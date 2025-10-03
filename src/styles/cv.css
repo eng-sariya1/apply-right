@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap');
+
+.cv-container {
+  width: 260mm;
+  min-height: 1270mm;
+  margin: 0.1rem auto;
+  margin-bottom: 5rem;
+  box-shadow: rgba(0, 0, 0, 0.6) 0px 12px 28px 0px,
+    rgba(0, 0, 0, 0.5) 0px 2px 4px 0px,
+    rgba(255, 255, 255, 0.01) 0px 0px 0px 1px inset;
+  font-family: "Ubuntu", sans-serif;
+  background: white;
+}
+
+.cv-container * {
+  margin: 0;
+  padding: 0;
+}
+
+.cv-container header {
+  padding: 3rem 5rem;
+  padding-bottom: 2rem;
+}
+
+.cv-container h1 {
+  margin-bottom: 15px;
+  color: #d4af37;
+}
+
+.cv-container h2 {
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: #d4af37;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.49);
+  margin-bottom: 1rem;
+}
+
+.cv-container .headerIcon {
+  width: 1rem;
+}
+
+.cv-container .headers {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.cv-container .headers li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.cv-container .profile {
+  padding: 2rem 5rem 0 5rem;
+}
+
+.cv-container .skill {
+  padding: 2rem 5rem 0 5rem;
+}
+
+.cv-container .skills {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 5rem;
+  padding-left: 3rem;
+}
+
+.cv-container .career {
+  padding: 2rem 5rem 0 5rem;
+}
+
+.cv-container .career p:nth-child(1) {
+  font-weight: bold;
+}
+
+.cv-container .careerTitle {
+  padding: 2rem 0 1rem 0;
+}
+
+.cv-container .mainCareerList {
+  list-style: decimal;
+  margin-left: 2rem;
+}
+
+.cv-container .careerList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-left: 2rem;
+  list-style: circle !important;
+}
+
+.cv-container .listTitle {
+  font-weight: bold;
+}
+
+.cv-container label {
+  font-size: 15px;
+  filter: opacity(0.8);
+}
+
+.cv-container .secondCareerList {
+  margin-left: 2rem;
+  list-style: disc;
+}
+
+.cv-container .secondCareerList li {
+  font-size: 15px;
+  filter: opacity(0.8);
+}
+
+@media print {
+  .cv-container {
+    box-shadow: none;
+    margin: 0;
+  }
+}

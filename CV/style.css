@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-family: "Ubuntu", sans-serif;
+
+}
+
+body {
+    width: 260mm;
+    height: 1270mm;
+    margin: 0.1rem auto;
+    margin-bottom: 5rem;
+    box-shadow: rgba(0, 0, 0, 0.6) 0px 12px 28px 0px,
+    rgba(0, 0, 0, 0.5) 0px 2px 4px 0px,
+    rgba(255, 255, 255, 0.01) 0px 0px 0px 1px inset;
+}
+
+.total {
+}
+
+header {
+    /*border-bottom: 2px solid rgba(0, 0, 0, 0.49);*/
+    padding: 3rem 5rem;
+    padding-bottom: 2rem;
+}
+
+h1 {
+    margin-bottom: 15px;
+    color: #1864ab;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    color: #1864ab;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.49);
+    margin-bottom: 1rem;
+}
+
+.headerIcon {
+    width: 1rem;
+}
+
+.headers {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.headers li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile {
+    padding: 2rem 5rem 0 5rem;
+}
+
+.skill {
+    padding: 2rem 5rem 0 5rem;
+}
+
+.skills {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 5rem;
+    padding-left: 3rem;
+}
+
+.career {
+    padding: 2rem 5rem 0 5rem;
+}
+
+.career p:nth-child(1) {
+    font-weight: bold;
+}
+
+.careerTitle {
+    padding: 2rem 0 1rem 0;
+}
+.mainCareerList{
+    list-style: decimal;
+    margin-left: 2rem;
+}
+.careerList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-left: 2rem;
+    list-style: circle !important;
+}
+
+.listTitle{
+    font-weight: bold;
+}
+label{
+    font-size: 15px;
+    filter: opacity(0.8);
+}
+.secondCareerList{
+    margin-left: 2rem;
+    list-style: disc;
+}
+.secondCareerList li{
+    font-size: 15px;
+    filter: opacity(0.8);
+}

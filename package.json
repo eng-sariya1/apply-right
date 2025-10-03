@@ -46,5 +46,18 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.5",
     "vitest": "^3.2.4"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sariya-ux/apply-right.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sariya-ux/apply-right/issues"
+  },
+  "homepage": "https://github.com/sariya-ux/apply-right#readme"
 }
