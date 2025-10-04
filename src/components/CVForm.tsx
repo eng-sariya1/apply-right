@@ -1,4 +1,5 @@
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import { useEffect } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -40,9 +41,18 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
     education: ''
   };
 
-  const { control, handleSubmit, formState: { errors }, reset } = useForm<CVData>({
+  const { control, formState: { errors }, reset, watch } = useForm<CVData>({
     defaultValues
   });
+
+  // Watch all form values for real-time updates
+  const formValues = watch();
+
+  // Update CV in real-time as user types
+  useEffect(() => {
+    onSubmit(formValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formValues]);
 
   const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({
     control,
@@ -59,11 +69,6 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
     name: 'personalProjects'
   });
 
-  const onFormSubmit = (data: CVData) => {
-    onSubmit(data);
-    onHide();
-  };
-
   const onReset = () => {
     reset(defaultValues);
   };
@@ -77,7 +82,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
       "
       header={<h2 className="text-2xl font-bold text-yellow-500">CV Builder Form</h2>}
     >
-      <form onSubmit={handleSubmit(onFormSubmit)} className="flex flex-col gap-6 p-4">
+      <div className="flex flex-col gap-6 p-4">
         {/* Header Section */}
         <div className="card p-4 bg-gray-900 rounded-lg">
           <h3 className="text-xl font-semibold text-yellow-500 mb-4">Personal Information</h3>
@@ -379,11 +384,10 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
 
         {/* Form Actions */}
         <div className="flex gap-3 sticky bottom-0 bg-gray-800 p-4 rounded-lg">
-          <Button type="submit" label="Generate CV" icon="pi pi-check" className="flex-1" />
-          <Button type="button" label="Reset" icon="pi pi-refresh" severity="secondary" onClick={onReset} />
-          <Button type="button" label="Cancel" icon="pi pi-times" severity="danger" outlined onClick={onHide} />
+          <Button type="button" label="Reset" icon="pi pi-refresh" severity="secondary" onClick={onReset} className="flex-1" />
+          <Button type="button" label="Close" icon="pi pi-times" severity="info" outlined onClick={onHide} />
         </div>
-      </form>
+      </div>
     </Sidebar>
   );
 }
