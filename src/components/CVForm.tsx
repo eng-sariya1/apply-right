@@ -73,7 +73,8 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
       visible={visible}
       onHide={onHide}
       position="right"
-      className="w-72"
+      className="w-72
+      "
       header={<h2 className="text-2xl font-bold text-yellow-500">CV Builder Form</h2>}
     >
       <form onSubmit={handleSubmit(onFormSubmit)} className="flex flex-col gap-6 p-4">

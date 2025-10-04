@@ -10,11 +10,13 @@
     rgba(255, 255, 255, 0.01) 0px 0px 0px 1px inset;
   font-family: "Ubuntu", sans-serif;
   background: white;
+  color: #000;
 }
 
 .cv-container * {
   margin: 0;
   padding: 0;
+  color: #000;
 }
 
 .cv-container header {
@@ -37,6 +39,8 @@
 
 .cv-container .headerIcon {
   width: 1rem;
+  color: #000;
+  stroke: #000;
 }
 
 .cv-container .headers {
@@ -51,10 +55,20 @@
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  color: #000;
+}
+
+.cv-container .headers a {
+  color: #000;
+  text-decoration: none;
 }
 
 .cv-container .profile {
   padding: 2rem 5rem 0 5rem;
+}
+
+.cv-container .profile p {
+  color: #000;
 }
 
 .cv-container .skill {
@@ -69,8 +83,16 @@
   padding-left: 3rem;
 }
 
+.cv-container .skills li {
+  color: #000;
+}
+
 .cv-container .career {
   padding: 2rem 5rem 0 5rem;
+}
+
+.cv-container .career p {
+  color: #000;
 }
 
 .cv-container .career p:nth-child(1) {
@@ -79,11 +101,16 @@
 
 .cv-container .careerTitle {
   padding: 2rem 0 1rem 0;
+  color: #000;
 }
 
 .cv-container .mainCareerList {
   list-style: decimal;
   margin-left: 2rem;
+}
+
+.cv-container .mainCareerList li {
+  color: #000;
 }
 
 .cv-container .careerList {
@@ -94,13 +121,23 @@
   list-style: circle !important;
 }
 
+.cv-container .careerList li {
+  color: #000;
+}
+
+.cv-container .careerList b {
+  color: #000;
+}
+
 .cv-container .listTitle {
   font-weight: bold;
+  color: #000;
 }
 
 .cv-container label {
   font-size: 15px;
   filter: opacity(0.8);
+  color: #000;
 }
 
 .cv-container .secondCareerList {
@@ -111,6 +148,7 @@
 .cv-container .secondCareerList li {
   font-size: 15px;
   filter: opacity(0.8);
+  color: #000;
 }
 
 @media print {
