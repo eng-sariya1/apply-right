@@ -151,6 +151,15 @@
   color: #000;
 }
 
+.cv-container .p-skeleton {
+  background-color: #e0e0e0 !important;
+  border-radius: 4px;
+}
+
+.cv-container .p-skeleton::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
+}
+
 @media print {
   .cv-container {
     box-shadow: none;

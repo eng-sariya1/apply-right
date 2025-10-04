@@ -11,6 +11,7 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Divider } from 'primereact/divider';
 import { ColorPicker } from 'primereact/colorpicker';
 import type { CVData } from '../types/cv.types';
+import { useGemini } from '../hooks/useGemini';
 
 interface CVFormProps {
   visible: boolean;
@@ -43,18 +44,20 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
     sectionTitleColor: '000000'
   };
 
-  const { control, formState: { errors }, reset, watch } = useForm<CVData>({
+  const { control, formState: { errors }, reset, watch, setValue } = useForm<CVData>({
     defaultValues
   });
 
-  // Watch all form values for real-time updates
-  const formValues = watch();
+  // Gemini hook for AI-powered text improvement
+  const { improveText, isLoading } = useGemini();
 
-  // Update CV in real-time as user types
+  // Update CV in real-time as user types using subscription pattern
   useEffect(() => {
-    onSubmit(formValues);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formValues]);
+    const subscription = watch((data) => {
+      onSubmit(data as CVData);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, onSubmit]);
 
   const { fields: linkFields, append: appendLink, remove: removeLink } = useFieldArray({
     control,
@@ -73,6 +76,18 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
 
   const onReset = () => {
     reset(defaultValues);
+  };
+
+  const handleImproveAbstract = async () => {
+    const currentAbstract = watch('abstract');
+    if (!currentAbstract?.trim()) return;
+
+    try {
+      const improvedText = await improveText(currentAbstract);
+      setValue('abstract', improvedText, { shouldValidate: true });
+    } catch (error) {
+      console.error('Failed to improve abstract:', error);
+    }
   };
 
   return (
@@ -255,7 +270,20 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
 
         {/* Abstract Section */}
         <div className="card p-4 bg-gray-900 rounded-lg">
-          <h3 className="text-xl font-semibold text-yellow-500 mb-4">Abstract</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold text-yellow-500">Abstract</h3>
+            <Button
+              type="button"
+              icon="pi pi-sparkles"
+              severity="secondary"
+              outlined
+              loading={isLoading}
+              disabled={!watch('abstract')?.trim() || isLoading}
+              onClick={handleImproveAbstract}
+              tooltip="Improve with AI"
+              tooltipOptions={{ position: 'left' }}
+            />
+          </div>
           <div className="field">
             <Controller
               name="abstract"
@@ -339,7 +367,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                   </div>
                 }
               >
-                <CareerFields control={control} careerIndex={careerIndex} errors={errors} />
+                <CareerFields control={control} careerIndex={careerIndex} />
               </AccordionTab>
             ))}
           </Accordion>
@@ -383,7 +411,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                   </div>
                 }
               >
-                <PersonalProjectFields control={control} projectIndex={projectIndex} errors={errors} />
+                <PersonalProjectFields control={control} projectIndex={projectIndex} />
               </AccordionTab>
             ))}
           </Accordion>
@@ -419,7 +447,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
 }
 
 // Career Fields Component
-function CareerFields({ control, careerIndex, errors }: any) {
+function CareerFields({ control, careerIndex }: any) {
   const { fields: projectFields, append: appendProject, remove: removeProject } = useFieldArray({
     control,
     name: `career.${careerIndex}.projects`
@@ -642,7 +670,7 @@ function ProjectFields({ control, careerIndex, projectIndex }: any) {
 }
 
 // Personal Project Fields Component
-function PersonalProjectFields({ control, projectIndex, errors }: any) {
+function PersonalProjectFields({ control, projectIndex }: any) {
   return (
     <div className="flex flex-col gap-4">
       <div className="field">
