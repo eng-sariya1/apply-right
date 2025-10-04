@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import "primereact/resources/themes/lara-dark-amber/theme.css";
 import "primeicons/primeicons.css";
 import './App.css';
@@ -8,16 +8,42 @@ import { Button } from 'primereact/button';
 import type { CVData } from './types/cv.types';
 
 function App() {
-  const [cvData, setCvData] = useState<CVData | null>(null);
+  const [cvData, setCvData] = useState<CVData>({
+    header: {
+      fullName: '',
+      specialization: '',
+      email: '',
+      phone: '',
+      links: []
+    },
+    abstract: '',
+    skills: [],
+    career: [],
+    personalProjects: [],
+    education: ''
+  });
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
-  const handleFormSubmit = (data: CVData) => {
+  const handleFormSubmit = useCallback((data: CVData) => {
     setCvData(data);
-  };
+  }, []);
 
-  const handleReset = () => {
-    setCvData(null);
-  };
+  const handleReset = useCallback(() => {
+    setCvData({
+      header: {
+        fullName: '',
+        specialization: '',
+        email: '',
+        phone: '',
+        links: []
+      },
+      abstract: '',
+      skills: [],
+      career: [],
+      personalProjects: [],
+      education: ''
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black py-8">
@@ -34,42 +60,30 @@ function App() {
             onClick={() => setSidebarVisible(true)}
             size="large"
           />
-          {cvData && (
-            <>
-              <Button
-                label="Print / Save as PDF"
-                icon="pi pi-download"
-                onClick={() => window.print()}
-                severity="secondary"
-                size="large"
-              />
-              <Button
-                label="Reset CV"
-                icon="pi pi-refresh"
-                onClick={handleReset}
-                severity="danger"
-                outlined
-                size="large"
-              />
-            </>
-          )}
+          <Button
+            label="Print / Save as PDF"
+            icon="pi pi-download"
+            onClick={() => window.print()}
+            severity="secondary"
+            size="large"
+          />
+          <Button
+            label="Reset CV"
+            icon="pi pi-refresh"
+            onClick={handleReset}
+            severity="danger"
+            outlined
+            size="large"
+          />
         </div>
 
-        {cvData ? (
-          <CVDisplay data={cvData} />
-        ) : (
-          <div className="text-center py-24 text-yellow-600">
-            <i className="pi pi-file text-8xl mb-6 block"></i>
-            <h2 className="text-3xl font-bold mb-3">No CV Created Yet</h2>
-            <p className="text-xl mb-6">Click "Open Form" to start building your CV</p>
-          </div>
-        )}
+        <CVDisplay data={cvData} />
 
         <CVForm
           visible={sidebarVisible}
           onHide={() => setSidebarVisible(false)}
           onSubmit={handleFormSubmit}
-          initialData={cvData || undefined}
+          initialData={cvData}
         />
       </div>
     </div>
