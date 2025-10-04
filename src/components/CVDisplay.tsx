@@ -1,5 +1,7 @@
 import type { CVData } from '../types/cv.types';
 import '../styles/cv.css';
+import { Mail, Phone } from 'lucide-react';
+import { Skeleton } from 'primereact/skeleton';
 
 interface CVDisplayProps {
   data: CVData;
@@ -10,51 +12,25 @@ export default function CVDisplay({ data }: CVDisplayProps) {
     <div className="cv-container">
       <div className="total">
         <header>
-          <h1>
-            <span style={{ fontWeight: '600' }}>Full Name: </span>{data.header.fullName || '___________'}
+          <h1 className={"flex gap-1"}>
+            <span style={{ fontWeight: '600' }}> </span>{data.header.fullName || <Skeleton width="10rem" height="1.5rem" />}
             {' | '}
-            <span style={{ fontWeight: '600' }}>Specialization: </span>{data.header.specialization || '___________'}
+            <span style={{ fontWeight: '600' }}> </span>{data.header.specialization || <Skeleton width="12rem" height="1.5rem" />}
           </h1>
           <div>
             <ul className="headers">
               <li>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="headerIcon"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                  />
-                </svg>
-                <span style={{ fontWeight: '600' }}>Email: </span>
+                <Mail className="headerIcon" strokeWidth={1.5} />
+                <span style={{ fontWeight: '600' }}> </span>
                 <a href={`mailto:${data.header.email}`} target="_blank" rel="noopener noreferrer">
-                  {data.header.email || '___________'}
+                  {data.header.email || <Skeleton width="12rem" height="1rem" />}
                 </a>
               </li>
               <li>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="headerIcon"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
-                  />
-                </svg>
-                <span style={{ fontWeight: '600' }}>Phone: </span>
+                <Phone className="headerIcon" strokeWidth={1.5} />
+                <span style={{ fontWeight: '600' }}> </span>
                 <a href={`tel:${data.header.phone}`} target="_blank" rel="noopener noreferrer">
-                  {data.header.phone || '___________'}
+                  {data.header.phone || <Skeleton width="8rem" height="1rem" />}
                 </a>
               </li>
               {data.header.links.map((link, index) => (
@@ -81,7 +57,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
           <div>
             <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Abstract</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <p>{data.abstract || '___________'}</p>
+              <p>{data.abstract || <Skeleton width="100%" height="4rem" />}</p>
             </div>
           </div>
         </div>
@@ -117,26 +93,26 @@ export default function CVDisplay({ data }: CVDisplayProps) {
                   <div>
                     <p>
                       <span style={{ fontWeight: '600' }}>Period: </span>
-                      {career.startDate || '___'} - {career.isPresent ? 'Present' : (career.endDate || '___')}
+                      {career.startDate || <Skeleton width="4rem" height="1rem" />} - {career.isPresent ? 'Present' : (career.endDate || <Skeleton width="4rem" height="1rem" />)}
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}>
-                      <p><span style={{ fontWeight: '600' }}>Location: </span>{career.location || '___________'}</p>
+                      <p><span style={{ fontWeight: '600' }}>Location: </span>{career.location || <Skeleton width="10rem" height="1rem" />}</p>
                     </div>
                   </div>
                   <div>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}>
-                      <p><span style={{ fontWeight: '600' }}>Company: </span>{career.companyName || '___________'}</p>
+                      <p><span style={{ fontWeight: '600' }}>Company: </span>{career.companyName || <Skeleton width="10rem" height="1rem" />}</p>
                     </div>
                     <p>
                       <span style={{ fontWeight: '600' }}>Position: </span>
-                      {career.workSpecialization || '___________'} ({career.jobType})
+                      {career.workSpecialization || <Skeleton width="12rem" height="1rem" />} ({career.jobType})
                     </p>
                   </div>
                 </div>
                 <div>
                   <p style={{ paddingTop: '1rem', paddingBottom: '1rem', fontWeight: 'normal', filter: 'opacity(0.8)' }}>
                     <span style={{ fontWeight: '600', filter: 'opacity(1)' }}>Summary: </span>
-                    {career.summarization || '___________'}
+                    {career.summarization || <Skeleton width="100%" height="3rem" />}
                   </p>
                   {career.projects.length > 0 && (
                     <>
@@ -144,15 +120,15 @@ export default function CVDisplay({ data }: CVDisplayProps) {
                       <ul className="mainCareerList">
                         {career.projects.map((project, projectIndex) => (
                           <div key={projectIndex}>
-                            <li className="careerTitle"><span style={{ fontWeight: '600' }}>Name: </span>{project.name || '___________'}</li>
+                            <li className="careerTitle"><span style={{ fontWeight: '600' }}>Name: </span>{project.name || <Skeleton width="10rem" height="1rem" />}</li>
                             <ul className="careerList">
                               <li>
                                 <b>Description: </b>
-                                <label>{project.description || '___________'}</label>
+                                <label>{project.description || <Skeleton width="100%" height="2rem" />}</label>
                               </li>
                               <li>
                                 <b>Technologies: </b>
-                                <label>{project.technologies || '___________'}</label>
+                                <label>{project.technologies || <Skeleton width="15rem" height="1rem" />}</label>
                               </li>
                               {project.keyContributions.length > 0 && (
                                 <>
@@ -190,15 +166,15 @@ export default function CVDisplay({ data }: CVDisplayProps) {
               <ul className="mainCareerList">
                 {data.personalProjects.map((project, projectIndex) => (
                   <div key={projectIndex}>
-                    <li className="careerTitle"><span style={{ fontWeight: '600' }}>Title: </span>{project.title || '___________'}</li>
+                    <li className="careerTitle"><span style={{ fontWeight: '600' }}>Title: </span>{project.title || <Skeleton width="10rem" height="1rem" />}</li>
                     <ul className="careerList">
                       <li>
                         <b>Description: </b>
-                        <label>{project.description || '___________'}</label>
+                        <label>{project.description || <Skeleton width="100%" height="2rem" />}</label>
                       </li>
                       <li>
                         <b>Technologies: </b>
-                        <label>{project.technologies || '___________'}</label>
+                        <label>{project.technologies || <Skeleton width="15rem" height="1rem" />}</label>
                       </li>
                       {project.keyFeatures.length > 0 && (
                         <>
@@ -221,7 +197,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         <div className="career">
           <div>
             <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Education</h2>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{data.education || '___________'}</p>
+            <p style={{ whiteSpace: 'pre-wrap' }}>{data.education || <Skeleton width="100%" height="3rem" />}</p>
           </div>
         </div>
       </div>
