@@ -79,7 +79,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
 
         <div className="profile">
           <div>
-            <h2>Abstract</h2>
+            <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Abstract</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <p>{data.abstract || '___________'}</p>
             </div>
@@ -89,7 +89,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         {data.skills.length > 0 && (
           <div className="skill">
             <div>
-              <h2>Skills</h2>
+              <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Skills</h2>
             </div>
             <div>
               <ul className="skills">
@@ -108,7 +108,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         {data.career.length > 0 && (
           <div className="career">
             <div>
-              <h2>Career</h2>
+              <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Career</h2>
             </div>
 
             {data.career.map((career, careerIndex) => (
@@ -184,7 +184,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         {data.personalProjects.length > 0 && (
           <div className="career">
             <div>
-              <h2>Personal Projects</h2>
+              <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Personal Projects</h2>
             </div>
             <div>
               <ul className="mainCareerList">
@@ -220,7 +220,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
 
         <div className="career">
           <div>
-            <h2>Education</h2>
+            <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Education</h2>
             <p style={{ whiteSpace: 'pre-wrap' }}>{data.education || '___________'}</p>
           </div>
         </div>

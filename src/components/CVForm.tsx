@@ -9,6 +9,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Divider } from 'primereact/divider';
+import { ColorPicker } from 'primereact/colorpicker';
 import type { CVData } from '../types/cv.types';
 
 interface CVFormProps {
@@ -38,7 +39,8 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
     skills: [],
     career: [],
     personalProjects: [],
-    education: ''
+    education: '',
+    sectionTitleColor: '000000'
   };
 
   const { control, formState: { errors }, reset, watch } = useForm<CVData>({
@@ -224,6 +226,30 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Appearance Settings */}
+        <div className="card p-4 bg-gray-900 rounded-lg">
+          <h3 className="text-xl font-semibold text-yellow-500 mb-4">Appearance Settings</h3>
+          <div className="field">
+            <label htmlFor="sectionTitleColor" className="block mb-2 text-yellow-600">Section Title Color</label>
+            <Controller
+              name="sectionTitleColor"
+              control={control}
+              render={({ field }) => (
+                <ColorPicker
+                  id="sectionTitleColor"
+                  value={field.value || '000000'}
+                  onChange={(e) => field.onChange(e.value)}
+                  format="hex"
+                  className="w-full"
+                />
+              )}
+            />
+            <small className="text-gray-400 mt-2 block">
+              Choose a color for all section titles (Abstract, Skills, Career, etc.)
+            </small>
           </div>
         </div>
 

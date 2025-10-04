@@ -45,4 +45,5 @@ export interface CVData {
   career: Career[];
   personalProjects: PersonalProject[];
   education: string;
+  sectionTitleColor?: string;
 }

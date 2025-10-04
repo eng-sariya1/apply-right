@@ -20,7 +20,8 @@ function App() {
     skills: [],
     career: [],
     personalProjects: [],
-    education: ''
+    education: '',
+    sectionTitleColor: '000000'
   });
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
@@ -41,7 +42,8 @@ function App() {
       skills: [],
       career: [],
       personalProjects: [],
-      education: ''
+      education: '',
+      sectionTitleColor: '000000'
     });
   }, []);
 
