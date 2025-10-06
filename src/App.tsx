@@ -21,7 +21,7 @@ function App() {
     career: [],
     personalProjects: [],
     education: '',
-    sectionTitleColor: '000000'
+    sectionTitleColor: '1e3a8a'
   });
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
@@ -43,7 +43,7 @@ function App() {
       career: [],
       personalProjects: [],
       education: '',
-      sectionTitleColor: '000000'
+      sectionTitleColor: '1e3a8a'
     });
   }, []);
 
@@ -53,9 +53,13 @@ function App() {
         <div className="container mx-auto px-4">
           {!sidebarVisible && (
             <>
-              <div className="no-print text-center mb-8">
-                <h1 className="text-5xl font-bold text-sky-400 mb-2">CV Builder</h1>
-                <p className="text-cyan-400 text-lg">Create your professional CV in minutes</p>
+              <div className="no-print mb-12">
+                <h1 className="text-5xl font-bold bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4 leading-tight tracking-tight" style={{ fontFamily: 'Outfit, sans-serif', textAlign: 'left', marginLeft: '2rem' }}>
+                  Let AI craft your perfect CV — fast, modern, and ready to impress
+                </h1>
+                <p className="text-slate-50 text-lg max-w-4xl leading-relaxed mb-8" style={{ fontFamily: 'Manrope, sans-serif', fontWeight: 500, textAlign: 'left', marginLeft: '2rem' }}>
+                  Build a stunning, professional CV powered by the Gemini AI model and optimized with ATS technology — designed to help you stand out and land your dream job
+                </p>
               </div>
 
               <div className="no-print flex justify-center mb-6 gap-3">
@@ -64,7 +68,7 @@ function App() {
                   icon="pi pi-pencil"
                   onClick={() => setSidebarVisible(true)}
                   size="large"
-                  className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-blue-500/50"
+                  className="glass-btn-base glass-btn-primary glass-btn-lg"
                 />
                 <Button
                   label="Print / Save as PDF"
@@ -72,7 +76,7 @@ function App() {
                   onClick={() => window.print()}
                   severity="secondary"
                   size="large"
-                  className="border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 transition-all duration-300"
+                  className="glass-btn-base glass-btn-secondary glass-btn-lg"
                 />
                 <Button
                   label="Reset CV"
@@ -81,7 +85,7 @@ function App() {
                   severity="danger"
                   outlined
                   size="large"
-                  className="transition-all duration-300"
+                  className="glass-btn-base glass-btn-danger glass-btn-lg"
                 />
               </div>
             </>

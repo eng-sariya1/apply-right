@@ -41,7 +41,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
     career: [],
     personalProjects: [],
     education: '',
-    sectionTitleColor: '000000'
+    sectionTitleColor: '1e3a8a'
   };
 
   const { control, formState: { errors }, reset, watch, setValue } = useForm<CVData>({
@@ -201,7 +201,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                   icon="pi pi-plus"
                   label="Add Link"
                   size="small"
-                  className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300"
+                  className="glass-btn-base glass-btn-primary glass-btn-sm"
                   onClick={() => appendLink({ name: '', url: '' })}
                 />
               </div>
@@ -236,6 +236,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                     icon="pi pi-trash"
                     severity="danger"
                     outlined
+                    className="glass-btn-base glass-btn-danger glass-btn-sm"
                     onClick={() => removeLink(index)}
                   />
                 </div>
@@ -244,26 +245,42 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
           </div>
         </div>
 
-        {/* Appearance Settings */}
+        {/* Theme */}
         <div className="card p-4 bg-slate-900/80 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
-          <h3 className="text-xl font-semibold text-sky-400 mb-4">Appearance Settings</h3>
+          <h3 className="text-xl font-semibold text-sky-400 mb-4">Theme</h3>
           <div className="field">
-            <label htmlFor="sectionTitleColor" className="block mb-2 text-cyan-400">Section Title Color</label>
-            <Controller
-              name="sectionTitleColor"
-              control={control}
-              render={({ field }) => (
-                <ColorPicker
-                  id="sectionTitleColor"
-                  value={field.value || '000000'}
-                  onChange={(e) => field.onChange(e.value)}
-                  format="hex"
-                  className="w-full"
-                />
-              )}
-            />
-            <small className="text-slate-50/70 mt-2 block">
-              Choose a color for all section titles (Abstract, Skills, Career, etc.)
+            <label htmlFor="sectionTitleColor" className="block mb-3 text-cyan-400">Theme Color</label>
+            <div className="flex items-center gap-4">
+              <Controller
+                name="sectionTitleColor"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <ColorPicker
+                      id="sectionTitleColor"
+                      value={field.value || '1e3a8a'}
+                      onChange={(e) => field.onChange(e.value)}
+                      format="hex"
+                    />
+                    <div
+                      className="flex-1 h-12 rounded-lg border-2 border-sky-400/30 transition-all duration-300"
+                      style={{
+                        backgroundColor: `#${field.value || '1e3a8a'}`,
+                        boxShadow: `0 0 20px rgba(${parseInt((field.value || '1e3a8a').substring(0, 2), 16)}, ${parseInt((field.value || '1e3a8a').substring(2, 4), 16)}, ${parseInt((field.value || '1e3a8a').substring(4, 6), 16)}, 0.3)`
+                      }}
+                    >
+                      <div className="h-full flex items-center justify-center">
+                        <span className="text-white font-semibold text-sm drop-shadow-lg">
+                          #{field.value || '1e3a8a'}
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                )}
+              />
+            </div>
+            <small className="text-slate-50/70 mt-3 block">
+              This color will be applied to section titles, separators, and theme elements throughout your CV
             </small>
           </div>
         </div>
@@ -282,7 +299,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
               onClick={handleImproveAbstract}
               tooltip="Improve with AI"
               tooltipOptions={{ position: 'left' }}
-              className="border-sky-400 text-sky-400 hover:bg-sky-400/10 transition-all duration-300"
+              className="glass-btn-base glass-btn-ghost glass-btn-sm"
             />
           </div>
           <div className="field">
@@ -333,7 +350,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
               type="button"
               icon="pi pi-plus"
               label="Add Career"
-              className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300"
+              className="glass-btn-base glass-btn-primary"
               onClick={() => appendCareer({
                 startDate: '',
                 endDate: null,
@@ -361,6 +378,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                       severity="danger"
                       size="small"
                       outlined
+                      className="glass-btn-base glass-btn-danger glass-btn-sm"
                       onClick={(e) => {
                         e.stopPropagation();
                         removeCareer(careerIndex);
@@ -383,7 +401,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
               type="button"
               icon="pi pi-plus"
               label="Add Project"
-              className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300"
+              className="glass-btn-base glass-btn-primary"
               onClick={() => appendPersonalProject({
                 title: '',
                 description: '',
@@ -406,6 +424,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                       severity="danger"
                       size="small"
                       outlined
+                      className="glass-btn-base glass-btn-danger glass-btn-sm"
                       onClick={(e) => {
                         e.stopPropagation();
                         removePersonalProject(projectIndex);
@@ -441,8 +460,8 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
 
         {/* Form Actions */}
         <div className="flex gap-3 sticky bottom-0 bg-slate-800/90 backdrop-blur-sm p-4 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
-          <Button type="button" label="Reset" icon="pi pi-refresh" severity="secondary" onClick={onReset} className="flex-1 border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 transition-all duration-300" />
-          <Button type="button" label="Close" icon="pi pi-times" severity="info" outlined onClick={onHide} className="border-sky-400 text-sky-400 hover:bg-sky-400/10 transition-all duration-300" />
+          <Button type="button" label="Reset" icon="pi pi-refresh" severity="secondary" onClick={onReset} className="flex-1 glass-btn-base glass-btn-secondary" />
+          <Button type="button" label="Close" icon="pi pi-times" severity="info" outlined onClick={onHide} className="glass-btn-base glass-btn-ghost" />
         </div>
       </div>
     </Sidebar>
@@ -580,7 +599,7 @@ function CareerFields({ control, careerIndex }: any) {
             icon="pi pi-plus"
             label="Add Project"
             size="small"
-            className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300"
+            className="glass-btn-base glass-btn-primary glass-btn-sm"
             onClick={() => appendProject({
               name: '',
               description: '',
@@ -600,6 +619,7 @@ function CareerFields({ control, careerIndex }: any) {
                 severity="danger"
                 size="small"
                 outlined
+                className="glass-btn-base glass-btn-danger glass-btn-sm"
                 onClick={() => removeProject(projectIndex)}
               />
             </div>

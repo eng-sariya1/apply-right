@@ -8,13 +8,15 @@ interface CVDisplayProps {
 }
 
 export default function CVDisplay({ data }: CVDisplayProps) {
+  const themeColor = data.sectionTitleColor ? `#${data.sectionTitleColor}` : '#1e3a8a';
+
   return (
     <div className="cv-container">
       <div className="total">
         <header>
           <h1 className={"flex gap-1"}>
             <span style={{ fontWeight: '600' }}> </span>{data.header.fullName || <Skeleton width="10rem" height="1.5rem" />}
-            {' | '}
+            <span style={{ color: themeColor, fontWeight: '600' }}> | </span>
             <span style={{ fontWeight: '600' }}> </span>{data.header.specialization || <Skeleton width="12rem" height="1.5rem" />}
           </h1>
           <div>
@@ -55,7 +57,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
 
         <div className="profile">
           <div>
-            <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Abstract</h2>
+            <h2 style={{ color: themeColor }}>Abstract</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <p>{data.abstract || <Skeleton width="100%" height="4rem" />}</p>
             </div>
@@ -65,7 +67,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         {data.skills.length > 0 && (
           <div className="skill">
             <div>
-              <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Skills</h2>
+              <h2 style={{ color: themeColor }}>Skills</h2>
             </div>
             <div>
               <ul className="skills">
@@ -84,7 +86,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         {data.career.length > 0 && (
           <div className="career">
             <div>
-              <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Career</h2>
+              <h2 style={{ color: themeColor }}>Career</h2>
             </div>
 
             {data.career.map((career, careerIndex) => (
@@ -160,7 +162,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         {data.personalProjects.length > 0 && (
           <div className="career">
             <div>
-              <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Personal Projects</h2>
+              <h2 style={{ color: themeColor }}>Personal Projects</h2>
             </div>
             <div>
               <ul className="mainCareerList">
@@ -196,7 +198,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
 
         <div className="career">
           <div>
-            <h2 style={{ color: data.sectionTitleColor ? `#${data.sectionTitleColor}` : undefined }}>Education</h2>
+            <h2 style={{ color: themeColor }}>Education</h2>
             <p style={{ whiteSpace: 'pre-wrap' }}>{data.education || <Skeleton width="100%" height="3rem" />}</p>
           </div>
         </div>

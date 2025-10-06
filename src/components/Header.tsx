@@ -52,7 +52,7 @@ const Header = () => {
             <Button
               label="Sign Up"
               icon="pi pi-user-plus"
-              className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-blue-500/50"
+              className="glass-btn-base glass-btn-primary"
               onClick={() => console.log('Sign up clicked')}
             />
 
@@ -61,7 +61,7 @@ const Header = () => {
               rounded
               outlined
               severity="secondary"
-              className="border-sky-400 text-sky-400 hover:bg-sky-400/10 transition-all duration-300"
+              className="glass-btn-base glass-btn-ghost"
               onClick={(e) => menuRef.current?.toggle(e)}
               aria-label="Menu"
             />

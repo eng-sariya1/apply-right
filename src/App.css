@@ -1,3 +1,7 @@
+/* ============ Fonts ============ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
 /* ============ Sidebar Customization ============ */
 .p-sidebar-right .p-sidebar {
   width: 40rem;
@@ -227,7 +231,141 @@
   color: rgb(248 250 252);
 }
 
-/* Button Utilities */
+/* ============ Glass Button System ============ */
+/* Glass Button Base */
+.glass-btn-base {
+  position: relative;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  overflow: hidden;
+}
+
+.glass-btn-base::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.glass-btn-base:hover::before {
+  left: 100%;
+}
+
+/* Glass Primary Button */
+.glass-btn-primary {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.25));
+  color: rgb(224, 242, 254);
+  border-color: rgba(96, 165, 250, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(59, 130, 246, 0.2),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-btn-primary:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(37, 99, 235, 0.35));
+  border-color: rgba(96, 165, 250, 0.5);
+  box-shadow: 0 12px 40px 0 rgba(59, 130, 246, 0.35),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.glass-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 16px 0 rgba(59, 130, 246, 0.2),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Glass Secondary Button */
+.glass-btn-secondary {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.15), rgba(6, 182, 212, 0.1));
+  color: rgb(34, 211, 238);
+  border-color: rgba(34, 211, 238, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(34, 211, 238, 0.15),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-btn-secondary:hover {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.25), rgba(6, 182, 212, 0.2));
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow: 0 12px 40px 0 rgba(34, 211, 238, 0.25),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.glass-btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 16px 0 rgba(34, 211, 238, 0.15),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Glass Ghost/Outline Button */
+.glass-btn-ghost {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(14, 165, 233, 0.05));
+  color: rgb(56, 189, 248);
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(56, 189, 248, 0.1),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-btn-ghost:hover {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(14, 165, 233, 0.15));
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 12px 40px 0 rgba(56, 189, 248, 0.2),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.glass-btn-ghost:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 16px 0 rgba(56, 189, 248, 0.1),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Glass Danger Button */
+.glass-btn-danger {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+  color: rgb(252, 165, 165);
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(239, 68, 68, 0.15),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-btn-danger:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.2));
+  border-color: rgba(239, 68, 68, 0.5);
+  box-shadow: 0 12px 40px 0 rgba(239, 68, 68, 0.25),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.glass-btn-danger:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 16px 0 rgba(239, 68, 68, 0.15),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Glass Button Small Size */
+.glass-btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+}
+
+/* Glass Button Large Size */
+.glass-btn-lg {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 0.75rem;
+}
+
+/* Legacy Button Utilities (keeping for backwards compatibility) */
 .neon-btn-primary {
   background-color: rgb(59 130 246);
   color: white;
@@ -401,4 +539,42 @@
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4),
               0 4px 6px -4px rgb(0 0 0 / 0.4),
               0 0 20px rgb(56 189 248 / 0.15);
+}
+
+/* ============ Modern Typography ============ */
+.hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 3.75rem;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, rgb(56 189 248), rgb(34 211 238), rgb(59 130 246));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+}
+
+.hero-subtitle {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: rgb(248 250 252);
+  text-align: center;
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

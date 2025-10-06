@@ -301,16 +301,20 @@
   }
 
   /* Ensure black text for printing */
-  .cv-container,
+  .cv-container {
+    background: white !important;
+  }
+
   .cv-container * {
     color: #000 !important;
     background: white !important;
   }
 
-  /* Preserve CV header colors */
-  .cv-container h1,
-  .cv-container h2 {
-    color: #d4af37 !important;
+  /* Preserve theme colors for section titles and separators */
+  .cv-container h2,
+  .cv-container h1 span[style*="color"] {
+    color: inherit !important;
+    background: white !important;
   }
 
   /* Remove page margins */
