@@ -95,18 +95,17 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
       visible={visible}
       onHide={onHide}
       position="right"
-      className="w-72
-      "
-      header={<h2 className="text-2xl font-bold text-yellow-500">CV Builder Form</h2>}
+      className="cv-form-sidebar"
+      header={<h2 className="text-2xl font-bold text-sky-400">CV Builder Form</h2>}
     >
       <div className="flex flex-col gap-6 p-4">
         {/* Header Section */}
-        <div className="card p-4 bg-gray-900 rounded-lg">
-          <h3 className="text-xl font-semibold text-yellow-500 mb-4">Personal Information</h3>
+        <div className="card p-4 bg-slate-900/80 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
+          <h3 className="text-xl font-semibold text-sky-400 mb-4">Personal Information</h3>
 
           <div className="flex flex-col gap-4">
             <div className="field">
-              <label htmlFor="fullName" className="block mb-2 text-yellow-600">Full Name *</label>
+              <label htmlFor="fullName" className="block mb-2 text-cyan-400">Full Name *</label>
               <Controller
                 name="header.fullName"
                 control={control}
@@ -126,7 +125,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
             </div>
 
             <div className="field">
-              <label htmlFor="specialization" className="block mb-2 text-yellow-600">Specialization *</label>
+              <label htmlFor="specialization" className="block mb-2 text-cyan-400">Specialization *</label>
               <Controller
                 name="header.specialization"
                 control={control}
@@ -146,7 +145,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
             </div>
 
             <div className="field">
-              <label htmlFor="email" className="block mb-2 text-yellow-600">Email *</label>
+              <label htmlFor="email" className="block mb-2 text-cyan-400">Email *</label>
               <Controller
                 name="header.email"
                 control={control}
@@ -173,7 +172,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
             </div>
 
             <div className="field">
-              <label htmlFor="phone" className="block mb-2 text-yellow-600">Phone Number *</label>
+              <label htmlFor="phone" className="block mb-2 text-cyan-400">Phone Number *</label>
               <Controller
                 name="header.phone"
                 control={control}
@@ -196,17 +195,18 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
             <Divider />
             <div className="field">
               <div className="flex justify-between items-center mb-3">
-                <label className="text-yellow-600 font-semibold">Links</label>
+                <label className="text-cyan-400 font-semibold">Links</label>
                 <Button
                   type="button"
                   icon="pi pi-plus"
                   label="Add Link"
                   size="small"
+                  className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300"
                   onClick={() => appendLink({ name: '', url: '' })}
                 />
               </div>
               {linkFields.map((field, index) => (
-                <div key={field.id} className="flex gap-2 mb-3 p-3 bg-gray-800 rounded">
+                <div key={field.id} className="flex gap-2 mb-3 p-3 bg-slate-800/60 rounded border border-sky-400/10">
                   <div className="flex-1">
                     <Controller
                       name={`header.links.${index}.name`}
@@ -245,10 +245,10 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
         </div>
 
         {/* Appearance Settings */}
-        <div className="card p-4 bg-gray-900 rounded-lg">
-          <h3 className="text-xl font-semibold text-yellow-500 mb-4">Appearance Settings</h3>
+        <div className="card p-4 bg-slate-900/80 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
+          <h3 className="text-xl font-semibold text-sky-400 mb-4">Appearance Settings</h3>
           <div className="field">
-            <label htmlFor="sectionTitleColor" className="block mb-2 text-yellow-600">Section Title Color</label>
+            <label htmlFor="sectionTitleColor" className="block mb-2 text-cyan-400">Section Title Color</label>
             <Controller
               name="sectionTitleColor"
               control={control}
@@ -262,16 +262,16 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                 />
               )}
             />
-            <small className="text-gray-400 mt-2 block">
+            <small className="text-slate-50/70 mt-2 block">
               Choose a color for all section titles (Abstract, Skills, Career, etc.)
             </small>
           </div>
         </div>
 
         {/* Abstract Section */}
-        <div className="card p-4 bg-gray-900 rounded-lg">
+        <div className="card p-4 bg-slate-900/80 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold text-yellow-500">Abstract</h3>
+            <h3 className="text-xl font-semibold text-sky-400">Abstract</h3>
             <Button
               type="button"
               icon="pi pi-sparkles"
@@ -282,6 +282,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
               onClick={handleImproveAbstract}
               tooltip="Improve with AI"
               tooltipOptions={{ position: 'left' }}
+              className="border-sky-400 text-sky-400 hover:bg-sky-400/10 transition-all duration-300"
             />
           </div>
           <div className="field">
@@ -301,10 +302,10 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
         </div>
 
         {/* Skills Section */}
-        <div className="card p-4 bg-gray-900 rounded-lg">
-          <h3 className="text-xl font-semibold text-yellow-500 mb-4">Skills</h3>
+        <div className="card p-4 bg-slate-900/80 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
+          <h3 className="text-xl font-semibold text-sky-400 mb-4">Skills</h3>
           <div className="field">
-            <label htmlFor="skills" className="block mb-2 text-yellow-600">Add your skills</label>
+            <label htmlFor="skills" className="block mb-2 text-cyan-400">Add your skills</label>
             <Controller
               name="skills"
               control={control}
@@ -318,20 +319,21 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                 />
               )}
             />
-            <small className="text-gray-400 mt-2 block">
+            <small className="text-slate-50/70 mt-2 block">
               Type a skill and press Enter. Examples: React, TypeScript, Node.js
             </small>
           </div>
         </div>
 
         {/* Career Section */}
-        <div className="card p-4 bg-gray-900 rounded-lg">
+        <div className="card p-4 bg-slate-900/80 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold text-yellow-500">Career</h3>
+            <h3 className="text-xl font-semibold text-sky-400">Career</h3>
             <Button
               type="button"
               icon="pi pi-plus"
               label="Add Career"
+              className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300"
               onClick={() => appendCareer({
                 startDate: '',
                 endDate: null,
@@ -374,13 +376,14 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
         </div>
 
         {/* Personal Projects Section */}
-        <div className="card p-4 bg-gray-900 rounded-lg">
+        <div className="card p-4 bg-slate-900/80 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold text-yellow-500">Personal Projects</h3>
+            <h3 className="text-xl font-semibold text-sky-400">Personal Projects</h3>
             <Button
               type="button"
               icon="pi pi-plus"
               label="Add Project"
+              className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300"
               onClick={() => appendPersonalProject({
                 title: '',
                 description: '',
@@ -418,8 +421,8 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
         </div>
 
         {/* Education Section */}
-        <div className="card p-4 bg-gray-900 rounded-lg">
-          <h3 className="text-xl font-semibold text-yellow-500 mb-4">Education</h3>
+        <div className="card p-4 bg-slate-900/80 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
+          <h3 className="text-xl font-semibold text-sky-400 mb-4">Education</h3>
           <div className="field">
             <Controller
               name="education"
@@ -437,9 +440,9 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
         </div>
 
         {/* Form Actions */}
-        <div className="flex gap-3 sticky bottom-0 bg-gray-800 p-4 rounded-lg">
-          <Button type="button" label="Reset" icon="pi pi-refresh" severity="secondary" onClick={onReset} className="flex-1" />
-          <Button type="button" label="Close" icon="pi pi-times" severity="info" outlined onClick={onHide} />
+        <div className="flex gap-3 sticky bottom-0 bg-slate-800/90 backdrop-blur-sm p-4 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
+          <Button type="button" label="Reset" icon="pi pi-refresh" severity="secondary" onClick={onReset} className="flex-1 border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 transition-all duration-300" />
+          <Button type="button" label="Close" icon="pi pi-times" severity="info" outlined onClick={onHide} className="border-sky-400 text-sky-400 hover:bg-sky-400/10 transition-all duration-300" />
         </div>
       </div>
     </Sidebar>
@@ -457,7 +460,7 @@ function CareerFields({ control, careerIndex }: any) {
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-2 gap-3">
         <div className="field">
-          <label className="block mb-2 text-yellow-600">Start Date</label>
+          <label className="block mb-2 text-cyan-400">Start Date</label>
           <Controller
             name={`career.${careerIndex}.startDate`}
             control={control}
@@ -468,7 +471,7 @@ function CareerFields({ control, careerIndex }: any) {
         </div>
 
         <div className="field">
-          <label className="block mb-2 text-yellow-600">End Date</label>
+          <label className="block mb-2 text-cyan-400">End Date</label>
           <Controller
             name={`career.${careerIndex}.endDate`}
             control={control}
@@ -495,14 +498,14 @@ function CareerFields({ control, careerIndex }: any) {
                 checked={field.value}
                 onChange={(e) => field.onChange(e.checked)}
               />
-              <label htmlFor={`present-${careerIndex}`} className="text-yellow-600">I currently work here</label>
+              <label htmlFor={`present-${careerIndex}`} className="text-cyan-400">I currently work here</label>
             </div>
           )}
         />
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Location</label>
+        <label className="block mb-2 text-cyan-400">Location</label>
         <Controller
           name={`career.${careerIndex}.location`}
           control={control}
@@ -513,7 +516,7 @@ function CareerFields({ control, careerIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Company Name</label>
+        <label className="block mb-2 text-cyan-400">Company Name</label>
         <Controller
           name={`career.${careerIndex}.companyName`}
           control={control}
@@ -524,7 +527,7 @@ function CareerFields({ control, careerIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Work Specialization</label>
+        <label className="block mb-2 text-cyan-400">Work Specialization</label>
         <Controller
           name={`career.${careerIndex}.workSpecialization`}
           control={control}
@@ -535,7 +538,7 @@ function CareerFields({ control, careerIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Job Type</label>
+        <label className="block mb-2 text-cyan-400">Job Type</label>
         <Controller
           name={`career.${careerIndex}.jobType`}
           control={control}
@@ -551,7 +554,7 @@ function CareerFields({ control, careerIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Work Summary</label>
+        <label className="block mb-2 text-cyan-400">Work Summary</label>
         <Controller
           name={`career.${careerIndex}.summarization`}
           control={control}
@@ -571,12 +574,13 @@ function CareerFields({ control, careerIndex }: any) {
       {/* Projects within Career */}
       <div className="field">
         <div className="flex justify-between items-center mb-3">
-          <label className="text-yellow-600 font-semibold">Projects</label>
+          <label className="text-cyan-400 font-semibold">Projects</label>
           <Button
             type="button"
             icon="pi pi-plus"
             label="Add Project"
             size="small"
+            className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold transition-all duration-300"
             onClick={() => appendProject({
               name: '',
               description: '',
@@ -587,9 +591,9 @@ function CareerFields({ control, careerIndex }: any) {
         </div>
 
         {projectFields.map((field, projectIndex) => (
-          <div key={field.id} className="mb-4 p-3 bg-gray-800 rounded">
+          <div key={field.id} className="mb-4 p-3 bg-slate-800/60 rounded border border-sky-400/10">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-yellow-500 font-semibold">Project {projectIndex + 1}</span>
+              <span className="text-sky-400 font-semibold">Project {projectIndex + 1}</span>
               <Button
                 type="button"
                 icon="pi pi-trash"
@@ -613,7 +617,7 @@ function ProjectFields({ control, careerIndex, projectIndex }: any) {
   return (
     <div className="flex flex-col gap-3">
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Project Name</label>
+        <label className="block mb-2 text-cyan-400">Project Name</label>
         <Controller
           name={`career.${careerIndex}.projects.${projectIndex}.name`}
           control={control}
@@ -624,7 +628,7 @@ function ProjectFields({ control, careerIndex, projectIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Description</label>
+        <label className="block mb-2 text-cyan-400">Description</label>
         <Controller
           name={`career.${careerIndex}.projects.${projectIndex}.description`}
           control={control}
@@ -640,7 +644,7 @@ function ProjectFields({ control, careerIndex, projectIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Technologies</label>
+        <label className="block mb-2 text-cyan-400">Technologies</label>
         <Controller
           name={`career.${careerIndex}.projects.${projectIndex}.technologies`}
           control={control}
@@ -651,7 +655,7 @@ function ProjectFields({ control, careerIndex, projectIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Key Contributions</label>
+        <label className="block mb-2 text-cyan-400">Key Contributions</label>
         <Controller
           name={`career.${careerIndex}.projects.${projectIndex}.keyContributions`}
           control={control}
@@ -674,7 +678,7 @@ function PersonalProjectFields({ control, projectIndex }: any) {
   return (
     <div className="flex flex-col gap-4">
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Project Title</label>
+        <label className="block mb-2 text-cyan-400">Project Title</label>
         <Controller
           name={`personalProjects.${projectIndex}.title`}
           control={control}
@@ -685,7 +689,7 @@ function PersonalProjectFields({ control, projectIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Description</label>
+        <label className="block mb-2 text-cyan-400">Description</label>
         <Controller
           name={`personalProjects.${projectIndex}.description`}
           control={control}
@@ -701,7 +705,7 @@ function PersonalProjectFields({ control, projectIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Technologies</label>
+        <label className="block mb-2 text-cyan-400">Technologies</label>
         <Controller
           name={`personalProjects.${projectIndex}.technologies`}
           control={control}
@@ -712,7 +716,7 @@ function PersonalProjectFields({ control, projectIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-yellow-600">Key Features</label>
+        <label className="block mb-2 text-cyan-400">Key Features</label>
         <Controller
           name={`personalProjects.${projectIndex}.keyFeatures`}
           control={control}
