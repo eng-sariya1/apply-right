@@ -12,6 +12,8 @@ import { Divider } from 'primereact/divider';
 import { ColorPicker } from 'primereact/colorpicker';
 import type { CVData } from '../types/cv.types';
 import { useGemini } from '../hooks/useGemini';
+import { useGeminiCareer } from '../hooks/useGeminiCareer';
+import { useGeminiProjects } from '../hooks/useGeminiProjects';
 
 interface CVFormProps {
   visible: boolean;
@@ -387,7 +389,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                   </div>
                 }
               >
-                <CareerFields control={control} careerIndex={careerIndex} />
+                <CareerFields control={control} careerIndex={careerIndex} watch={watch} setValue={setValue} />
               </AccordionTab>
             ))}
           </Accordion>
@@ -433,7 +435,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                   </div>
                 }
               >
-                <PersonalProjectFields control={control} projectIndex={projectIndex} />
+                <PersonalProjectFields control={control} projectIndex={projectIndex} watch={watch} setValue={setValue} />
               </AccordionTab>
             ))}
           </Accordion>
@@ -469,11 +471,25 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
 }
 
 // Career Fields Component
-function CareerFields({ control, careerIndex }: any) {
+function CareerFields({ control, careerIndex, watch, setValue }: any) {
   const { fields: projectFields, append: appendProject, remove: removeProject } = useFieldArray({
     control,
     name: `career.${careerIndex}.projects`
   });
+
+  const { improveText: improveCareerText, isLoading: isCareerLoading } = useGeminiCareer();
+
+  const handleImproveCareerSummary = async () => {
+    const currentSummary = watch(`career.${careerIndex}.summarization`);
+    if (!currentSummary?.trim()) return;
+
+    try {
+      const improvedText = await improveCareerText(currentSummary);
+      setValue(`career.${careerIndex}.summarization`, improvedText, { shouldValidate: true });
+    } catch (error) {
+      console.error('Failed to improve career summary:', error);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -573,7 +589,21 @@ function CareerFields({ control, careerIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-cyan-400">Work Summary</label>
+        <div className="flex justify-between items-center mb-2">
+          <label className="text-cyan-400">Work Summary</label>
+          <Button
+            type="button"
+            icon="pi pi-sparkles"
+            severity="secondary"
+            outlined
+            loading={isCareerLoading}
+            disabled={!watch(`career.${careerIndex}.summarization`)?.trim() || isCareerLoading}
+            onClick={handleImproveCareerSummary}
+            tooltip="Improve with AI"
+            tooltipOptions={{ position: 'left' }}
+            className="glass-btn-base glass-btn-ghost glass-btn-sm"
+          />
+        </div>
         <Controller
           name={`career.${careerIndex}.summarization`}
           control={control}
@@ -694,7 +724,21 @@ function ProjectFields({ control, careerIndex, projectIndex }: any) {
 }
 
 // Personal Project Fields Component
-function PersonalProjectFields({ control, projectIndex }: any) {
+function PersonalProjectFields({ control, projectIndex, watch, setValue }: any) {
+  const { improveText: improveProjectText, isLoading: isProjectLoading } = useGeminiProjects();
+
+  const handleImproveProjectDescription = async () => {
+    const currentDescription = watch(`personalProjects.${projectIndex}.description`);
+    if (!currentDescription?.trim()) return;
+
+    try {
+      const improvedText = await improveProjectText(currentDescription);
+      setValue(`personalProjects.${projectIndex}.description`, improvedText, { shouldValidate: true });
+    } catch (error) {
+      console.error('Failed to improve project description:', error);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="field">
@@ -709,7 +753,21 @@ function PersonalProjectFields({ control, projectIndex }: any) {
       </div>
 
       <div className="field">
-        <label className="block mb-2 text-cyan-400">Description</label>
+        <div className="flex justify-between items-center mb-2">
+          <label className="text-cyan-400">Description</label>
+          <Button
+            type="button"
+            icon="pi pi-sparkles"
+            severity="secondary"
+            outlined
+            loading={isProjectLoading}
+            disabled={!watch(`personalProjects.${projectIndex}.description`)?.trim() || isProjectLoading}
+            onClick={handleImproveProjectDescription}
+            tooltip="Improve with AI"
+            tooltipOptions={{ position: 'left' }}
+            className="glass-btn-base glass-btn-ghost glass-btn-sm"
+          />
+        </div>
         <Controller
           name={`personalProjects.${projectIndex}.description`}
           control={control}
