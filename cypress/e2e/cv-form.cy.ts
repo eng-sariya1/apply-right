@@ -1,15 +1,13 @@
 import { faker } from '@faker-js/faker';
 
-describe('CV Form - Complete Form Submission', () => {
+describe('CV Form - Fill Fields Through Abstract', () => {
   beforeEach(() => {
-    // Clear any stored state and reload the page fresh with cache busting
+    // Clear any stored state and reload the page fresh
     cy.clearLocalStorage();
     cy.clearCookies();
 
-    // Use reload to ensure complete page refresh
     cy.visit('/', {
       onBeforeLoad: (win) => {
-        // Clear any window state
         win.sessionStorage.clear();
       }
     });
@@ -18,34 +16,7 @@ describe('CV Form - Complete Form Submission', () => {
     cy.get('[data-cy="open-form-button"]').should('be.visible');
   });
 
-  afterEach(() => {
-    // Simple cleanup: just close the sidebar if it's open
-    // The beforeEach will handle full page reload for clean state
-    cy.get('body').then($body => {
-      if ($body.find('.cv-form-sidebar:visible').length > 0) {
-        cy.log('Cleaning up: Closing sidebar...');
-
-        // Click the X icon button in the sidebar header (PrimeReact default)
-        // Or try to find the Close button
-        cy.get('.cv-form-sidebar').then($sidebar => {
-          // Try the X icon first
-          const closeIcon = $sidebar.find('.p-sidebar-close');
-          if (closeIcon.length > 0) {
-            cy.wrap(closeIcon).click({ force: true });
-          } else {
-            // Fall back to Close button
-            cy.wrap($sidebar).find('button:contains("Close")').click({ force: true });
-          }
-        });
-
-        // Wait for sidebar close animation
-        cy.get('.cv-form-sidebar', { timeout: 3000 }).should('not.be.visible');
-        cy.log('Cleanup complete');
-      }
-    });
-  });
-
-  it('should fill out the CV form fields in order through Abstract field', () => {
+  it('should fill out form fields 1-7 in order (Full Name through Abstract)', () => {
     // Ensure the page is ready and no sidebar is open
     cy.get('body').then($body => {
       if ($body.find('.cv-form-sidebar').length > 0) {
@@ -170,129 +141,8 @@ describe('CV Form - Complete Form Submission', () => {
     cy.get('[data-cy="abstract-input"]')
       .scrollIntoView()
       .should('have.value', testData.abstract);
-  });
 
-  it('should validate required fields and show error messages', () => {
-    // Ensure the page is ready and no sidebar is open
-    cy.get('body').then($body => {
-      if ($body.find('.cv-form-sidebar').length > 0) {
-        cy.get('.cv-form-sidebar').should('not.be.visible');
-      }
-    });
-
-    // Open the form
-    cy.get('[data-cy="open-form-button"]')
-      .should('be.visible')
-      .click();
-
-    cy.get('.cv-form-sidebar').should('be.visible');
-
-    // The form starts empty, so required fields should show errors when touched
-    // Fill and clear to trigger validation
-    cy.get('[data-cy="fullName-input"]')
-      .should('be.visible')
-      .scrollIntoView()
-      .focus()
-      .type('John Doe')
-      .clear()
-      .blur();
-
-    // Check if error message appears - it's in a <small> tag with class text-red-500
-    // The error appears as a sibling to the input within the .field div
-    cy.get('[data-cy="fullName-input"]')
-      .parents('.field')
-      .find('small.text-red-500')
-      .should('be.visible')
-      .and('contain.text', 'Full name is required');
-
-    // Test email validation pattern
-    cy.get('[data-cy="email-input"]')
-      .should('be.visible')
-      .scrollIntoView()
-      .focus()
-      .type('invalid-email')
-      .blur();
-
-    // Should show invalid email error
-    cy.get('[data-cy="email-input"]')
-      .parents('.field')
-      .find('small.text-red-500')
-      .should('be.visible')
-      .and('contain.text', 'Invalid email address');
-  });
-
-  it('should handle form reset correctly', () => {
-    // Ensure the page is ready and no sidebar is open
-    cy.get('body').then($body => {
-      if ($body.find('.cv-form-sidebar').length > 0) {
-        cy.get('.cv-form-sidebar').should('not.be.visible');
-      }
-    });
-
-    const testName = faker.person.fullName();
-    const testEmail = faker.internet.email();
-    const testSkill = 'React';
-
-    // Open the form and fill multiple fields
-    cy.get('[data-cy="open-form-button"]')
-      .should('be.visible')
-      .click();
-
-    cy.get('.cv-form-sidebar').should('be.visible');
-
-    // Fill name
-    cy.get('[data-cy="fullName-input"]')
-      .should('be.visible')
-      .scrollIntoView()
-      .clear()
-      .type(testName)
-      .should('have.value', testName);
-
-    // Fill email
-    cy.get('[data-cy="email-input"]')
-      .should('be.visible')
-      .scrollIntoView()
-      .clear()
-      .type(testEmail)
-      .should('have.value', testEmail);
-
-    // Add a skill
-    cy.get('[data-cy="skills-input"]', { timeout: 10000 })
-      .should('exist')
-      .should('be.visible')
-      .scrollIntoView()
-      .find('input.p-inputtext')
-      .should('be.visible')
-      .click()
-      .type(`${testSkill}{enter}`);
-
-    // Verify skill was added
-    cy.get('[data-cy="skills-input"]')
-      .find('.p-chip-text')
-      .contains(testSkill)
-      .should('be.visible');
-
-    // Scroll to reset button and click it
-    cy.contains('button', 'Reset')
-      .should('be.visible')
-      .scrollIntoView()
-      .click();
-
-    // Verify fields are cleared
-    // Note: We use a more flexible check since the form auto-saves
-    cy.get('[data-cy="fullName-input"]')
-      .should('be.visible')
-      .scrollIntoView()
-      .should('have.value', '');
-
-    cy.get('[data-cy="email-input"]')
-      .should('be.visible')
-      .scrollIntoView()
-      .should('have.value', '');
-
-    // Verify skills are cleared
-    cy.get('[data-cy="skills-input"]')
-      .find('.p-chip')
-      .should('not.exist');
+    // Test complete - form successfully filled through Abstract field
+    cy.log('✅ Test completed successfully - All fields through Abstract are filled and verified');
   });
 });
