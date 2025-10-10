@@ -14,6 +14,7 @@ import type { CVData } from '../types/cv.types';
 import { useGemini } from '../hooks/useGemini';
 import { useGeminiCareer } from '../hooks/useGeminiCareer';
 import { useGeminiProjects } from '../hooks/useGeminiProjects';
+import { useGeminiEducation } from '../hooks/useGeminiEducation';
 
 interface CVFormProps {
   visible: boolean;
@@ -50,8 +51,9 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
     defaultValues
   });
 
-  // Gemini hook for AI-powered text improvement
+  // Gemini hooks for AI-powered text improvement
   const { improveText, isLoading } = useGemini();
+  const { improveText: improveEducationText, isLoading: isEducationLoading } = useGeminiEducation();
 
   // Update CV in real-time as user types using subscription pattern
   useEffect(() => {
@@ -92,6 +94,18 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
     }
   };
 
+  const handleImproveEducation = async () => {
+    const currentEducation = watch('education');
+    if (!currentEducation?.trim()) return;
+
+    try {
+      const improvedText = await improveEducationText(currentEducation);
+      setValue('education', improvedText, { shouldValidate: true });
+    } catch (error) {
+      console.error('Failed to improve education:', error);
+    }
+  };
+
   return (
     <Sidebar
       visible={visible}
@@ -118,6 +132,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                     {...field}
                     className="w-full"
                     placeholder="John Doe"
+                    data-cy="fullName-input"
                   />
                 )}
               />
@@ -138,6 +153,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                     {...field}
                     className="w-full"
                     placeholder="Software Engineer"
+                    data-cy="specialization-input"
                   />
                 )}
               />
@@ -165,6 +181,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                     className="w-full"
                     placeholder="john.doe@example.com"
                     type="email"
+                    data-cy="email-input"
                   />
                 )}
               />
@@ -185,6 +202,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                     {...field}
                     className="w-full"
                     placeholder="+1234567890"
+                    data-cy="phone-input"
                   />
                 )}
               />
@@ -205,6 +223,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                   size="small"
                   className="glass-btn-base glass-btn-primary glass-btn-sm"
                   onClick={() => appendLink({ name: '', url: '' })}
+                  data-cy="add-link-button"
                 />
               </div>
               {linkFields.map((field, index) => (
@@ -218,6 +237,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                           {...field}
                           className="w-full mb-2"
                           placeholder="Link Name (e.g., LinkedIn)"
+                          data-cy={`link-name-input-${index}`}
                         />
                       )}
                     />
@@ -229,6 +249,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                           {...field}
                           className="w-full"
                           placeholder="https://..."
+                          data-cy={`link-url-input-${index}`}
                         />
                       )}
                     />
@@ -314,6 +335,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                   rows={6}
                   className="w-full"
                   placeholder="Write a brief summary about yourself..."
+                  data-cy="abstract-input"
                 />
               )}
             />
@@ -335,6 +357,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                   onChange={(e) => field.onChange(e.value)}
                   className="w-full"
                   placeholder="Type and press Enter to add skills"
+                  data-cy="skills-input"
                 />
               )}
             />
@@ -364,6 +387,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                 summarization: '',
                 projects: []
               })}
+              data-cy="add-career-button"
             />
           </div>
 
@@ -410,6 +434,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                 technologies: '',
                 keyFeatures: []
               })}
+              data-cy="add-project-button"
             />
           </div>
 
@@ -443,7 +468,21 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
 
         {/* Education Section */}
         <div className="card p-4 bg-slate-900/80 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
-          <h3 className="text-xl font-semibold text-sky-400 mb-4">Education</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold text-sky-400">Education</h3>
+            <Button
+              type="button"
+              icon="pi pi-sparkles"
+              severity="secondary"
+              outlined
+              loading={isEducationLoading}
+              disabled={!watch('education')?.trim() || isEducationLoading}
+              onClick={handleImproveEducation}
+              tooltip="Improve with AI"
+              tooltipOptions={{ position: 'left' }}
+              className="glass-btn-base glass-btn-ghost glass-btn-sm"
+            />
+          </div>
           <div className="field">
             <Controller
               name="education"
@@ -500,7 +539,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
             name={`career.${careerIndex}.startDate`}
             control={control}
             render={({ field }) => (
-              <InputText {...field} className="w-full" placeholder="Jan 2020" />
+              <InputText {...field} className="w-full" placeholder="Jan 2020" data-cy={`career-startDate-input-${careerIndex}`} />
             )}
           />
         </div>
@@ -516,6 +555,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
                 value={field.value || ''}
                 className="w-full"
                 placeholder="Dec 2022"
+                data-cy={`career-endDate-input-${careerIndex}`}
               />
             )}
           />
@@ -545,7 +585,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
           name={`career.${careerIndex}.location`}
           control={control}
           render={({ field }) => (
-            <InputText {...field} className="w-full" placeholder="New York, USA" />
+            <InputText {...field} className="w-full" placeholder="New York, USA" data-cy={`career-location-input-${careerIndex}`} />
           )}
         />
       </div>
@@ -556,7 +596,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
           name={`career.${careerIndex}.companyName`}
           control={control}
           render={({ field }) => (
-            <InputText {...field} className="w-full" placeholder="Company Inc." />
+            <InputText {...field} className="w-full" placeholder="Company Inc." data-cy={`career-companyName-input-${careerIndex}`} />
           )}
         />
       </div>
@@ -567,7 +607,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
           name={`career.${careerIndex}.workSpecialization`}
           control={control}
           render={({ field }) => (
-            <InputText {...field} className="w-full" placeholder="Frontend Developer" />
+            <InputText {...field} className="w-full" placeholder="Frontend Developer" data-cy={`career-workSpecialization-input-${careerIndex}`} />
           )}
         />
       </div>
@@ -613,6 +653,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
               rows={4}
               className="w-full"
               placeholder="Describe your work..."
+              data-cy={`career-summarization-input-${careerIndex}`}
             />
           )}
         />
@@ -747,7 +788,7 @@ function PersonalProjectFields({ control, projectIndex, watch, setValue }: any) 
           name={`personalProjects.${projectIndex}.title`}
           control={control}
           render={({ field }) => (
-            <InputText {...field} className="w-full" placeholder="My Awesome Project" />
+            <InputText {...field} className="w-full" placeholder="My Awesome Project" data-cy={`project-title-input-${projectIndex}`} />
           )}
         />
       </div>
@@ -777,6 +818,7 @@ function PersonalProjectFields({ control, projectIndex, watch, setValue }: any) 
               rows={4}
               className="w-full"
               placeholder="Describe your project..."
+              data-cy={`project-description-input-${projectIndex}`}
             />
           )}
         />
@@ -788,7 +830,7 @@ function PersonalProjectFields({ control, projectIndex, watch, setValue }: any) 
           name={`personalProjects.${projectIndex}.technologies`}
           control={control}
           render={({ field }) => (
-            <InputText {...field} className="w-full" placeholder="React, Firebase, TailwindCSS" />
+            <InputText {...field} className="w-full" placeholder="React, Firebase, TailwindCSS" data-cy={`project-technologies-input-${projectIndex}`} />
           )}
         />
       </div>

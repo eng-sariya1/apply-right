@@ -69,6 +69,7 @@ function App() {
                   onClick={() => setSidebarVisible(true)}
                   size="large"
                   className="glass-btn-base glass-btn-primary glass-btn-lg"
+                  data-cy="open-form-button"
                 />
                 <Button
                   label="Print / Save as PDF"

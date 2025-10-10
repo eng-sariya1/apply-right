@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "cypress-dev": "vite --mode cypress",
+    "cypress-open": "npx cypress open",
+    "cypress-run": "npx cypress run",
     "build": "tsc -b && vite build",
     "lint": "eslint my-app",
     "preview": "vite preview"
