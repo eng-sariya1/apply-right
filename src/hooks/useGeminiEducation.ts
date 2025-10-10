@@ -32,17 +32,12 @@ export const useGeminiEducation = (): UseGeminiEducationResult => {
               {
                 parts: [
                   {
-                    text: `You are an expert technical resume writer specializing in education section descriptions.
-I will provide education information below.
-Your task:
-• Enhance the education description to be clear, professional, and impactful.
-• Include degree name, institution, dates, and relevant achievements or honors.
-• Highlight relevant coursework, academic projects, GPA (if strong), certifications, or awards.
-• Keep it concise and well-structured (2-4 lines or 80-120 words).
-• Focus on academic excellence, relevant skills gained, and notable accomplishments.
-• Maintain a professional tone suitable for technical resumes.
-• Do not generate multiple options — just one polished final version.
-original text: ${text}`,
+                    text: `You are an expert AI assistant specialized in writing professional CV content.
+I will provide education information such as degree, field of study, university, and grade.
+Rewrite it as a single, polished, and professional sentence that fits perfectly in a CV.
+Do not give multiple options — only the best possible version.
+Keep it formal, clear, and grammatically perfect.
+                    original text: ${text}`,
                   },
                 ],
               },

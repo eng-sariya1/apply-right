@@ -32,17 +32,16 @@ export const useGeminiProjects = (): UseGeminiProjectsResult => {
               {
                 parts: [
                   {
-                    text: `You are an expert technical resume writer specializing in personal project descriptions.
-I will provide personal project information below.
-Your task:
-• Enhance the project description to be clear, professional, and technically impressive.
-• Highlight the technologies, frameworks, and tools used.
-• Emphasize the problem solved, features implemented, and technical challenges overcome.
-• Include measurable outcomes if possible (users, performance improvements, scale).
-• Keep it concise (2-4 bullet points or 100-150 words).
-• Focus on technical depth, innovation, and practical application.
-• Maintain a professional tone suitable for technical resumes.
-• Do not generate multiple options — just one polished final version.
+                    text: `You are an expert AI assistant specialized in writing professional project descriptions for resumes and portfolios.
+I will provide a short or rough description of a personal or academic project.
+Your task is to rewrite it as a single, clear, and professional sentence or paragraph (2–3 lines max) that fits perfectly in a CV.
+
+Requirements:
+ • Return only one polished version (no options).
+ • Keep it formal, concise, and result-oriented.
+ • Focus on what the project does, tools/technologies used, and the purpose or achievement.
+ • Avoid exaggerated language or unnecessary words.
+ • Do not include explanations — output only the improved text.
 original text: ${text}`,
                   },
                 ],

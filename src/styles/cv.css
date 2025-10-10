@@ -300,21 +300,32 @@
     gap: 0 !important;
   }
 
-  /* Ensure black text for printing */
+  /* Ensure proper backgrounds and enable color printing */
   .cv-container {
     background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
 
+  /* Force color printing for all elements */
   .cv-container * {
-    color: #000 !important;
-    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
 
-  /* Preserve theme colors for section titles and separators */
+  /* Preserve theme colors for section titles and styled elements */
   .cv-container h2,
   .cv-container h1 span[style*="color"] {
-    color: inherit !important;
-    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Ensure skeletons don't print */
+  .cv-container .p-skeleton {
+    display: none !important;
   }
 
   /* Remove page margins */

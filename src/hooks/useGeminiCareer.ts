@@ -32,16 +32,16 @@ export const useGeminiCareer = (): UseGeminiCareerResult => {
               {
                 parts: [
                   {
-                    text: `You are an expert technical resume writer specializing in career experience descriptions.
-I will provide career/work experience information below.
-Your task:
-• Enhance the career description to be professional, impactful, and achievement-oriented.
-• Use strong action verbs and quantify achievements where possible.
-• Highlight technical skills, responsibilities, and measurable outcomes.
-• Keep it concise (2-4 bullet points or 100-150 words).
-• Focus on impact, technologies used, and problem-solving abilities.
-• Maintain a professional tone suitable for technical resumes.
-• Do not generate multiple options — just one polished final version.
+                    text: `You are an expert AI assistant specialized in writing professional CV summaries and career descriptions.
+I will provide you with a short or raw description of the user’s work field or experience (e.g., frontend developer, AI student, data analyst, etc.).
+Your task is to rewrite it as a single, polished, and professional career summary, suitable for the CV header or “Work Summary” section.
+
+Requirements:
+ • Return only one single best version — no alternatives.
+ • Keep it concise (2–3 lines maximum), formal, and natural.
+ • Emphasize skills, expertise, and professional tone.
+ • If needed, make the sentence flow better without changing the original meaning.
+ • Do not include explanations or bullet points — just the final text.
 original text: ${text}`,
                   },
                 ],
