@@ -93,9 +93,13 @@ export default function CVDisplay({ data }: CVDisplayProps) {
               <div key={careerIndex}>
                 <div style={{ display: 'flex', flexDirection: 'row', gap: '5rem', paddingTop: careerIndex === 0 ? '0rem' : '3rem' }}>
                   <div>
-                    <p>
+                    <p style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexWrap: 'nowrap' }}>
                       <span style={{ fontWeight: '600' }}>Period: </span>
-                      {career.startDate || <Skeleton width="4rem" height="1rem" />} - {career.isPresent ? 'Present' : (career.endDate || <Skeleton width="4rem" height="1rem" />)}
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', whiteSpace: 'nowrap' }}>
+                        {career.startDate || <Skeleton width="4rem" height="1rem" />}
+                        <span>-</span>
+                        {career.isPresent ? 'Present' : (career.endDate || <Skeleton width="4rem" height="1rem" />)}
+                      </span>
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}>
                       <p><span style={{ fontWeight: '600' }}>Location: </span>{career.location || <Skeleton width="10rem" height="1rem" />}</p>
