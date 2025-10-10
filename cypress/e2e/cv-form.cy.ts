@@ -145,4 +145,322 @@ describe('CV Form - Fill Fields Through Abstract', () => {
     // Test complete - form successfully filled through Abstract field
     cy.log('✅ Test completed successfully - All fields through Abstract are filled and verified');
   });
+
+  it('should fill skills field and add a career entry with all fields filled using faker', () => {
+    // Ensure the page is ready and no sidebar is open
+    cy.get('body').then($body => {
+      if ($body.find('.cv-form-sidebar').length > 0) {
+        cy.get('.cv-form-sidebar').should('not.be.visible');
+      }
+    });
+
+    // Generate realistic test data using faker
+    const testData = {
+      skills: [
+        faker.helpers.arrayElement(['React', 'Vue', 'Angular', 'Svelte']),
+        faker.helpers.arrayElement(['TypeScript', 'JavaScript', 'Python', 'Java']),
+        faker.helpers.arrayElement(['Node.js', 'Express', 'NestJS', 'FastAPI']),
+        faker.helpers.arrayElement(['MongoDB', 'PostgreSQL', 'MySQL', 'Redis'])
+      ],
+      career: {
+        startDate: faker.date.past({ years: 5 }).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }),
+        endDate: faker.date.recent({ days: 30 }).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }),
+        location: `${faker.location.city()}, ${faker.location.country()}`,
+        companyName: faker.company.name(),
+        workSpecialization: faker.person.jobTitle(),
+        jobType: faker.helpers.arrayElement(['Full time', 'Part time', 'Contract', 'Freelance']),
+        summarization: faker.lorem.paragraph(2)
+      }
+    };
+
+    // Step 1: Open the CV form sidebar
+    cy.get('[data-cy="open-form-button"]')
+      .should('be.visible')
+      .click();
+
+    // Wait for the sidebar to be fully visible
+    cy.get('.cv-form-sidebar')
+      .should('be.visible')
+      .and('have.css', 'visibility', 'visible');
+
+    // Step 2: Fill Skills field
+    // First scroll to make the element visible within the fixed sidebar
+    cy.get('[data-cy="skills-input"]')
+      .scrollIntoView()
+      .should('be.visible');
+
+    // Add each skill by typing and pressing Enter
+    testData.skills.forEach((skill) => {
+      cy.get('[data-cy="skills-input"]')
+        .scrollIntoView()
+        .find('input[type="text"]')
+        .should('be.visible')
+        .type(`${skill}{enter}`, { force: true })
+        .wait(100); // Small wait to ensure skill is added
+    });
+
+    // Verify skills were added by checking for skill chips
+    testData.skills.forEach((skill) => {
+      cy.get('[data-cy="skills-input"]')
+        .scrollIntoView()
+        .should('contain', skill);
+    });
+
+    // Step 3: Click "Add Career" button
+    cy.get('[data-cy="add-career-button"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .click();
+
+    // Wait for the career entry to be added
+    cy.wait(200);
+
+    // Step 4: Click on "Career Entry 1" header to expand the accordion
+    cy.get('[data-cy="career-entry-header-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .click();
+
+    // Wait for accordion to expand
+    cy.wait(300);
+
+    // Step 5: Fill all career fields with faker data
+
+    // Fill Start Date
+    cy.get('[data-cy="career-startDate-input-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.career.startDate)
+      .should('have.value', testData.career.startDate);
+
+    // Fill End Date
+    cy.get('[data-cy="career-endDate-input-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.career.endDate)
+      .should('have.value', testData.career.endDate);
+
+    // Fill Location
+    cy.get('[data-cy="career-location-input-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.career.location)
+      .should('have.value', testData.career.location);
+
+    // Fill Company Name
+    cy.get('[data-cy="career-companyName-input-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.career.companyName)
+      .should('have.value', testData.career.companyName);
+
+    // Fill Work Specialization
+    cy.get('[data-cy="career-workSpecialization-input-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.career.workSpecialization)
+      .should('have.value', testData.career.workSpecialization);
+
+    // Select Job Type from dropdown
+    cy.get('[data-cy="career-jobType-dropdown-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .click();
+
+    // Wait for dropdown to open
+    cy.wait(200);
+
+    // Select the job type from the dropdown menu
+    cy.get('.p-dropdown-panel')
+      .should('be.visible')
+      .contains(testData.career.jobType)
+      .click();
+
+    // Fill Work Summary
+    cy.get('[data-cy="career-summarization-input-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.career.summarization)
+      .should('have.value', testData.career.summarization);
+
+    // Verify all career fields are filled
+    cy.log('✅ Skills field filled successfully');
+    cy.log('✅ Career entry created and all fields filled successfully');
+
+    // Verify the form persists data
+    cy.get('[data-cy="career-startDate-input-0"]')
+      .scrollIntoView()
+      .should('have.value', testData.career.startDate);
+
+    cy.get('[data-cy="career-endDate-input-0"]')
+      .scrollIntoView()
+      .should('have.value', testData.career.endDate);
+
+    cy.get('[data-cy="career-location-input-0"]')
+      .scrollIntoView()
+      .should('have.value', testData.career.location);
+
+    cy.get('[data-cy="career-companyName-input-0"]')
+      .scrollIntoView()
+      .should('have.value', testData.career.companyName);
+
+    cy.get('[data-cy="career-workSpecialization-input-0"]')
+      .scrollIntoView()
+      .should('have.value', testData.career.workSpecialization);
+
+    cy.get('[data-cy="career-summarization-input-0"]')
+      .scrollIntoView()
+      .should('have.value', testData.career.summarization);
+
+    // Test complete
+    cy.log('✅ Test completed successfully - Skills and Career fields are filled and verified');
+  });
+
+  it('should add a personal project and fill all fields, then fill education field using faker', () => {
+    // Ensure the page is ready and no sidebar is open
+    cy.get('body').then($body => {
+      if ($body.find('.cv-form-sidebar').length > 0) {
+        cy.get('.cv-form-sidebar').should('not.be.visible');
+      }
+    });
+
+    // Generate realistic test data using faker
+    const testData = {
+      project: {
+        title: faker.commerce.productName(),
+        description: faker.lorem.paragraph(3),
+        technologies: [
+          faker.helpers.arrayElement(['React', 'Vue', 'Angular']),
+          faker.helpers.arrayElement(['TypeScript', 'JavaScript']),
+          faker.helpers.arrayElement(['Node.js', 'Python', 'Go'])
+        ].join(', '),
+        keyFeatures: [
+          faker.hacker.phrase(),
+          faker.hacker.phrase(),
+          faker.hacker.phrase()
+        ]
+      },
+      education: `${faker.helpers.arrayElement(['Bachelor of Science', 'Master of Science', 'PhD'])} in ${faker.helpers.arrayElement(['Computer Science', 'Software Engineering', 'Information Technology'])}\n${faker.company.name()} University\n${faker.date.past({ years: 10 }).getFullYear()} - ${faker.date.past({ years: 5 }).getFullYear()}\n\n${faker.lorem.paragraph(2)}`
+    };
+
+    // Step 1: Open the CV form sidebar
+    cy.get('[data-cy="open-form-button"]')
+      .should('be.visible')
+      .click();
+
+    // Wait for the sidebar to be fully visible
+    cy.get('.cv-form-sidebar')
+      .should('be.visible')
+      .and('have.css', 'visibility', 'visible');
+
+    // Step 2: Scroll to and click "Add Project" button
+    cy.get('[data-cy="add-project-button"]')
+      .scrollIntoView()
+      .should('be.visible')
+      .click({ force: true });
+
+    // Wait for the project entry to be added
+    cy.wait(200);
+
+    // Step 3: Click on "Project 1" header to expand the accordion
+    cy.get('[data-cy="project-entry-header-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .click();
+
+    // Wait for accordion to expand
+    cy.wait(300);
+
+    // Step 4: Fill all project fields with faker data
+
+    // Fill Project Title
+    cy.get('[data-cy="project-title-input-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.project.title)
+      .should('have.value', testData.project.title);
+
+    // Fill Project Description
+    cy.get('[data-cy="project-description-input-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.project.description)
+      .should('have.value', testData.project.description);
+
+    // Fill Project Technologies
+    cy.get('[data-cy="project-technologies-input-0"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.project.technologies)
+      .should('have.value', testData.project.technologies);
+
+    // Fill Key Features (Chips component)
+    cy.get('[data-cy="project-keyFeatures-input-0"]')
+      .should('be.visible')
+      .scrollIntoView();
+
+    // Add each key feature by typing and pressing Enter
+    testData.project.keyFeatures.forEach((feature) => {
+      cy.get('[data-cy="project-keyFeatures-input-0"]')
+        .scrollIntoView()
+        .find('input[type="text"]')
+        .should('be.visible')
+        .type(`${feature}{enter}`, { force: true })
+        .wait(100); // Small wait to ensure feature is added
+    });
+
+    // Verify key features were added
+    testData.project.keyFeatures.forEach((feature) => {
+      cy.get('[data-cy="project-keyFeatures-input-0"]')
+        .scrollIntoView()
+        .should('contain', feature);
+    });
+
+    cy.log('✅ Personal Project fields filled successfully');
+
+    // Step 5: Fill Education field
+    cy.get('[data-cy="education-input"]')
+      .should('be.visible')
+      .scrollIntoView()
+      .clear()
+      .type(testData.education)
+      .should('have.value', testData.education);
+
+    cy.log('✅ Education field filled successfully');
+
+    // Verify all fields persist data
+    cy.get('[data-cy="project-title-input-0"]')
+      .scrollIntoView()
+      .should('have.value', testData.project.title);
+
+    cy.get('[data-cy="project-description-input-0"]')
+      .scrollIntoView()
+      .should('have.value', testData.project.description);
+
+    cy.get('[data-cy="project-technologies-input-0"]')
+      .scrollIntoView()
+      .should('have.value', testData.project.technologies);
+
+    testData.project.keyFeatures.forEach((feature) => {
+      cy.get('[data-cy="project-keyFeatures-input-0"]')
+        .scrollIntoView()
+        .should('contain', feature);
+    });
+
+    cy.get('[data-cy="education-input"]')
+      .scrollIntoView()
+      .should('have.value', testData.education);
+
+    // Test complete
+    cy.log('✅ Test completed successfully - Personal Project and Education fields are filled and verified');
+  });
 });

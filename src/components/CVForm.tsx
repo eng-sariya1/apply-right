@@ -347,20 +347,21 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
           <h3 className="text-xl font-semibold text-sky-400 mb-4">Skills</h3>
           <div className="field">
             <label htmlFor="skills" className="block mb-2 text-cyan-400">Add your skills</label>
-            <Controller
-              name="skills"
-              control={control}
-              render={({ field }) => (
-                <Chips
-                  id="skills"
-                  value={field.value}
-                  onChange={(e) => field.onChange(e.value)}
-                  className="w-full"
-                  placeholder="Type and press Enter to add skills"
-                  data-cy="skills-input"
-                />
-              )}
-            />
+            <div data-cy="skills-input">
+              <Controller
+                name="skills"
+                control={control}
+                render={({ field }) => (
+                  <Chips
+                    id="skills"
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.value)}
+                    className="w-full"
+                    placeholder="Type and press Enter to add skills"
+                  />
+                )}
+              />
+            </div>
             <small className="text-slate-50/70 mt-2 block">
               Type a skill and press Enter. Examples: React, TypeScript, Node.js
             </small>
@@ -396,7 +397,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
               <AccordionTab
                 key={field.id}
                 header={
-                  <div className="flex justify-between items-center w-full">
+                  <div className="flex justify-between items-center w-full" data-cy={`career-entry-header-${careerIndex}`}>
                     <span>Career Entry {careerIndex + 1}</span>
                     <Button
                       type="button"
@@ -443,7 +444,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
               <AccordionTab
                 key={field.id}
                 header={
-                  <div className="flex justify-between items-center w-full">
+                  <div className="flex justify-between items-center w-full" data-cy={`project-entry-header-${projectIndex}`}>
                     <span>Project {projectIndex + 1}</span>
                     <Button
                       type="button"
@@ -493,6 +494,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
                   rows={4}
                   className="w-full"
                   placeholder="Describe your education..."
+                  data-cy="education-input"
                 />
               )}
             />
@@ -572,6 +574,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
                 inputId={`present-${careerIndex}`}
                 checked={field.value}
                 onChange={(e) => field.onChange(e.checked)}
+                data-cy={`career-isPresent-checkbox-${careerIndex}`}
               />
               <label htmlFor={`present-${careerIndex}`} className="text-cyan-400">I currently work here</label>
             </div>
@@ -623,6 +626,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
               options={jobTypeOptions}
               className="w-full"
               placeholder="Select job type"
+              data-cy={`career-jobType-dropdown-${careerIndex}`}
             />
           )}
         />
@@ -837,18 +841,20 @@ function PersonalProjectFields({ control, projectIndex, watch, setValue }: any) 
 
       <div className="field">
         <label className="block mb-2 text-cyan-400">Key Features</label>
-        <Controller
-          name={`personalProjects.${projectIndex}.keyFeatures`}
-          control={control}
-          render={({ field }) => (
-            <Chips
-              value={field.value}
-              onChange={(e) => field.onChange(e.value)}
-              className="w-full"
-              placeholder="Type and press Enter to add features"
-            />
-          )}
-        />
+        <div data-cy={`project-keyFeatures-input-${projectIndex}`}>
+          <Controller
+            name={`personalProjects.${projectIndex}.keyFeatures`}
+            control={control}
+            render={({ field }) => (
+              <Chips
+                value={field.value}
+                onChange={(e) => field.onChange(e.value)}
+                className="w-full"
+                placeholder="Type and press Enter to add features"
+              />
+            )}
+          />
+        </div>
       </div>
     </div>
   );
