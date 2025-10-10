@@ -112,10 +112,11 @@ export default function CVDisplay({ data }: CVDisplayProps) {
                   </div>
                 </div>
                 <div>
-                  <p style={{ paddingTop: '1rem', paddingBottom: '1rem', fontWeight: 'normal', filter: 'opacity(0.8)' }}>
-                    <span style={{ fontWeight: '600', filter: 'opacity(1)' }}>Summary: </span>
-                    {career.summarization || <Skeleton width="100%" height="3rem" />}
-                  </p>
+                  {career.summarization && (
+                    <p style={{ paddingTop: '1rem', paddingBottom: '1rem', fontWeight: 'normal', filter: 'opacity(0.8)' }}>
+                      {career.summarization}
+                    </p>
+                  )}
                   {career.projects.length > 0 && (
                     <>
                       <p style={{ marginBottom: '-1rem', fontWeight: '600' }}>Projects:</p>

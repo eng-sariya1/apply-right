@@ -54,12 +54,9 @@ function App() {
           {!sidebarVisible && (
             <>
               <div className="no-print mb-12">
-                <h1 className="text-5xl font-bold bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4 leading-tight tracking-tight" style={{ fontFamily: 'Outfit, sans-serif', textAlign: 'left', marginLeft: '2rem' }}>
-                  Let AI craft your perfect CV — fast, modern, and ready to impress
+                <h1 className="text-5xl font-bold bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4 leading-tight tracking-tight animate-fade-slide-up" style={{ fontFamily: 'Outfit, sans-serif', textAlign: 'center' }}>
+                  Build Your Perfect CV in Minutes
                 </h1>
-                <p className="text-slate-50 text-lg max-w-4xl leading-relaxed mb-8" style={{ fontFamily: 'Manrope, sans-serif', fontWeight: 500, textAlign: 'left', marginLeft: '2rem' }}>
-                  Build a stunning, professional CV powered by the Gemini AI model and optimized with ATS technology — designed to help you stand out and land your dream job
-                </p>
               </div>
 
               <div className="no-print flex justify-center mb-6 gap-3">
