@@ -45,50 +45,48 @@ const CVBuilderPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-900 py-8">
+    <div className="min-h-screen bg-slate-900">
       <div className={`${sidebarVisible ? 'pr-[42%]' : ''} transition-all duration-400`}>
-        <div className="container mx-auto px-4">
-          {!sidebarVisible && (
-            <>
-              <div className="no-print mb-12">
-                <h1 className="text-5xl font-bold bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4 leading-tight tracking-tight animate-fade-slide-up" style={{ fontFamily: 'Outfit, sans-serif', textAlign: 'left', marginLeft: '2rem' }}>
+        {!sidebarVisible && (
+          <>
+            <div className="no-print mb-8 pt-8 px-4">
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4 leading-tight tracking-tight animate-fade-slide-up text-center" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                Professional CV Builder
+              </h1>
+            </div>
 
-                </h1>
-              </div>
+            <div className="no-print flex justify-center mb-8 gap-3 px-4">
+              <Button
+                label="Open Form"
+                icon="pi pi-pencil"
+                onClick={() => setSidebarVisible(true)}
+                size="large"
+                className="glass-btn-base glass-btn-primary glass-btn-lg"
+                data-cy="open-form-button"
+              />
+              <Button
+                label="Print / Save as PDF"
+                icon="pi pi-download"
+                onClick={() => window.print()}
+                severity="secondary"
+                size="large"
+                className="glass-btn-base glass-btn-secondary glass-btn-lg"
+              />
+              <Button
+                label="Reset CV"
+                icon="pi pi-refresh"
+                onClick={handleReset}
+                severity="danger"
+                outlined
+                size="large"
+                className="glass-btn-base glass-btn-danger glass-btn-lg"
+              />
+            </div>
+          </>
+        )}
 
-              <div className="no-print flex justify-center mb-6 gap-3">
-                <Button
-                  label="Open Form"
-                  icon="pi pi-pencil"
-                  onClick={() => setSidebarVisible(true)}
-                  size="large"
-                  className="glass-btn-base glass-btn-primary glass-btn-lg"
-                  data-cy="open-form-button"
-                />
-                <Button
-                  label="Print / Save as PDF"
-                  icon="pi pi-download"
-                  onClick={() => window.print()}
-                  severity="secondary"
-                  size="large"
-                  className="glass-btn-base glass-btn-secondary glass-btn-lg"
-                />
-                <Button
-                  label="Reset CV"
-                  icon="pi pi-refresh"
-                  onClick={handleReset}
-                  severity="danger"
-                  outlined
-                  size="large"
-                  className="glass-btn-base glass-btn-danger glass-btn-lg"
-                />
-              </div>
-            </>
-          )}
-
-          <div className={`cv-display-container ${sidebarVisible ? 'with-sidebar' : ''}`}>
-            <CVDisplay data={cvData} />
-          </div>
+        <div className={`cv-display-container ${sidebarVisible ? 'with-sidebar' : ''}`}>
+          <CVDisplay data={cvData} />
         </div>
       </div>
 
