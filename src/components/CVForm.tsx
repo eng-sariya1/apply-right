@@ -10,11 +10,13 @@ import { Checkbox } from 'primereact/checkbox';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Divider } from 'primereact/divider';
 import { ColorPicker } from 'primereact/colorpicker';
+import { Sparkles } from 'lucide-react';
 import type { CVData } from '../types/cv.types';
 import { useGemini } from '../hooks/useGemini';
 import { useGeminiCareer } from '../hooks/useGeminiCareer';
 import { useGeminiProjects } from '../hooks/useGeminiProjects';
 import { useGeminiEducation } from '../hooks/useGeminiEducation';
+import { useGeminiATS } from '../hooks/useGeminiATS';
 
 interface CVFormProps {
   visible: boolean;
@@ -54,6 +56,7 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
   // Gemini hooks for AI-powered text improvement
   const { improveText, isLoading } = useGemini();
   const { improveText: improveEducationText, isLoading: isEducationLoading } = useGeminiEducation();
+  const { analyzeAndOptimizeCV, isLoading: isATSLoading } = useGeminiATS();
 
   // Update CV in real-time as user types using subscription pattern
   useEffect(() => {
@@ -103,6 +106,25 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
       setValue('education', improvedText, { shouldValidate: true });
     } catch (error) {
       console.error('Failed to improve education:', error);
+    }
+  };
+
+  const handleATSOptimization = async () => {
+    const currentData = watch();
+
+    // Check if there's enough data to optimize
+    if (!currentData.header?.fullName || !currentData.abstract?.trim()) {
+      console.error('Please fill in at least your name and abstract before ATS optimization');
+      return;
+    }
+
+    try {
+      const optimizedCV = await analyzeAndOptimizeCV(currentData as CVData);
+
+      // Update all form fields with optimized data
+      reset(optimizedCV);
+    } catch (error) {
+      console.error('Failed to optimize CV for ATS:', error);
     }
   };
 
@@ -504,6 +526,20 @@ export default function CVForm({ visible, onHide, onSubmit, initialData }: CVFor
         {/* Form Actions */}
         <div className="flex gap-3 sticky bottom-0 bg-slate-800/90 backdrop-blur-sm p-4 rounded-lg border border-sky-400/20 shadow-lg shadow-sky-400/10">
           <Button type="button" label="Reset" icon="pi pi-refresh" severity="secondary" onClick={onReset} className="flex-1 glass-btn-base glass-btn-secondary" />
+          <Button
+            type="button"
+            severity="help"
+            outlined
+            onClick={handleATSOptimization}
+            loading={isATSLoading}
+            disabled={!watch('header.fullName') || !watch('abstract')?.trim() || isATSLoading}
+            tooltip="Optimize CV for ATS"
+            tooltipOptions={{ position: 'top' }}
+            className="glass-btn-base glass-btn-primary p-3"
+            data-cy="ats-optimize-button"
+          >
+            <Sparkles className="w-5 h-5" />
+          </Button>
           <Button type="button" label="Close" icon="pi pi-times" severity="info" outlined onClick={onHide} className="glass-btn-base glass-btn-ghost" />
         </div>
       </div>
