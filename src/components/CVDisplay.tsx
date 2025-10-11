@@ -15,9 +15,9 @@ export default function CVDisplay({ data }: CVDisplayProps) {
       <div className="total">
         <header>
           <h1 className={"flex gap-1"}>
-            <span style={{ fontWeight: '600' }}> </span>{data.header.fullName || <Skeleton width="10rem" height="1.5rem" />}
+            <span style={{ fontWeight: '600', color: themeColor }}>{data.header.fullName || <Skeleton width="10rem" height="1.5rem" />}</span>
             <span style={{ color: themeColor, fontWeight: '600' }}> | </span>
-            <span style={{ fontWeight: '600' }}> </span>{data.header.specialization || <Skeleton width="12rem" height="1.5rem" />}
+            <span style={{ fontWeight: '600', color: themeColor }}>{data.header.specialization || <Skeleton width="12rem" height="1.5rem" />}</span>
           </h1>
           <div>
             <ul className="headers">
