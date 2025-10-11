@@ -196,10 +196,8 @@ export default function CVBuilder() {
                 <p className="text-sm text-[#88B7C4]">Your changes appear here in real-time</p>
               </div>
 
-              <div className="bg-white rounded-xl shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 p-8 overflow-hidden">
-                <div className="transform scale-90 origin-top-left" style={{ width: '111%' }}>
-                  <CVDisplay data={cvData} />
-                </div>
+              <div className="bg-white rounded-xl shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 p-8 overflow-auto">
+                <CVDisplay data={cvData} />
               </div>
             </div>
           </motion.div>
