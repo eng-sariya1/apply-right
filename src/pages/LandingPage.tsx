@@ -1,74 +1,324 @@
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'primereact/button';
+import { CheckCircle2, Sparkles, Download, Eye } from 'lucide-react';
 
-const LandingPage = () => {
+export default function LandingPage() {
   const navigate = useNavigate();
 
+  const handleCreateResume = () => {
+    navigate('/cv-builder');
+  };
+
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden">
+      {/* Background Gradients */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-gradient-to-l from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
+        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-gradient-to-t from-[#017A8C]/5 via-transparent to-transparent blur-3xl rounded-full" />
+      </div>
+
+      {/* Sticky Header */}
+      <motion.header
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="sticky top-0 z-50 backdrop-blur-lg bg-[#FAF7F0]/90 border-b border-[#017A8C]/20 shadow-sm"
+      >
+        <nav className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="text-2xl font-bold text-[#017A8C] tracking-tight"
+            >
+              Nuivo
+            </motion.div>
+
+            <div className="hidden md:flex items-center gap-8">
+              <a
+                href="#home"
+                className="text-[#017A8C] hover:text-[#015d6b] transition-colors duration-300 font-medium"
+              >
+                Home
+              </a>
+              <a
+                href="#features"
+                className="text-[#017A8C] hover:text-[#015d6b] transition-colors duration-300 font-medium"
+              >
+                Features
+              </a>
+              <a
+                href="#contact"
+                className="text-[#017A8C] hover:text-[#015d6b] transition-colors duration-300 font-medium"
+              >
+                Contact
+              </a>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button className="md:hidden text-[#017A8C] hover:text-[#015d6b] transition-colors">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </motion.header>
+
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-20">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Main Heading */}
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 animate-fade-in">
-            <span className="bg-gradient-to-r from-sky-400 via-cyan-400 to-sky-400 bg-clip-text text-transparent">
-              Build Your Professional CV
-            </span>
-          </h1>
+      <section id="home" className="relative pt-20 pb-32 px-6">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-center"
+          >
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-5xl md:text-7xl font-bold text-[#017A8C] mb-6 leading-tight"
+            >
+              This resume builder gets you{' '}
+              <span className="text-[#017A8C] relative inline-block">
+                an interview
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '100%' }}
+                  transition={{ duration: 0.8, delay: 1 }}
+                  className="absolute bottom-2 left-0 h-1 bg-gradient-to-r from-[#017A8C] to-transparent"
+                />
+              </span>
+            </motion.h1>
 
-          {/* Description */}
-          <p className="text-xl md:text-2xl text-slate-50 mb-12 leading-relaxed animate-fade-in-up">
-            Create a stunning, professional CV in minutes with our intuitive builder.
-            Stand out from the crowd with modern templates and AI-powered suggestions.
-            Your dream job is just one click away.
-          </p>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-xl md:text-2xl text-[#88B7C4] mb-12 max-w-3xl mx-auto leading-relaxed"
+            >
+              Stand out with a custom CV designed to pass ATS filters and impress
+              the employers
+            </motion.p>
 
-          {/* CTA Button */}
-          <Button
-            label="Get Started"
-            icon="pi pi-arrow-right"
-            iconPos="right"
-            size="large"
-            className="bg-blue-500 hover:bg-blue-600 border-0 text-white font-semibold px-8 py-4 text-xl shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 animate-fade-in-up hover:scale-105"
-            onClick={() => navigate('/builder')}
-          />
+            <motion.button
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(1, 122, 140, 0.3)' }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleCreateResume}
+              className="px-10 py-4 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold text-lg rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              Create my resume
+            </motion.button>
+          </motion.div>
+        </div>
+      </section>
 
-          {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mt-20 animate-fade-in-up">
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-sky-400/20 hover:border-sky-400/50 transition-all duration-300 hover:transform hover:scale-105 shadow-lg hover:shadow-sky-400/20">
-              <div className="text-sky-400 text-4xl mb-4">
-                <i className="pi pi-bolt"></i>
+      {/* Features Section */}
+      <section id="features" className="relative py-20 px-6">
+        <div className="container mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-[#017A8C] mb-4">
+              Why Choose Nuivo?
+            </h2>
+            <p className="text-lg text-[#88B7C4] max-w-2xl mx-auto">
+              Professional tools to build the perfect resume that gets you hired
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Feature Card 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-300"
+            >
+              <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
+                <CheckCircle2 className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-sky-400 mb-2">Fast & Easy</h3>
-              <p className="text-slate-50/80">
-                Create your CV in minutes with our intuitive drag-and-drop interface
+              <h3 className="text-xl font-bold text-[#017A8C] mb-3">
+                ATS Compatibility
+              </h3>
+              <p className="text-[#88B7C4] leading-relaxed">
+                Optimized formats that pass Applicant Tracking Systems with ease,
+                ensuring your resume reaches human eyes
               </p>
-            </div>
+            </motion.div>
 
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-cyan-400/20 hover:border-cyan-400/50 transition-all duration-300 hover:transform hover:scale-105 shadow-lg hover:shadow-cyan-400/20">
-              <div className="text-cyan-400 text-4xl mb-4">
-                <i className="pi pi-palette"></i>
+            {/* Feature Card 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-300"
+            >
+              <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
+                <Sparkles className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-cyan-400 mb-2">Beautiful Templates</h3>
-              <p className="text-slate-50/80">
-                Choose from professionally designed templates that make you stand out
+              <h3 className="text-xl font-bold text-[#017A8C] mb-3">
+                AI-Powered Optimization
+              </h3>
+              <p className="text-[#88B7C4] leading-relaxed">
+                Smart grammar fixes and layout optimization powered by AI to make
+                your resume stand out professionally
               </p>
-            </div>
+            </motion.div>
 
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-sky-400/20 hover:border-sky-400/50 transition-all duration-300 hover:transform hover:scale-105 shadow-lg hover:shadow-sky-400/20">
-              <div className="text-sky-400 text-4xl mb-4">
-                <i className="pi pi-download"></i>
+            {/* Feature Card 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-300"
+            >
+              <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
+                <Download className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-sky-400 mb-2">Export to PDF</h3>
-              <p className="text-slate-50/80">
-                Download your CV as a professional PDF ready to send to employers
+              <h3 className="text-xl font-bold text-[#017A8C] mb-3">
+                Custom Themes & PDF Export
+              </h3>
+              <p className="text-[#88B7C4] leading-relaxed">
+                Choose from professional themes and export as high-quality PDF
+                ready to send to employers instantly
               </p>
-            </div>
+            </motion.div>
+
+            {/* Feature Card 4 */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-300"
+            >
+              <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
+                <Eye className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-[#017A8C] mb-3">
+                Real-time Preview
+              </h3>
+              <p className="text-[#88B7C4] leading-relaxed">
+                See your changes instantly with live preview mode while editing
+                your resume for perfect results
+              </p>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="relative py-20 px-6">
+        <div className="container mx-auto max-w-4xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-[#017A8C] mb-6">
+              Ready to Get Hired?
+            </h2>
+            <p className="text-lg text-[#88B7C4] mb-10">
+              Join thousands of professionals who landed their dream jobs with Nuivo
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(1, 122, 140, 0.3)' }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleCreateResume}
+              className="px-10 py-4 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold text-lg rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              Get Started Now
+            </motion.button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Modern Footer */}
+      <footer className="relative border-t border-[#C6DEE4]/30 bg-white/50 backdrop-blur-sm py-12 px-6">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            {/* Brand Column */}
+            <div className="col-span-1 md:col-span-2">
+              <h3 className="text-2xl font-bold text-[#017A8C] mb-4">Nuivo</h3>
+              <p className="text-[#88B7C4] mb-4 max-w-md">
+                Build professional resumes that get you hired. Trusted by thousands of job seekers worldwide.
+              </p>
+              <div className="flex gap-4">
+                <a href="#" className="text-[#017A8C] hover:text-[#015d6b] transition-colors">
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+                <a href="#" className="text-[#017A8C] hover:text-[#015d6b] transition-colors">
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  </svg>
+                </a>
+                <a href="#" className="text-[#017A8C] hover:text-[#015d6b] transition-colors">
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-lg font-semibold text-[#017A8C] mb-4">Quick Links</h4>
+              <ul className="space-y-2">
+                <li><a href="#home" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Home</a></li>
+                <li><a href="#features" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Features</a></li>
+                <li><a href="#contact" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Contact</a></li>
+              </ul>
+            </div>
+
+            {/* Resources */}
+            <div>
+              <h4 className="text-lg font-semibold text-[#017A8C] mb-4">Resources</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Resume Tips</a></li>
+                <li><a href="#" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Career Advice</a></li>
+                <li><a href="#" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">FAQs</a></li>
+                <li><a href="#" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Support</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Copyright Bar */}
+          <div className="pt-8 border-t border-[#C6DEE4]/30 text-center">
+            <p className="text-[#88B7C4] text-sm">
+              © 2025 Nuivo. All rights reserved. | <a href="#" className="hover:text-[#017A8C] transition-colors">Privacy Policy</a> | <a href="#" className="hover:text-[#017A8C] transition-colors">Terms of Service</a>
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
-};
-
-export default LandingPage;
+}

@@ -7,6 +7,8 @@ import CVDisplay from './components/CVDisplay';
 import { Button } from 'primereact/button';
 import type { CVData } from './types/cv.types';
 
+
+
 function App() {
   const [cvData, setCvData] = useState<CVData>({
     header: {
