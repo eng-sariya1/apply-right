@@ -141,6 +141,8 @@
   margin: 0;
   padding: 0;
   color: #000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .cv-container header {
@@ -192,6 +194,10 @@
 }
 .cv-container .profile p {
   color: #000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .cv-container .skill {
@@ -216,6 +222,10 @@
 
 .cv-container .career p {
   color: #000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .cv-container .career p:nth-child(1) {
@@ -246,6 +256,10 @@
 
 .cv-container .careerList li {
   color: #000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .cv-container .careerList b {
@@ -261,6 +275,10 @@
   font-size: 15px;
   filter: opacity(0.8);
   color: #000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .cv-container .secondCareerList {
@@ -272,6 +290,10 @@
   font-size: 15px;
   filter: opacity(0.8);
   color: #000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .cv-container .p-skeleton {
