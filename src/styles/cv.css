@@ -148,11 +148,25 @@
 .cv-container header {
   padding: 3rem 5rem;
   padding-bottom: 2rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .cv-container h1 {
   margin-bottom: 15px;
   color: #000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.cv-container h1 span {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .cv-container h2 {
@@ -182,11 +196,25 @@
   align-items: center;
   gap: 10px;
   color: #000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-wrap: wrap;
 }
 
 .cv-container .headers a {
   color: #000;
   text-decoration: none;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.cv-container .headers span {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .cv-container .profile {

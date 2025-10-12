@@ -47,8 +47,15 @@ const Header = () => {
             </h1>
           </div>
 
-          {/* Right: Sign Up + Menu */}
+          {/* Right: Create My Resume + Sign Up + Menu */}
           <div className="flex items-center gap-3">
+            <Button
+              label="Create my Resume"
+              icon="pi pi-file-edit"
+              className="bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl px-4 py-2 transition-all duration-300 shadow-md hover:shadow-lg border-0"
+              onClick={() => navigate('/builder')}
+            />
+
             <Button
               label="Sign Up"
               icon="pi pi-user-plus"

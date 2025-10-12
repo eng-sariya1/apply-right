@@ -53,6 +53,14 @@ export default function LandingPage() {
               >
                 Contact
               </a>
+              <motion.button
+                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleCreateResume}
+                className="px-6 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                Create Resume
+              </motion.button>
             </div>
 
             {/* Mobile Menu Button */}
