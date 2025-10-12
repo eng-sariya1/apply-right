@@ -75,7 +75,7 @@ export default function LandingPage() {
         </nav>
       </motion.header>
 
-      {/* Hero Section - Resume.io Style */}
+      {/* Hero Section */}
       <section id="home" className="relative pt-20 pb-20 px-6">
         <div className="container mx-auto max-w-7xl">
           <motion.div
@@ -165,7 +165,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="relative py-20 px-6">
+      <section id="features" className="relative py-24 px-6">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -174,7 +174,7 @@ export default function LandingPage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#017A8C] mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#02343F] mb-4">
               Why Choose Nuivo?
             </h2>
             <p className="text-lg text-[#88B7C4] max-w-2xl mx-auto">
@@ -195,7 +195,7 @@ export default function LandingPage() {
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <CheckCircle2 className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-[#017A8C] mb-3">
+              <h3 className="text-xl font-bold text-[#02343F] mb-3">
                 ATS Compatibility
               </h3>
               <p className="text-[#88B7C4] leading-relaxed">
@@ -216,7 +216,7 @@ export default function LandingPage() {
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <Sparkles className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-[#017A8C] mb-3">
+              <h3 className="text-xl font-bold text-[#02343F] mb-3">
                 AI-Powered Optimization
               </h3>
               <p className="text-[#88B7C4] leading-relaxed">
@@ -237,7 +237,7 @@ export default function LandingPage() {
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <Download className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-[#017A8C] mb-3">
+              <h3 className="text-xl font-bold text-[#02343F] mb-3">
                 Custom Themes & PDF Export
               </h3>
               <p className="text-[#88B7C4] leading-relaxed">
@@ -258,7 +258,7 @@ export default function LandingPage() {
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <Eye className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-[#017A8C] mb-3">
+              <h3 className="text-xl font-bold text-[#02343F] mb-3">
                 Real-time Preview
               </h3>
               <p className="text-[#88B7C4] leading-relaxed">
@@ -271,7 +271,7 @@ export default function LandingPage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative py-20 px-6">
+      <section id="contact" className="relative py-24 px-6">
         <div className="container mx-auto max-w-4xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -279,7 +279,7 @@ export default function LandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#017A8C] mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#02343F] mb-6">
               Ready to Get Hired?
             </h2>
             <p className="text-lg text-[#88B7C4] mb-10">
@@ -298,7 +298,7 @@ export default function LandingPage() {
       </section>
 
       {/* Modern Footer */}
-      <footer className="relative border-t border-[#C6DEE4]/30 bg-white/50 backdrop-blur-sm py-12 px-6">
+      <footer className="relative border-t border-[#C6DEE4]/30 bg-[#F3F3F3]/70 backdrop-blur-sm py-12 px-6 mt-12">
         <div className="container mx-auto max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Brand Column */}
