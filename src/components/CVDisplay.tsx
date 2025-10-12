@@ -14,10 +14,10 @@ export default function CVDisplay({ data }: CVDisplayProps) {
     <div className="cv-container">
       <div className="total">
         <header>
-          <h1 className={"flex gap-1"}>
-            <span style={{ fontWeight: '600', color: themeColor }}>{data.header.fullName || <Skeleton width="10rem" height="1.5rem" />}</span>
+          <h1 className={"flex gap-1"} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', maxWidth: '100%' }}>
+            <span style={{ fontWeight: '600', color: themeColor, wordWrap: 'break-word', overflowWrap: 'break-word' }}>{data.header.fullName || <Skeleton width="10rem" height="1.5rem" />}</span>
             <span style={{ color: themeColor, fontWeight: '600' }}> | </span>
-            <span style={{ fontWeight: '600', color: themeColor }}>{data.header.specialization || <Skeleton width="12rem" height="1.5rem" />}</span>
+            <span style={{ fontWeight: '600', color: themeColor, wordWrap: 'break-word', overflowWrap: 'break-word' }}>{data.header.specialization || <Skeleton width="12rem" height="1.5rem" />}</span>
           </h1>
           <div>
             <ul className="headers">
@@ -59,7 +59,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
           <div>
             <h2 style={{ color: themeColor }}>Abstract</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <p>{data.abstract || <Skeleton width="100%" height="4rem" />}</p>
+              <p style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>{data.abstract || <Skeleton width="100%" height="4rem" />}</p>
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
                 {Array.from({ length: Math.ceil(data.skills.length / 5) }).map((_, colIndex) => (
                   <div key={colIndex}>
                     {data.skills.slice(colIndex * 5, (colIndex + 1) * 5).map((skill, index) => (
-                      <li key={index}>{skill}</li>
+                      <li key={index} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word' }}>{skill}</li>
                     ))}
                   </div>
                 ))}
@@ -93,23 +93,23 @@ export default function CVDisplay({ data }: CVDisplayProps) {
               <div key={careerIndex}>
                 <div style={{ display: 'flex', flexDirection: 'row', gap: '5rem', paddingTop: careerIndex === 0 ? '0rem' : '3rem' }}>
                   <div>
-                    <p style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexWrap: 'nowrap' }}>
+                    <p style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexWrap: 'wrap', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                       <span style={{ fontWeight: '600' }}>Period: </span>
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', whiteSpace: 'nowrap' }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', flexWrap: 'wrap' }}>
                         {career.startDate || <Skeleton width="4rem" height="1rem" />}
                         <span>-</span>
                         {career.isPresent ? 'Present' : (career.endDate || <Skeleton width="4rem" height="1rem" />)}
                       </span>
                     </p>
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}>
-                      <p><span style={{ fontWeight: '600' }}>Location: </span>{career.location || <Skeleton width="10rem" height="1rem" />}</p>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px', flexWrap: 'wrap' }}>
+                      <p style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word' }}><span style={{ fontWeight: '600' }}>Location: </span>{career.location || <Skeleton width="10rem" height="1rem" />}</p>
                     </div>
                   </div>
                   <div>
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}>
-                      <p><span style={{ fontWeight: '600' }}>Company: </span>{career.companyName || <Skeleton width="10rem" height="1rem" />}</p>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px', flexWrap: 'wrap' }}>
+                      <p style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word' }}><span style={{ fontWeight: '600' }}>Company: </span>{career.companyName || <Skeleton width="10rem" height="1rem" />}</p>
                     </div>
-                    <p>
+                    <p style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
                       <span style={{ fontWeight: '600' }}>Position: </span>
                       {career.workSpecialization || <Skeleton width="12rem" height="1rem" />} ({career.jobType})
                     </p>
@@ -117,7 +117,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
                 </div>
                 <div>
                   {career.summarization && (
-                    <p style={{ paddingTop: '1rem', paddingBottom: '1rem', fontWeight: 'normal', filter: 'opacity(0.8)' }}>
+                    <p style={{ paddingTop: '1rem', paddingBottom: '1rem', fontWeight: 'normal', filter: 'opacity(0.8)', wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>
                       {career.summarization}
                     </p>
                   )}
@@ -127,22 +127,22 @@ export default function CVDisplay({ data }: CVDisplayProps) {
                       <ul className="mainCareerList">
                         {career.projects.map((project, projectIndex) => (
                           <div key={projectIndex}>
-                            <li className="careerTitle"><span style={{ fontWeight: '600' }}>Name: </span>{project.name || <Skeleton width="10rem" height="1rem" />}</li>
+                            <li className="careerTitle" style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word' }}><span style={{ fontWeight: '600' }}>Name: </span>{project.name || <Skeleton width="10rem" height="1rem" />}</li>
                             <ul className="careerList">
-                              <li>
+                              <li style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>
                                 <b>Description: </b>
-                                <label>{project.description || <Skeleton width="100%" height="2rem" />}</label>
+                                <label style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>{project.description || <Skeleton width="100%" height="2rem" />}</label>
                               </li>
-                              <li>
+                              <li style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>
                                 <b>Technologies: </b>
-                                <label>{project.technologies || <Skeleton width="15rem" height="1rem" />}</label>
+                                <label style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>{project.technologies || <Skeleton width="15rem" height="1rem" />}</label>
                               </li>
                               {project.keyContributions.length > 0 && (
                                 <>
                                   <li><b>Key Contributions:</b></li>
                                   <ul className="secondCareerList">
                                     {project.keyContributions.map((contribution, contribIndex) => (
-                                      <li key={contribIndex}>{contribution}</li>
+                                      <li key={contribIndex} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>{contribution}</li>
                                     ))}
                                   </ul>
                                 </>
@@ -173,22 +173,22 @@ export default function CVDisplay({ data }: CVDisplayProps) {
               <ul className="mainCareerList">
                 {data.personalProjects.map((project, projectIndex) => (
                   <div key={projectIndex}>
-                    <li className="careerTitle"><span style={{ fontWeight: '600' }}>Title: </span>{project.title || <Skeleton width="10rem" height="1rem" />}</li>
+                    <li className="careerTitle" style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word' }}><span style={{ fontWeight: '600' }}>Title: </span>{project.title || <Skeleton width="10rem" height="1rem" />}</li>
                     <ul className="careerList">
-                      <li>
+                      <li style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>
                         <b>Description: </b>
-                        <label>{project.description || <Skeleton width="100%" height="2rem" />}</label>
+                        <label style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>{project.description || <Skeleton width="100%" height="2rem" />}</label>
                       </li>
-                      <li>
+                      <li style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>
                         <b>Technologies: </b>
-                        <label>{project.technologies || <Skeleton width="15rem" height="1rem" />}</label>
+                        <label style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>{project.technologies || <Skeleton width="15rem" height="1rem" />}</label>
                       </li>
                       {project.keyFeatures.length > 0 && (
                         <>
                           <li><b>Key Features:</b></li>
                           <ul className="secondCareerList">
                             {project.keyFeatures.map((feature, featureIndex) => (
-                              <li key={featureIndex}>{feature}</li>
+                              <li key={featureIndex} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'normal' }}>{feature}</li>
                             ))}
                           </ul>
                         </>
@@ -204,7 +204,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         <div className="career">
           <div>
             <h2 style={{ color: themeColor }}>Education</h2>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{data.education || <Skeleton width="100%" height="3rem" />}</p>
+            <p style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word' }}>{data.education || <Skeleton width="100%" height="3rem" />}</p>
           </div>
         </div>
       </div>

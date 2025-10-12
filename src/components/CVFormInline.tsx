@@ -166,6 +166,7 @@ const navigate = useNavigate();
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
+        className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
       >
         <h3 className="text-lg font-bold text-[#017A8C] mb-4">Personal Information</h3>
 
@@ -302,7 +303,7 @@ const navigate = useNavigate();
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="pt-6 border-t border-[#C6DEE4]/30"
+        className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
       >
         <h3 className="text-lg font-bold text-[#017A8C] mb-4">Theme Color</h3>
         <div className="flex items-center gap-4">
@@ -335,7 +336,7 @@ const navigate = useNavigate();
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
-        className="pt-6 border-t border-[#C6DEE4]/30"
+        className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
       >
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-bold text-[#017A8C]">Abstract</h3>
@@ -371,7 +372,7 @@ const navigate = useNavigate();
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.3 }}
-        className="pt-6 border-t border-[#C6DEE4]/30"
+        className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
       >
         <h3 className="text-lg font-bold text-[#017A8C] mb-4">Skills</h3>
         <div data-cy="skills-input">
@@ -398,7 +399,7 @@ const navigate = useNavigate();
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.4 }}
-        className="pt-6 border-t border-[#C6DEE4]/30"
+        className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
       >
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-bold text-[#017A8C]">Career</h3>
@@ -458,7 +459,7 @@ const navigate = useNavigate();
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.5 }}
-        className="pt-6 border-t border-[#C6DEE4]/30"
+        className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
       >
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-bold text-[#017A8C]">Personal Projects</h3>
@@ -513,7 +514,7 @@ const navigate = useNavigate();
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.6 }}
-        className="pt-6 border-t border-[#C6DEE4]/30"
+        className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
       >
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-bold text-[#017A8C]">Education</h3>

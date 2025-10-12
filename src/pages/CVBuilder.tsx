@@ -267,34 +267,46 @@ export default function CVBuilder() {
                     </p>
                   </div>
 
-                  {/* Enlarged CV Preview (20% bigger) */}
-                  <div className="bg-[#F3F3F3] rounded-xl p-8 mb-6">
-                    <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto" style={{ transform: 'scale(1.2)', transformOrigin: 'top center' }}>
+                  {/* A4 CV Preview Container */}
+                  <div className="flex justify-center mb-8">
+                    <div
+                      className="bg-white rounded-lg shadow-xl border border-gray-200 p-8"
+                      style={{
+                        width: '21cm',
+                        maxWidth: '100%',
+                        aspectRatio: '1 / 1.414'
+                      }}
+                    >
                       <CVDisplay data={cvData} />
                     </div>
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                    className="flex flex-col sm:flex-row gap-4 justify-center"
+                  >
                     <motion.button
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ scale: 1.03, boxShadow: '0 10px 30px rgba(1, 122, 140, 0.3)' }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => window.print()}
-                      className="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                      className="flex items-center justify-center gap-2 px-8 py-3 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-lg shadow-lg transition-all duration-300"
                     >
                       <Download className="w-5 h-5" />
                       Download as PDF
                     </motion.button>
                     <motion.button
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ scale: 1.03, backgroundColor: 'rgba(250, 247, 240, 0.5)' }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setShowModal(false)}
-                      className="flex items-center justify-center gap-2 px-8 py-3 bg-white hover:bg-[#FAF7F0] text-[#017A8C] font-semibold rounded-lg border-2 border-[#017A8C] transition-all duration-300"
+                      className="flex items-center justify-center gap-2 px-8 py-3 bg-transparent text-[#017A8C] font-semibold rounded-lg border-2 border-[#017A8C] transition-all duration-300"
                     >
                       <Edit3 className="w-5 h-5" />
                       Edit Again
                     </motion.button>
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
             </div>
