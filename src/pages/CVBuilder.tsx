@@ -193,9 +193,23 @@ export default function CVBuilder() {
             className="relative"
           >
             <div className="lg:sticky lg:top-32">
-              <div className="mb-4">
-                <h2 className="text-xl font-bold text-[#017A8C] mb-2">Live Preview</h2>
-                <p className="text-sm text-[#88B7C4]">Your changes appear here in real-time</p>
+              {/* Header with Title and Button */}
+              <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-bold text-[#017A8C] mb-1">Live Preview</h2>
+                  <p className="text-sm text-[#88B7C4]">Your changes appear here in real-time</p>
+                </div>
+
+                {/* View Full CV Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowModal(true)}
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 whitespace-nowrap sm:self-start"
+                >
+                  <FileSearch className="w-4 h-4" />
+                  View Full CV
+                </motion.button>
               </div>
 
               <div
@@ -204,17 +218,6 @@ export default function CVBuilder() {
               >
                 <CVDisplay data={cvData} />
               </div>
-
-              {/* View Full CV Button */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setShowModal(true)}
-                className="mt-6 w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-              >
-                <FileSearch className="w-5 h-5" />
-                View Full CV
-              </motion.button>
             </div>
           </motion.div>
         </div>
