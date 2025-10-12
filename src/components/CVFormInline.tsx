@@ -15,6 +15,7 @@ import { useGeminiCareer } from '../hooks/useGeminiCareer';
 import { useGeminiProjects } from '../hooks/useGeminiProjects';
 import { useGeminiEducation } from '../hooks/useGeminiEducation';
 import { useGeminiATS } from '../hooks/useGeminiATS';
+import {useNavigate} from "react-router-dom";
 
 interface CVFormInlineProps {
   onSubmit: (data: CVData) => void;
@@ -44,7 +45,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
     education: '',
     sectionTitleColor: '017A8C'
   };
-
+const navigate = useNavigate();
   const { control, watch, setValue } = useForm<CVData>({
     defaultValues
   });
@@ -143,7 +144,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               type="button"
-              onClick={handleATSOptimization}
+              onClick={()=>{navigate("/ats")}}
               disabled={!watch('header.fullName') || !watch('abstract')?.trim() || isATSLoading}
               className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold rounded-lg hover:from-[#015C6A] hover:to-[#017A8C] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
             >

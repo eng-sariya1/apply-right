@@ -1,32 +1,20 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Download, RefreshCw, FileSearch } from 'lucide-react';
 import CVFormInline from '../components/CVFormInline';
 import CVDisplay from '../components/CVDisplay';
 import type { CVData } from '../types/cv.types';
+import { useCVContext } from '../context/CVContext';
 import '../styles/cv-builder.css';
+
 export default function CVBuilder() {
   const navigate = useNavigate();
-  const [cvData, setCvData] = useState<CVData>({
-    header: {
-      fullName: '',
-      specialization: '',
-      email: '',
-      phone: '',
-      links: []
-    },
-    abstract: '',
-    skills: [],
-    career: [],
-    personalProjects: [],
-    education: '',
-    sectionTitleColor: '017A8C'
-  });
+  const { cvData, setCvData } = useCVContext();
 
   const handleFormSubmit = useCallback((data: CVData) => {
     setCvData(data);
-  }, []);
+  }, [setCvData]);
 
   const handleReset = useCallback(() => {
     setCvData({
@@ -44,7 +32,7 @@ export default function CVBuilder() {
       education: '',
       sectionTitleColor: '017A8C'
     });
-  }, []);
+  }, [setCvData]);
 
   // Calculate completion progress
   const completionProgress = useMemo(() => {
@@ -159,25 +147,27 @@ export default function CVBuilder() {
               />
 
               {/* Action Buttons */}
-              <div className="flex gap-3 mt-6 pt-6 border-t border-[#017A8C]/10">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleReset}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-[#FAF7F0] text-[#88B7C4] font-semibold rounded-lg border border-[#017A8C]/20 transition-all duration-300"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  Reset
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => window.print()}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <Download className="w-4 h-4" />
-                  Save as PDF
-                </motion.button>
+              <div className="flex flex-col gap-3 mt-6 pt-6 border-t border-[#017A8C]/10">
+                <div className="flex gap-3">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleReset}
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-[#FAF7F0] text-[#88B7C4] font-semibold rounded-lg border border-[#017A8C]/20 transition-all duration-300"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    Reset
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => window.print()}
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    <Download className="w-4 h-4" />
+                    Save as PDF
+                  </motion.button>
+                </div>
               </div>
             </div>
           </motion.div>
