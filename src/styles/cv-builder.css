@@ -1,3 +1,10 @@
+/* CV Preview Container - Override any conflicting styles */
+.cv-preview-wrapper {
+  overflow: visible !important;
+  max-height: none !important;
+  height: auto !important;
+}
+
 /* Custom scrollbar for CV Builder form panel */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;

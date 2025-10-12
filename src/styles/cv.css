@@ -58,9 +58,10 @@
 
 /* ============ CV Container ============ */
 .cv-container {
-  width: 210mm;
-  min-height: 297mm;
-  height: auto;
+  width: 210mm !important;
+  min-height: 297mm !important;
+  height: auto !important;
+  max-height: none !important;
   max-width: 100%;
   margin: 0 auto;
   margin-bottom: 3rem;
@@ -73,6 +74,7 @@
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   position: relative;
+  overflow: visible !important;
 }
 
 /* Adjust CV container when sidebar is open */
@@ -86,11 +88,13 @@
 /* CV Inner Content Container */
 .cv-container .total {
   width: 100%;
-  height: auto;
+  height: auto !important;
+  max-height: none !important;
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  padding-bottom: 3rem;
+  padding-bottom: 3rem !important;
+  overflow: visible !important;
 }
 
 /* Responsive adjustments for smaller screens */
@@ -186,7 +190,6 @@
 .cv-container .profile {
   padding: 2rem 5rem 1.5rem 5rem;
 }
-
 .cv-container .profile p {
   color: #000;
 }
