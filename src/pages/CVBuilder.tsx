@@ -6,7 +6,6 @@ import CVFormInline from '../components/CVFormInline';
 import CVDisplay from '../components/CVDisplay';
 import type { CVData } from '../types/cv.types';
 import '../styles/cv-builder.css';
-
 export default function CVBuilder() {
   const navigate = useNavigate();
   const [cvData, setCvData] = useState<CVData>({

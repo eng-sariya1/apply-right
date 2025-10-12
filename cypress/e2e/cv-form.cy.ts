@@ -6,108 +6,163 @@ describe('CV Form - Fill Fields Through Abstract', () => {
     cy.clearLocalStorage();
     cy.clearCookies();
 
-    cy.visit('/', {
+    cy.visit('/cv-builder', {
       onBeforeLoad: (win) => {
         win.sessionStorage.clear();
       }
     });
 
-    // Wait for the page to fully load
-    cy.get('[data-cy="open-form-button"]').should('be.visible');
+    // Wait for the page to fully load - CVFormInline is directly visible (no sidebar)
+    cy.wait(1000);
   });
 
   it('should fill out form fields 1-7 in order (Full Name through Abstract)', () => {
-    // Ensure the page is ready and no sidebar is open
-    cy.get('body').then($body => {
-      if ($body.find('.cv-form-sidebar').length > 0) {
-        cy.get('.cv-form-sidebar').should('not.be.visible');
-      }
-    });
-    
-    // Generate realistic test data using faker
+    // Generate realistic professional CV test data using faker
     const testData = {
+      // Personal Information
       fullName: faker.person.fullName(),
-      specialization: faker.person.jobTitle(),
-      email: faker.internet.email(),
-      phone: faker.phone.number('+1##########'),
+      specialization: faker.helpers.arrayElement([
+        'Senior Full Stack Developer',
+        'Frontend Engineer',
+        'Backend Developer',
+        'DevOps Engineer',
+        'Software Architect',
+        'UI/UX Developer'
+      ]),
+      email: faker.internet.email().toLowerCase(),
+      phone: faker.phone.number('+1 (###) ###-####'),
       link: {
         name: 'LinkedIn',
-        url: `https://linkedin.com/in/${faker.internet.username()}`
+        url: `https://linkedin.com/in/${faker.internet.username().toLowerCase()}`
       },
-      abstract: faker.lorem.paragraph(3)
+      abstract: `${faker.person.jobTitle()} with ${faker.number.int({ min: 3, max: 10 })}+ years of experience in building scalable web applications. Proven track record in leading development teams, implementing best practices, and delivering high-quality software solutions. Passionate about modern technologies and continuous learning.`,
+
+      // Skills
+      skills: [
+        'React',
+        'TypeScript',
+        'Node.js',
+        'PostgreSQL',
+        'AWS',
+        'Docker',
+        'CI/CD',
+        'REST APIs'
+      ],
+
+      // Career Experience
+      career: {
+        startDate: 'Jan 2020',
+        endDate: 'Present',
+        location: `${faker.location.city()}, ${faker.location.state({ abbreviated: true })}`,
+        companyName: faker.company.name(),
+        workSpecialization: faker.helpers.arrayElement([
+          'Senior Software Engineer',
+          'Full Stack Developer',
+          'Lead Developer',
+          'Technical Lead'
+        ]),
+        jobType: 'Full time',
+        summarization: `Led development of multiple high-impact features that improved user engagement by ${faker.number.int({ min: 20, max: 60 })}%. Collaborated with cross-functional teams to design and implement scalable solutions. Mentored junior developers and established coding standards and best practices across the team.`
+      },
+
+      // Personal Project
+      project: {
+        title: faker.helpers.arrayElement([
+          'E-Commerce Platform',
+          'Task Management System',
+          'Real-Time Chat Application',
+          'Analytics Dashboard',
+          'Portfolio Website Builder'
+        ]),
+        description: `A full-stack web application built with modern technologies. Features include user authentication, real-time updates, responsive design, and comprehensive testing. Designed with scalability and performance in mind.`,
+        technologies: 'React, TypeScript, Node.js, Express, MongoDB, Socket.io',
+        keyFeatures: [
+          'User authentication and authorization',
+          'Real-time data synchronization',
+          'Responsive mobile-first design',
+          'RESTful API architecture'
+        ]
+      },
+
+      // Education
+      education: `Bachelor of Science in Computer Science\n${faker.company.name()} University\n2016 - 2020\n\nRelevant coursework: Data Structures, Algorithms, Web Development, Database Systems, Software Engineering. Graduated with honors. Active member of the Computer Science Club and participated in multiple hackathons.`
     };
-    
-    // Step 1: Open the CV form sidebar
-    cy.get('[data-cy="open-form-button"]')
+
+    // NOTE: /cv-builder uses CVFormInline (NO SIDEBAR) - form fields are directly visible
+    // Wait for page to load and form to be visible
+    cy.wait(1000);
+
+    // Step 1: Fill Full Name field
+    cy.get('[data-cy="fullName-input"]', { timeout: 10000 })
       .should('be.visible')
-      .click();
-    
-    // Wait for the sidebar to be fully visible and ready for interaction
-    cy.get('.cv-form-sidebar')
-      .should('be.visible')
-      .and('have.css', 'visibility', 'visible');
-    
-    // Step 2: Fill Full Name field
-    cy.get('[data-cy="fullName-input"]')
-      .should('be.visible')
+      .should('be.enabled')
       .scrollIntoView()
       .clear()
-      .type(testData.fullName)
+      .type(testData.fullName, { delay: 50 })
       .should('have.value', testData.fullName);
-    
-    // Step 3: Fill Specialization field
+
+    // Step 4: Fill Specialization field
     cy.get('[data-cy="specialization-input"]')
       .should('be.visible')
+      .should('be.enabled')
       .scrollIntoView()
       .clear()
-      .type(testData.specialization)
+      .type(testData.specialization, { delay: 50 })
       .should('have.value', testData.specialization);
-    
-    // Step 4: Fill Email field
+
+    // Step 5: Fill Email field
     cy.get('[data-cy="email-input"]')
       .should('be.visible')
+      .should('be.enabled')
       .scrollIntoView()
       .clear()
-      .type(testData.email)
+      .type(testData.email, { delay: 50 })
       .should('have.value', testData.email);
-    
-    // Step 5: Fill Phone Number field
+
+    // Step 6: Fill Phone Number field
     cy.get('[data-cy="phone-input"]')
       .should('be.visible')
+      .should('be.enabled')
       .scrollIntoView()
       .clear()
-      .type(testData.phone)
+      .type(testData.phone, { delay: 50 })
       .should('have.value', testData.phone);
-    
-    // Step 6: Add Link (must press "Add" after typing)
+
+    // Step 7: Add Link (must press "Add" after typing)
     cy.get('[data-cy="add-link-button"]')
       .should('be.visible')
+      .should('be.enabled')
       .scrollIntoView()
       .click();
-    
+
+    // Wait for link fields to appear
+    cy.wait(200);
+
     // Fill link name
     cy.get('[data-cy="link-name-input-0"]')
       .should('be.visible')
+      .should('be.enabled')
       .scrollIntoView()
       .clear()
-      .type(testData.link.name)
+      .type(testData.link.name, { delay: 50 })
       .should('have.value', testData.link.name);
-    
+
     // Fill link URL
     cy.get('[data-cy="link-url-input-0"]')
       .should('be.visible')
+      .should('be.enabled')
       .scrollIntoView()
       .clear()
-      .type(testData.link.url)
+      .type(testData.link.url, { delay: 50 })
       .should('have.value', testData.link.url);
-    
-    // Step 7: Fill Abstract field (scroll into view to avoid sticky footer)
+
+    // Step 8: Fill Abstract field (scroll into view to avoid sticky footer)
     cy.get('[data-cy="abstract-input"]')
-      .should('exist')
-      .scrollIntoView()
       .should('be.visible')
+      .should('be.enabled')
+      .scrollIntoView()
       .clear()
-      .type(testData.abstract)
+      .type(testData.abstract, { delay: 30 })
       .should('have.value', testData.abstract);
     
     // Verify form is filled successfully through Abstract field
@@ -144,29 +199,8 @@ describe('CV Form - Fill Fields Through Abstract', () => {
     
     // Test complete - form successfully filled through Abstract field
     cy.log('✅ Test completed successfully - All fields through Abstract are filled and verified');
-    // Ensure the page is ready and no sidebar is open
 
-
-    // Generate realistic test data using faker
-    const testData = {
-      skills: [
-        faker.helpers.arrayElement(['React', 'Vue', 'Angular', 'Svelte']),
-        faker.helpers.arrayElement(['TypeScript', 'JavaScript', 'Python', 'Java']),
-        faker.helpers.arrayElement(['Node.js', 'Express', 'NestJS', 'FastAPI']),
-        faker.helpers.arrayElement(['MongoDB', 'PostgreSQL', 'MySQL', 'Redis'])
-      ],
-      career: {
-        startDate: faker.date.past({ years: 5 }).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }),
-        endDate: faker.date.recent({ days: 30 }).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }),
-        location: `${faker.location.city()}, ${faker.location.country()}`,
-        companyName: faker.company.name(),
-        workSpecialization: faker.person.jobTitle(),
-        jobType: faker.helpers.arrayElement(['Full time', 'Part time', 'Contract', 'Freelance']),
-        summarization: faker.lorem.paragraph(2)
-      }
-    };
-
-    // Step 2: Fill Skills field
+    // Step 9: Fill Skills field
     // First scroll to make the element visible within the fixed sidebar
     cy.get('[data-cy="skills-input"]')
         .scrollIntoView()
@@ -189,7 +223,7 @@ describe('CV Form - Fill Fields Through Abstract', () => {
           .should('contain', skill);
     });
 
-    // Step 3: Click "Add Career" button
+    // Step 10: Click "Add Career" button
     cy.get('[data-cy="add-career-button"]')
         .should('be.visible')
         .scrollIntoView()
@@ -198,7 +232,7 @@ describe('CV Form - Fill Fields Through Abstract', () => {
     // Wait for the career entry to be added
     cy.wait(200);
 
-    // Step 4: Click on "Career Entry 1" header to expand the accordion
+    // Step 11: Click on "Career Entry 1" header to expand the accordion
     cy.get('[data-cy="career-entry-header-0"]')
         .should('be.visible')
         .scrollIntoView()
@@ -207,7 +241,7 @@ describe('CV Form - Fill Fields Through Abstract', () => {
     // Wait for accordion to expand
     cy.wait(300);
 
-    // Step 5: Fill all career fields with faker data
+    // Step 12: Fill all career fields with faker data
 
     // Fill Start Date
     cy.get('[data-cy="career-startDate-input-0"]')
@@ -304,26 +338,7 @@ describe('CV Form - Fill Fields Through Abstract', () => {
     // Test complete
     cy.log('✅ Test completed successfully - Skills and Career fields are filled and verified');
 
-    // Generate realistic test data using faker
-    const testData = {
-      project: {
-        title: faker.commerce.productName(),
-        description: faker.lorem.paragraph(3),
-        technologies: [
-          faker.helpers.arrayElement(['React', 'Vue', 'Angular']),
-          faker.helpers.arrayElement(['TypeScript', 'JavaScript']),
-          faker.helpers.arrayElement(['Node.js', 'Python', 'Go'])
-        ].join(', '),
-        keyFeatures: [
-          faker.hacker.phrase(),
-          faker.hacker.phrase(),
-          faker.hacker.phrase()
-        ]
-      },
-      education: `${faker.helpers.arrayElement(['Bachelor of Science', 'Master of Science', 'PhD'])} in ${faker.helpers.arrayElement(['Computer Science', 'Software Engineering', 'Information Technology'])}\n${faker.company.name()} University\n${faker.date.past({ years: 10 }).getFullYear()} - ${faker.date.past({ years: 5 }).getFullYear()}\n\n${faker.lorem.paragraph(2)}`
-    };
-
-    // Step 2: Scroll to and click "Add Project" button
+    // Step 13: Scroll to and click "Add Project" button
     cy.get('[data-cy="add-project-button"]')
         .scrollIntoView()
         .should('be.visible')
@@ -332,7 +347,7 @@ describe('CV Form - Fill Fields Through Abstract', () => {
     // Wait for the project entry to be added
     cy.wait(200);
 
-    // Step 3: Click on "Project 1" header to expand the accordion
+    // Step 14: Click on "Project 1" header to expand the accordion
     cy.get('[data-cy="project-entry-header-0"]')
         .should('be.visible')
         .scrollIntoView()
@@ -341,7 +356,7 @@ describe('CV Form - Fill Fields Through Abstract', () => {
     // Wait for accordion to expand
     cy.wait(300);
 
-    // Step 4: Fill all project fields with faker data
+    // Step 15: Fill all project fields with faker data
 
     // Fill Project Title
     cy.get('[data-cy="project-title-input-0"]')
@@ -391,7 +406,7 @@ describe('CV Form - Fill Fields Through Abstract', () => {
 
     cy.log('✅ Personal Project fields filled successfully');
 
-    // Step 5: Fill Education field
+    // Step 16: Fill Education field
     cy.get('[data-cy="education-input"]')
         .should('be.visible')
         .scrollIntoView()

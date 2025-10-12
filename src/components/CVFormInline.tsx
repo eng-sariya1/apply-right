@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Button } from 'primereact/button';
 import { Chips } from 'primereact/chips';
 import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
@@ -179,6 +178,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
                   {...field}
                   className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                   placeholder="John Doe"
+                  data-cy="fullName-input"
                 />
               )}
             />
@@ -194,6 +194,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
                   {...field}
                   className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                   placeholder="Software Engineer"
+                  data-cy="specialization-input"
                 />
               )}
             />
@@ -210,6 +211,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
                   type="email"
                   className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                   placeholder="john.doe@example.com"
+                  data-cy="email-input"
                 />
               )}
             />
@@ -225,6 +227,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
                   {...field}
                   className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                   placeholder="+1234567890"
+                  data-cy="phone-input"
                 />
               )}
             />
@@ -241,6 +244,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
               type="button"
               onClick={() => appendLink({ name: '', url: '' })}
               className="flex items-center gap-2 px-3 py-1.5 bg-[#017A8C] text-white text-sm font-semibold rounded-lg hover:bg-[#015C6A] transition-all"
+              data-cy="add-link-button"
             >
               <Plus className="w-4 h-4" />
               Add Link
@@ -259,6 +263,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
                         {...field}
                         className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                         placeholder="Link Name (e.g., LinkedIn)"
+                        data-cy={`link-name-input-${index}`}
                       />
                     )}
                   />
@@ -270,6 +275,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
                         {...field}
                         className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                         placeholder="https://..."
+                        data-cy={`link-url-input-${index}`}
                       />
                     )}
                   />
@@ -352,6 +358,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
               rows={6}
               className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
               placeholder="Write a brief summary about yourself..."
+              data-cy="abstract-input"
             />
           )}
         />
@@ -365,18 +372,20 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
         className="pt-6 border-t border-[#C6DEE4]/30"
       >
         <h3 className="text-lg font-bold text-[#017A8C] mb-4">Skills</h3>
-        <Controller
-          name="skills"
-          control={control}
-          render={({ field }) => (
-            <Chips
-              value={field.value}
-              onChange={(e) => field.onChange(e.value)}
-              className="w-full"
-              placeholder="Type a skill and press Enter"
-            />
-          )}
-        />
+        <div data-cy="skills-input">
+          <Controller
+            name="skills"
+            control={control}
+            render={({ field }) => (
+              <Chips
+                value={field.value}
+                onChange={(e) => field.onChange(e.value)}
+                className="w-full"
+                placeholder="Type a skill and press Enter"
+              />
+            )}
+          />
+        </div>
         <p className="text-xs text-[#88B7C4] mt-2">
           Type a skill and press Enter. Examples: React, TypeScript, Node.js
         </p>
@@ -407,6 +416,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
               projects: []
             })}
             className="flex items-center gap-2 px-3 py-1.5 bg-[#017A8C] text-white text-sm font-semibold rounded-lg hover:bg-[#015C6A] transition-all"
+            data-cy="add-career-button"
           >
             <Plus className="w-4 h-4" />
             Add Career
@@ -418,7 +428,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
             <AccordionTab
               key={field.id}
               header={
-                <div className="flex justify-between items-center w-full pr-2">
+                <div className="flex justify-between items-center w-full pr-2" data-cy={`career-entry-header-${careerIndex}`}>
                   <span className="font-semibold">Career Entry {careerIndex + 1}</span>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
@@ -461,6 +471,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
               keyFeatures: []
             })}
             className="flex items-center gap-2 px-3 py-1.5 bg-[#017A8C] text-white text-sm font-semibold rounded-lg hover:bg-[#015C6A] transition-all"
+            data-cy="add-project-button"
           >
             <Plus className="w-4 h-4" />
             Add Project
@@ -472,7 +483,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
             <AccordionTab
               key={field.id}
               header={
-                <div className="flex justify-between items-center w-full pr-2">
+                <div className="flex justify-between items-center w-full pr-2" data-cy={`project-entry-header-${projectIndex}`}>
                   <span className="font-semibold">Project {projectIndex + 1}</span>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
@@ -525,6 +536,7 @@ export default function CVFormInline({ onSubmit, initialData }: CVFormInlineProp
               rows={4}
               className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
               placeholder="Describe your education..."
+              data-cy="education-input"
             />
           )}
         />
@@ -567,6 +579,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
                 {...field}
                 className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                 placeholder="Jan 2020"
+                data-cy={`career-startDate-input-${careerIndex}`}
               />
             )}
           />
@@ -583,6 +596,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
                 value={field.value || ''}
                 className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                 placeholder="Dec 2022"
+                data-cy={`career-endDate-input-${careerIndex}`}
               />
             )}
           />
@@ -615,6 +629,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
                 {...field}
                 className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                 placeholder="Company Inc."
+                data-cy={`career-companyName-input-${careerIndex}`}
               />
             )}
           />
@@ -630,6 +645,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
                 {...field}
                 className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                 placeholder="New York, USA"
+                data-cy={`career-location-input-${careerIndex}`}
               />
             )}
           />
@@ -645,6 +661,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
                 {...field}
                 className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                 placeholder="Frontend Developer"
+                data-cy={`career-workSpecialization-input-${careerIndex}`}
               />
             )}
           />
@@ -661,6 +678,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
                 options={jobTypeOptions}
                 className="w-full"
                 placeholder="Select job type"
+                data-cy={`career-jobType-dropdown-${careerIndex}`}
               />
             )}
           />
@@ -691,6 +709,7 @@ function CareerFields({ control, careerIndex, watch, setValue }: any) {
               rows={4}
               className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
               placeholder="Describe your work..."
+              data-cy={`career-summarization-input-${careerIndex}`}
             />
           )}
         />
@@ -824,6 +843,7 @@ function PersonalProjectFields({ control, projectIndex, watch, setValue }: any) 
               {...field}
               className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
               placeholder="My Awesome Project"
+              data-cy={`project-title-input-${projectIndex}`}
             />
           )}
         />
@@ -853,6 +873,7 @@ function PersonalProjectFields({ control, projectIndex, watch, setValue }: any) 
               rows={4}
               className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
               placeholder="Describe your project..."
+              data-cy={`project-description-input-${projectIndex}`}
             />
           )}
         />
@@ -868,6 +889,7 @@ function PersonalProjectFields({ control, projectIndex, watch, setValue }: any) 
               {...field}
               className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
               placeholder="React, Firebase, TailwindCSS"
+              data-cy={`project-technologies-input-${projectIndex}`}
             />
           )}
         />
@@ -875,18 +897,20 @@ function PersonalProjectFields({ control, projectIndex, watch, setValue }: any) 
 
       <div>
         <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Key Features</label>
-        <Controller
-          name={`personalProjects.${projectIndex}.keyFeatures`}
-          control={control}
-          render={({ field }) => (
-            <Chips
-              value={field.value}
-              onChange={(e) => field.onChange(e.value)}
-              className="w-full"
-              placeholder="Type and press Enter"
-            />
-          )}
-        />
+        <div data-cy={`project-keyFeatures-input-${projectIndex}`}>
+          <Controller
+            name={`personalProjects.${projectIndex}.keyFeatures`}
+            control={control}
+            render={({ field }) => (
+              <Chips
+                value={field.value}
+                onChange={(e) => field.onChange(e.value)}
+                className="w-full"
+                placeholder="Type and press Enter"
+              />
+            )}
+          />
+        </div>
       </div>
     </div>
   );

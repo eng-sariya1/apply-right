@@ -31,7 +31,7 @@
 .p-inputtext,
 .p-inputtextarea,
 .p-dropdown {
-  background: rgb(30 41 59 / 0.5) !important;
+  background: #fff !important;
   border: 1px solid rgb(56 189 248 / 0.3) !important;
   color: rgb(248 250 252) !important;
   transition: all 0.3s ease !important;
@@ -58,7 +58,7 @@
 
 /* Chips Component */
 .p-chips .p-chips-multiple-container {
-  background: rgb(30 41 59 / 0.5) !important;
+  background: #fff !important;
   border: 1px solid rgb(56 189 248 / 0.3) !important;
   transition: all 0.3s ease !important;
   display: flex !important;
@@ -156,7 +156,7 @@
 
 /* Checkbox */
 .p-checkbox .p-checkbox-box {
-  background: rgb(30 41 59 / 0.5) !important;
+  background: #fff !important;
   border: 2px solid rgb(56 189 248 / 0.5) !important;
   transition: all 0.3s ease !important;
 }
@@ -177,7 +177,7 @@
 
 /* Accordion */
 .p-accordion .p-accordion-header .p-accordion-header-link {
-  background: rgb(30 41 59 / 0.5) !important;
+  background: #fff !important;
   border: 1px solid rgb(56 189 248 / 0.2) !important;
   color: rgb(56 189 248) !important;
   transition: all 0.3s ease !important;
