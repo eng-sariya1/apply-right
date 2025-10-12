@@ -46,7 +46,7 @@ export default function HeroSection() {
                                 onClick={() => navigate('/cv-builder')}
                                 className="bg-[#017A8C] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#015C6A] transition-all duration-300 transform shadow-lg hover:shadow-xl shadow-[#017A8C]/20 hover:shadow-[#017A8C]/30 inline-block mt-4"
                             >
-                                Create my resume
+                                Create  resume
                             </motion.button>
                         </motion.div>
 
