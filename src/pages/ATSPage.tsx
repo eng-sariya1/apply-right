@@ -208,10 +208,22 @@ export default function ATSPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
-              <h2 className="text-xl font-bold text-[#017A8C] mb-4">Job Description</h2>
-              <p className="text-sm text-[#88B7C4] mb-4">
-                Paste the job description below to analyze how well your CV matches
-              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <div>
+                  <h2 className="text-xl font-bold text-[#017A8C] mb-1">Job Description</h2>
+                  <p className="text-sm text-[#88B7C4]">
+                    Paste the job description below to analyze how well your CV matches
+                  </p>
+                </div>
+                <Button
+                  label={isLoading ? 'Analyzing...' : 'Analyze CV'}
+                  icon="pi pi-chart-line"
+                  onClick={handleAnalyze}
+                  disabled={!jobDescription.trim() || isLoading}
+                  loading={isLoading}
+                  className="whitespace-nowrap bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                />
+              </div>
 
               <InputTextarea
                 value={jobDescription}
@@ -221,15 +233,6 @@ export default function ATSPage() {
                 placeholder="Paste the job description here..."
               />
 
-              <Button
-                label={isLoading ? 'Analyzing...' : 'Analyze CV'}
-                icon="pi pi-chart-line"
-                onClick={handleAnalyze}
-                disabled={!jobDescription.trim() || isLoading}
-                loading={isLoading}
-                className="w-full mt-4 bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-              />
-
               {analysisResult && !showComparison && (
                 <Button
                   label={isOptimizing ? 'Optimizing...' : 'Optimize CV for this Job'}
@@ -237,7 +240,7 @@ export default function ATSPage() {
                   onClick={handleOptimizeCV}
                   disabled={isOptimizing || isLoading}
                   loading={isOptimizing}
-                  className="w-full mt-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="whitespace-nowrap mt-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
                 />
               )}
 
