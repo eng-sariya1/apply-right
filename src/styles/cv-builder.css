@@ -5,6 +5,101 @@
   height: auto !important;
 }
 
+/* A4 Preview Scaled Container */
+.a4-preview-scaled {
+  width: 210mm;
+  max-width: 100%;
+  height: calc(297mm * 0.6); /* Scale down to 60% to fit viewport */
+  padding: 1.5rem;
+}
+
+/* A4 Content Wrapper - Scale CV to fit A4 */
+.a4-content-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: #017A8C #f0f0f0;
+  height: 100%;
+}
+
+.a4-content-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.a4-content-wrapper::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+
+.a4-content-wrapper::-webkit-scrollbar-thumb {
+  background: #017A8C;
+  border-radius: 3px;
+}
+
+.a4-content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #015C6A;
+}
+
+/* Adjust CV container to fit A4 dimensions */
+.a4-content-wrapper .cv-container {
+  width: 100% !important;
+  min-height: auto !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  font-size: 0.75rem !important;
+  line-height: 1.3 !important;
+  transform: scale(0.9);
+  transform-origin: top left;
+}
+
+/* Reduce padding and spacing for A4 fit */
+.a4-content-wrapper .cv-container header {
+  padding: 1rem 0 0.75rem 0 !important;
+}
+
+.a4-content-wrapper .cv-container h1 {
+  font-size: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.a4-content-wrapper .cv-container h2 {
+  font-size: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.a4-content-wrapper .cv-container .profile,
+.a4-content-wrapper .cv-container .skill,
+.a4-content-wrapper .cv-container .career {
+  padding: 0.75rem 0 0.5rem 0 !important;
+}
+
+.a4-content-wrapper .cv-container .skills {
+  gap: 1.5rem !important;
+  padding-left: 1rem !important;
+}
+
+.a4-content-wrapper .cv-container .careerTitle {
+  padding: 0.75rem 0 0.375rem 0 !important;
+}
+
+.a4-content-wrapper .cv-container .careerList,
+.a4-content-wrapper .cv-container .mainCareerList {
+  margin-left: 1rem !important;
+  gap: 0.25rem !important;
+}
+
+.a4-content-wrapper .cv-container .secondCareerList {
+  margin-left: 0.75rem !important;
+}
+
+.a4-content-wrapper .cv-container .careerList li,
+.a4-content-wrapper .cv-container .mainCareerList li,
+.a4-content-wrapper .cv-container .secondCareerList li {
+  margin-bottom: 0.25rem !important;
+}
+
 /* Custom scrollbar for CV Builder form panel */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;

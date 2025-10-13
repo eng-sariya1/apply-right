@@ -73,26 +73,38 @@ export default function ATSPage() {
   };
 
   const handleOptimizeCV = async () => {
+    console.log('🚀 Optimize button clicked!');
+    console.log('analysisResult:', analysisResult);
+    console.log('jobDescription:', jobDescription);
+
     if (!analysisResult || !jobDescription.trim()) {
+      console.error('❌ Missing required data');
       return;
     }
 
     try {
+      console.log('📊 Storing before analysis...');
       // Store the current analysis as "before"
       setBeforeAnalysis(analysisResult);
 
+      console.log('🔄 Calling optimizeCV...');
       // Optimize the CV
       const optimized = await optimizeCV(cvData, jobDescription);
+      console.log('✅ CV optimized:', optimized);
       setOptimizedCV(optimized);
 
+      console.log('🔍 Analyzing optimized CV...');
       // Analyze the optimized CV
       const afterResult = await analyzeCV(optimized, jobDescription);
+      console.log('✅ After analysis:', afterResult);
       setAfterAnalysis(afterResult);
 
+      console.log('🎉 Showing comparison view');
       // Show comparison view
       setShowComparison(true);
     } catch (err) {
-      console.error('Optimization failed:', err);
+      console.error('❌ Optimization failed:', err);
+      console.error('Error details:', err instanceof Error ? err.message : 'Unknown error');
     }
   };
 
