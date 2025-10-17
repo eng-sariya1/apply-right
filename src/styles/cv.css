@@ -58,7 +58,7 @@
 
 /* ============ CV Container ============ */
 .cv-container {
-  width: 210mm !important;
+  width: 310mm !important;
   min-height: 297mm !important;
   height: auto !important;
   max-height: none !important;
@@ -239,7 +239,9 @@
   gap: 5rem;
   padding-left: 3rem;
 }
-
+ul{
+  list-style: disc;
+}
 .cv-container .skills li {
   color: #000;
 }

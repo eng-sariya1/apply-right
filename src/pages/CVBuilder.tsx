@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download, RefreshCw, FileSearch, X, Edit3, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Dialog } from 'primereact/dialog';
 import CVFormInline from '../components/CVFormInline';
 import CVDisplay from '../components/CVDisplay';
 import type { CVData } from '../types/cv.types';
@@ -14,18 +15,6 @@ export default function CVBuilder() {
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 3;
-
-  // Disable background scrolling when modal is open
-  useEffect(() => {
-    if (showModal) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [showModal]);
 
   const handleFormSubmit = useCallback((data: CVData) => {
     setCvData(data);
@@ -248,96 +237,63 @@ export default function CVBuilder() {
         </div>
       </div>
 
-      {/* Full CV Preview Modal */}
-      <AnimatePresence>
-        {showModal && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowModal(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
-              style={{ overflow: 'hidden' }}
-            />
+      {/* Full CV Preview Dialog */}
+      <Dialog
+        header={
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-[#02343F] mb-2">
+              Your Professional CV Preview
+            </h2>
+            <p className="text-base text-[#88B7C4]">
+              Review it before saving or sharing!
+            </p>
+          </div>
+        }
+        visible={showModal}
+        onHide={() => setShowModal(false)}
+        style={{ width: '80vw', height:'90vh' }}
+        modal
+        dismissableMask
+        draggable={false}
+        className="cv-preview-dialog"
+        contentClassName="p-6"
+      >
+        {/* A4 CV Preview Container */}
+        <div className="flex justify-center mb-6">
+          <div
+            className="bg-white rounded-lg shadow-xl border border-gray-200 p-8"
+            style={{
+              width: '80vw',
+              maxWidth: '100%',
+              // aspectRatio: '1 / 1.414'
+            }}
+          >
+            <CVDisplay data={cvData} />
+          </div>
+        </div>
 
-            {/* Modal */}
-            <div className="fixed inset-0 z-[101] flex items-center justify-center p-4 overflow-hidden">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-                className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto relative"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Close Button */}
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="absolute top-4 right-4 z-10 p-2 bg-white hover:bg-gray-100 rounded-full shadow-md transition-colors duration-200"
-                >
-                  <X className="w-5 h-5 text-gray-600" />
-                </button>
-
-                {/* Modal Content */}
-                <div className="p-8">
-                  {/* Motivational Text */}
-                  <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-[#02343F] mb-3">
-                      Here's your professional CV preview
-                    </h2>
-                    <p className="text-lg text-[#88B7C4]">
-                      Review it before saving or sharing!
-                    </p>
-                  </div>
-
-                  {/* A4 CV Preview Container */}
-                  <div className="flex justify-center mb-8">
-                    <div
-                      className="bg-white rounded-lg shadow-xl border border-gray-200 p-8"
-                      style={{
-                        width: '21cm',
-                        maxWidth: '100%',
-                        aspectRatio: '1 / 1.414'
-                      }}
-                    >
-                      <CVDisplay data={cvData} />
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.2 }}
-                    className="flex flex-col sm:flex-row gap-4 justify-center"
-                  >
-                    <motion.button
-                      whileHover={{ scale: 1.03, boxShadow: '0 10px 30px rgba(1, 122, 140, 0.3)' }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => window.print()}
-                      className="flex items-center justify-center gap-2 px-8 py-3 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-lg shadow-lg transition-all duration-300"
-                    >
-                      <Download className="w-5 h-5" />
-                      Download as PDF
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.03, backgroundColor: 'rgba(250, 247, 240, 0.5)' }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setShowModal(false)}
-                      className="flex items-center justify-center gap-2 px-8 py-3 bg-transparent text-[#017A8C] font-semibold rounded-lg border-2 border-[#017A8C] transition-all duration-300"
-                    >
-                      <Edit3 className="w-5 h-5" />
-                      Edit Again
-                    </motion.button>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </div>
-          </>
-        )}
-      </AnimatePresence>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => window.print()}
+            className="flex items-center justify-center gap-2 px-8 py-3 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-lg shadow-lg transition-all duration-300"
+          >
+            <Download className="w-5 h-5" />
+            Download as PDF
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setShowModal(false)}
+            className="flex items-center justify-center gap-2 px-8 py-3 bg-transparent text-[#017A8C] font-semibold rounded-lg border-2 border-[#017A8C] hover:bg-[#FAF7F0]/50 transition-all duration-300"
+          >
+            <Edit3 className="w-5 h-5" />
+            Edit Again
+          </motion.button>
+        </div>
+      </Dialog>
     </div>
   );
 }

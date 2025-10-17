@@ -1,24 +1,26 @@
 import {useForm, useFieldArray, Controller} from 'react-hook-form';
 import {useEffect, useState, useRef} from 'react';
 import {motion} from 'framer-motion';
-import {InputText} from 'primereact/inputtext';
-import {InputTextarea} from 'primereact/inputtextarea';
-import {Chips} from 'primereact/chips';
-import {Dropdown} from 'primereact/dropdown';
-import {Checkbox} from 'primereact/checkbox';
 import {Accordion, AccordionTab} from 'primereact/accordion';
 import {ColorPicker} from 'primereact/colorpicker';
-import {Sparkles, Plus, Trash2, Zap, Upload, X, FileText} from 'lucide-react';
+import {Sparkles, Plus, Trash2, Zap, Upload, X, FileText, Eye} from 'lucide-react';
+import {Dialog} from 'primereact/dialog';
 import type {CVData} from '../types/cv.types';
 import {useGemini} from '../hooks/useGemini';
 import {useGeminiCareer} from '../hooks/useGeminiCareer';
 import {useGeminiProjects} from '../hooks/useGeminiProjects';
 import {useGeminiEducation} from '../hooks/useGeminiEducation';
 import {useGeminiATS} from '../hooks/useGeminiATS';
+import {useGeminiCVParser} from '../hooks/useGeminiCVParser';
 import {useNavigate} from "react-router-dom";
 import {FileUpload} from "primereact/fileupload";
 import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
+import TextInput from "./form/TextInput.tsx";
+import TextAreaInput from "./form/TextAreaInput.tsx";
+import DropdownInput from "./form/DropdownInput.tsx";
+import CheckboxInput from "./form/CheckboxInput.tsx";
+import ChipsInput from "./form/ChipsInput.tsx";
 
 // Configure PDF.js worker - use local worker file from public folder
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
@@ -68,13 +70,15 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
     const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
     const [extractedText, setExtractedText] = useState<string>('');
     const [isExtracting, setIsExtracting] = useState<boolean>(false);
+    const [showTextDialog, setShowTextDialog] = useState<boolean>(false);
     console.log({uploadedFile, extractedText})
     const [uploadError, setUploadError] = useState<string>('');
     const fileUploadRef = useRef<FileUpload>(null);
 
     const {improveText, isLoading} = useGemini();
     const {improveText: improveEducationText, isLoading: isEducationLoading} = useGeminiEducation();
-    const { isLoading: isATSLoading} = useGeminiATS();
+    const {isLoading: isATSLoading} = useGeminiATS();
+    const {parseCV, isLoading: isParsing, error: parseError} = useGeminiCVParser();
 
     // Update CV in real-time
     useEffect(() => {
@@ -244,6 +248,66 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
         return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
     };
 
+    // Auto-fill form from extracted text using Gemini
+    const handleAutoFillFromCV = async () => {
+        if (!extractedText.trim()) {
+            setUploadError('No text extracted from the file. Please upload a valid CV.');
+            return;
+        }
+
+        setUploadError('');
+
+        try {
+            const parsedData = await parseCV(extractedText);
+
+            // Set all form values with the parsed data
+            setValue('header.fullName', parsedData.header.fullName, {shouldValidate: true});
+            setValue('header.specialization', parsedData.header.specialization, {shouldValidate: true});
+            setValue('header.email', parsedData.header.email, {shouldValidate: true});
+            setValue('header.phone', parsedData.header.phone, {shouldValidate: true});
+
+            // Set links
+            if (parsedData.header.links.length > 0) {
+                setValue('header.links', parsedData.header.links, {shouldValidate: true});
+            }
+
+            // Set abstract
+            if (parsedData.abstract) {
+                setValue('abstract', parsedData.abstract, {shouldValidate: true});
+            }
+
+            // Set skills
+            if (parsedData.skills.length > 0) {
+                setValue('skills', parsedData.skills, {shouldValidate: true});
+            }
+
+            // Set career
+            if (parsedData.career.length > 0) {
+                setValue('career', parsedData.career, {shouldValidate: true});
+            }
+
+            // Set personal projects
+            if (parsedData.personalProjects.length > 0) {
+                setValue('personalProjects', parsedData.personalProjects, {shouldValidate: true});
+            }
+
+            // Set education
+            if (parsedData.education) {
+                setValue('education', parsedData.education, {shouldValidate: true});
+            }
+
+            // Set theme color if provided
+            if (parsedData.sectionTitleColor) {
+                setValue('sectionTitleColor', parsedData.sectionTitleColor, {shouldValidate: true});
+            }
+
+            console.log('CV data successfully parsed and form filled:', parsedData);
+        } catch (error) {
+            console.error('Failed to parse CV:', error);
+            setUploadError('Failed to parse CV data. Please check the file and try again.');
+        }
+    };
+
 
     return (
         <div className="flex flex-col gap-6">
@@ -292,7 +356,8 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                             className="flex items-center justify-between p-4 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]"
                         >
                             <div className="flex items-center gap-3 flex-1">
-                                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-lg flex items-center justify-center">
+                                <div
+                                    className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-lg flex items-center justify-center">
                                     <FileText className="w-5 h-5 text-white"/>
                                 </div>
                                 <div className="flex-1 min-w-0">
@@ -302,34 +367,73 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                                     <p className="text-xs text-[#88B7C4]">
                                         {formatFileSize(uploadedFile.size)}
                                         {isExtracting && <span className="ml-2">• Extracting text...</span>}
-                                        {!isExtracting && extractedText && <span className="ml-2">• Text extracted ({extractedText.length} characters)</span>}
+                                        {!isExtracting && extractedText && <span
+                                            className="ml-2">• Text extracted ({extractedText.length} characters)</span>}
                                     </p>
                                 </div>
                             </div>
-                            <motion.button
-                                whileHover={{scale: 1.1}}
-                                whileTap={{scale: 0.9}}
-                                type="button"
-                                onClick={handleRemoveFile}
-                                className="flex-shrink-0 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                                aria-label="Remove file"
-                            >
-                                <X className="w-5 h-5"/>
-                            </motion.button>
+                            <div className="flex items-center gap-2">
+                                {!isExtracting && extractedText && (
+                                    <motion.button
+                                        whileHover={{scale: 1.1}}
+                                        whileTap={{scale: 0.9}}
+                                        type="button"
+                                        onClick={() => setShowTextDialog(true)}
+                                        className="flex-shrink-0 p-2 text-[#017A8C] hover:bg-[#017A8C]/10 rounded-lg transition-all"
+                                        aria-label="View extracted text"
+                                        title="View full extracted text"
+                                    >
+                                        <Eye className="w-5 h-5"/>
+                                    </motion.button>
+                                )}
+                                <motion.button
+                                    whileHover={{scale: 1.1}}
+                                    whileTap={{scale: 0.9}}
+                                    type="button"
+                                    onClick={handleRemoveFile}
+                                    className="flex-shrink-0 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                    aria-label="Remove file"
+                                >
+                                    <X className="w-5 h-5"/>
+                                </motion.button>
+                            </div>
                         </motion.div>
 
-                        {/* Show extracted text preview */}
+                        {/* Auto-fill button */}
                         {!isExtracting && extractedText && (
                             <motion.div
                                 initial={{opacity: 0, y: -10}}
                                 animate={{opacity: 1, y: 0}}
-                                className="p-4 bg-white rounded-lg border border-[#C6DEE4]"
+                                className="flex flex-col gap-2"
                             >
-                                <h4 className="text-sm font-semibold text-[#017A8C] mb-2">Extracted Text Preview:</h4>
-                                <div className="text-xs text-[#5A6A6F] max-h-32 overflow-y-auto whitespace-pre-wrap">
-                                    {extractedText.substring(0, 500)}
-                                    {extractedText.length > 500 && '...'}
-                                </div>
+                                <motion.button
+                                    whileHover={{scale: 1.02}}
+                                    whileTap={{scale: 0.98}}
+                                    type="button"
+                                    onClick={handleAutoFillFromCV}
+                                    disabled={isParsing}
+                                    className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold rounded-lg hover:from-[#015C6A] hover:to-[#017A8C] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+                                >
+                                    <Sparkles className="w-5 h-5"/>
+                                    {isParsing ? 'Parsing CV with AI...' : 'Auto-Fill Form from CV'}
+                                </motion.button>
+                                <p className="text-xs text-[#88B7C4] text-center">
+                                    Click to automatically parse and fill the form with data from your CV
+                                </p>
+                            </motion.div>
+                        )}
+
+                        {/* Show parse error if any */}
+                        {parseError && (
+                            <motion.div
+                                initial={{opacity: 0, y: -10}}
+                                animate={{opacity: 1, y: 0}}
+                                className="p-3 bg-red-50 border border-red-200 rounded-lg"
+                            >
+                                <p className="text-sm text-red-600 flex items-center gap-2">
+                                    <span className="font-medium">Parse Error:</span>
+                                    {parseError}
+                                </p>
                             </motion.div>
                         )}
                     </div>
@@ -397,70 +501,37 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Personal Information</h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Full Name *</label>
-                        <Controller
-                            name="header.fullName"
-                            control={control}
-                            render={({field}) => (
-                                <InputText
-                                    {...field}
-                                    className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                    placeholder="John Doe"
-                                    data-cy="fullName-input"
-                                />
-                            )}
-                        />
-                    </div>
+                    <TextInput
+                        label="Full Name *"
+                        name="header.fullName"
+                        control={control}
+                        placeholder="John Doe"
+                        dataCy="fullName-input"
+                    />
 
-                    <div>
-                        <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Specialization *</label>
-                        <Controller
-                            name="header.specialization"
-                            control={control}
-                            render={({field}) => (
-                                <InputText
-                                    {...field}
-                                    className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                    placeholder="Software Engineer"
-                                    data-cy="specialization-input"
-                                />
-                            )}
-                        />
-                    </div>
+                    <TextInput
+                        label="Specialization *"
+                        name="header.specialization"
+                        control={control}
+                        placeholder="Software Engineer"
+                        dataCy="specialization-input"
+                    />
 
-                    <div>
-                        <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Email *</label>
-                        <Controller
-                            name="header.email"
-                            control={control}
-                            render={({field}) => (
-                                <InputText
-                                    {...field}
-                                    type="email"
-                                    className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                    placeholder="john.doe@example.com"
-                                    data-cy="email-input"
-                                />
-                            )}
-                        />
-                    </div>
+                    <TextInput
+                        label="Email *"
+                        name="header.email"
+                        control={control}
+                        placeholder="john.doe@example.com"
+                        dataCy="email-input"
+                    />
 
-                    <div>
-                        <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Phone Number *</label>
-                        <Controller
-                            name="header.phone"
-                            control={control}
-                            render={({field}) => (
-                                <InputText
-                                    {...field}
-                                    className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                    placeholder="+1234567890"
-                                    data-cy="phone-input"
-                                />
-                            )}
-                        />
-                    </div>
+                    <TextInput
+                        label="Phone Number *"
+                        name="header.phone"
+                        control={control}
+                        placeholder="+1234567890"
+                        dataCy="phone-input"
+                    />
                 </div>
 
                 {/* Links */}
@@ -484,30 +555,20 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                         {linkFields.map((field, index) => (
                             <div key={field.id}
                                  className="flex gap-2 p-3 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]/30">
-                                <div className="flex-1 space-y-2">
-                                    <Controller
+                                <div className="flex-1 space-y-3">
+                                    <TextInput
+                                        label="Link Name"
                                         name={`header.links.${index}.name`}
                                         control={control}
-                                        render={({field}) => (
-                                            <InputText
-                                                {...field}
-                                                className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                                placeholder="Link Name (e.g., LinkedIn)"
-                                                data-cy={`link-name-input-${index}`}
-                                            />
-                                        )}
+                                        placeholder="Link Name (e.g., LinkedIn)"
+                                        dataCy={`link-name-input-${index}`}
                                     />
-                                    <Controller
+                                    <TextInput
+                                        label="URL"
                                         name={`header.links.${index}.url`}
                                         control={control}
-                                        render={({field}) => (
-                                            <InputText
-                                                {...field}
-                                                className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                                placeholder="https://..."
-                                                data-cy={`link-url-input-${index}`}
-                                            />
-                                        )}
+                                        placeholder="https://..."
+                                        dataCy={`link-url-input-${index}`}
                                     />
                                 </div>
                                 <motion.button
@@ -515,7 +576,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                                     whileTap={{scale: 0.9}}
                                     type="button"
                                     onClick={() => removeLink(index)}
-                                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-all mt-6"
                                 >
                                     <Trash2 className="w-4 h-4"/>
                                 </motion.button>
@@ -579,18 +640,12 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                         {isLoading ? 'Improving...' : 'Improve with AI'}
                     </motion.button>
                 </div>
-                <Controller
+                <TextAreaInput
                     name="abstract"
                     control={control}
-                    render={({field}) => (
-                        <InputTextarea
-                            {...field}
-                            rows={6}
-                            className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                            placeholder="Write a brief summary about yourself..."
-                            data-cy="abstract-input"
-                        />
-                    )}
+                    placeholder="Write a brief summary about yourself..."
+                    dataCy="abstract-input"
+                    rows={6}
                 />
             </motion.div>
 
@@ -602,20 +657,12 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Skills</h3>
-                <div data-cy="skills-input">
-                    <Controller
-                        name="skills"
-                        control={control}
-                        render={({field}) => (
-                            <Chips
-                                value={field.value}
-                                onChange={(e) => field.onChange(e.value)}
-                                className="w-full"
-                                placeholder="Type a skill and press Enter"
-                            />
-                        )}
-                    />
-                </div>
+                <ChipsInput
+                    name="skills"
+                    control={control}
+                    dataCy="skills-input"
+                    placeholder="Type a skill and press Enter"
+                />
                 <p className="text-xs text-[#88B7C4] mt-2">
                     Type a skill and press Enter. Examples: React, TypeScript, Node.js
                 </p>
@@ -761,20 +808,32 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                         {isEducationLoading ? 'Improving...' : 'Improve with AI'}
                     </motion.button>
                 </div>
-                <Controller
+                <TextAreaInput
                     name="education"
                     control={control}
-                    render={({field}) => (
-                        <InputTextarea
-                            {...field}
-                            rows={4}
-                            className="w-full p-3 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                            placeholder="Describe your education..."
-                            data-cy="education-input"
-                        />
-                    )}
+                    placeholder="Describe your education..."
+                    dataCy="education-input"
+                    rows={4}
                 />
             </motion.div>
+
+            {/* Full View Dialog for Extracted Text */}
+            <Dialog
+                header="Extracted CV Text"
+                visible={showTextDialog}
+                onHide={() => setShowTextDialog(false)}
+                style={{width: '90vw', maxWidth: '900px'}}
+                modal
+                dismissableMask
+                draggable={false}
+                className="cv-text-dialog"
+            >
+                <div className="max-h-[70vh] overflow-y-auto">
+                    <pre className="whitespace-pre-wrap text-sm text-[#5A6A6F] font-mono leading-relaxed p-4 bg-[#FAF7F0] rounded-lg">
+                        {extractedText}
+                    </pre>
+                </div>
+            </Dialog>
         </div>
     );
 }
@@ -803,121 +862,52 @@ function CareerFields({control, careerIndex, watch, setValue}: any) {
     return (
         <div className="flex flex-col gap-4 mt-4">
             <div className="grid grid-cols-2 gap-3">
-                <div>
-                    <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Start Date</label>
-                    <Controller
-                        name={`career.${careerIndex}.startDate`}
-                        control={control}
-                        render={({field}) => (
-                            <InputText
-                                {...field}
-                                className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                placeholder="Jan 2020"
-                                data-cy={`career-startDate-input-${careerIndex}`}
-                            />
-                        )}
-                    />
-                </div>
-
-                <div>
-                    <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">End Date</label>
-                    <Controller
-                        name={`career.${careerIndex}.endDate`}
-                        control={control}
-                        render={({field}) => (
-                            <InputText
-                                {...field}
-                                value={field.value || ''}
-                                className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                placeholder="Dec 2022"
-                                data-cy={`career-endDate-input-${careerIndex}`}
-                            />
-                        )}
-                    />
-                </div>
+                <TextInput placeholder={'Jan 2020'} label={'Start Date'} control={control}
+                           name={`career.${careerIndex}.startDate`} dataCy={`career-startDate-input-${careerIndex}`}/>
+                <TextInput placeholder={'Jan 2022'} label={'End Date'} control={control}
+                           name={`career.${careerIndex}.endDate`} dataCy={`career-endDate-input-${careerIndex}`}/>
             </div>
 
-            <Controller
+            <CheckboxInput
+                label="I currently work here"
                 name={`career.${careerIndex}.isPresent`}
                 control={control}
-                render={({field}) => (
-                    <div className="flex items-center gap-2">
-                        <Checkbox
-                            inputId={`present-${careerIndex}`}
-                            checked={field.value}
-                            onChange={(e) => field.onChange(e.checked)}
-                        />
-                        <label htmlFor={`present-${careerIndex}`} className="text-sm text-[#5A6A6F]">I currently work
-                            here</label>
-                    </div>
-                )}
+                inputId={`present-${careerIndex}`}
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                    <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Company Name</label>
-                    <Controller
-                        name={`career.${careerIndex}.companyName`}
-                        control={control}
-                        render={({field}) => (
-                            <InputText
-                                {...field}
-                                className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                placeholder="Company Inc."
-                                data-cy={`career-companyName-input-${careerIndex}`}
-                            />
-                        )}
-                    />
-                </div>
+                <TextInput
+                    placeholder="Company Inc."
+                    label="Company Name"
+                    control={control}
+                    name={`career.${careerIndex}.companyName`}
+                    dataCy={`career-companyName-input-${careerIndex}`}
+                />
 
-                <div>
-                    <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Location</label>
-                    <Controller
-                        name={`career.${careerIndex}.location`}
-                        control={control}
-                        render={({field}) => (
-                            <InputText
-                                {...field}
-                                className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                placeholder="New York, USA"
-                                data-cy={`career-location-input-${careerIndex}`}
-                            />
-                        )}
-                    />
-                </div>
+                <TextInput
+                    placeholder="New York, USA"
+                    label="Location"
+                    control={control}
+                    name={`career.${careerIndex}.location`}
+                    dataCy={`career-location-input-${careerIndex}`}
+                />
 
-                <div>
-                    <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Position</label>
-                    <Controller
-                        name={`career.${careerIndex}.workSpecialization`}
-                        control={control}
-                        render={({field}) => (
-                            <InputText
-                                {...field}
-                                className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                                placeholder="Frontend Developer"
-                                data-cy={`career-workSpecialization-input-${careerIndex}`}
-                            />
-                        )}
-                    />
-                </div>
+                <TextInput
+                    placeholder="Frontend Developer"
+                    label="Position"
+                    control={control}
+                    name={`career.${careerIndex}.workSpecialization`}
+                    dataCy={`career-workSpecialization-input-${careerIndex}`}
+                />
 
-                <div>
-                    <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Job Type</label>
-                    <Controller
-                        name={`career.${careerIndex}.jobType`}
-                        control={control}
-                        render={({field}) => (
-                            <Dropdown
-                                {...field}
-                                options={jobTypeOptions}
-                                className="w-full"
-                                placeholder="Select job type"
-                                data-cy={`career-jobType-dropdown-${careerIndex}`}
-                            />
-                        )}
-                    />
-                </div>
+                <DropdownInput
+                    label="Job Type"
+                    name={`career.${careerIndex}.jobType`}
+                    control={control}
+                    options={jobTypeOptions}
+                    placeholder="Select job type"
+                    dataCy={`career-jobType-dropdown-${careerIndex}`}
+                />
             </div>
 
             <div>
@@ -935,18 +925,12 @@ function CareerFields({control, careerIndex, watch, setValue}: any) {
                         AI
                     </motion.button>
                 </div>
-                <Controller
+                <TextAreaInput
                     name={`career.${careerIndex}.summarization`}
                     control={control}
-                    render={({field}) => (
-                        <InputTextarea
-                            {...field}
-                            rows={4}
-                            className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                            placeholder="Describe your work..."
-                            data-cy={`career-summarization-input-${careerIndex}`}
-                        />
-                    )}
+                    placeholder="Describe your work..."
+                    dataCy={`career-summarization-input-${careerIndex}`}
+                    rows={4}
                 />
             </div>
 
@@ -997,54 +981,36 @@ function CareerFields({control, careerIndex, watch, setValue}: any) {
 function ProjectFields({control, careerIndex, projectIndex}: any) {
     return (
         <div className="flex flex-col gap-3">
-            <Controller
+            <TextInput
+                label="Project Name"
                 name={`career.${careerIndex}.projects.${projectIndex}.name`}
                 control={control}
-                render={({field}) => (
-                    <InputText
-                        {...field}
-                        className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                        placeholder="Project name"
-                    />
-                )}
+                placeholder="Project name"
+                dataCy={`career-project-name-input-${careerIndex}-${projectIndex}`}
             />
 
-            <Controller
+            <TextAreaInput
+                label="Description"
                 name={`career.${careerIndex}.projects.${projectIndex}.description`}
                 control={control}
-                render={({field}) => (
-                    <InputTextarea
-                        {...field}
-                        rows={2}
-                        className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                        placeholder="Project description"
-                    />
-                )}
+                placeholder="Project description"
+                dataCy={`career-project-description-input-${careerIndex}-${projectIndex}`}
+                rows={2}
             />
 
-            <Controller
+            <TextInput
+                label="Technologies"
                 name={`career.${careerIndex}.projects.${projectIndex}.technologies`}
                 control={control}
-                render={({field}) => (
-                    <InputText
-                        {...field}
-                        className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                        placeholder="Technologies: React, TypeScript, Node.js"
-                    />
-                )}
+                placeholder="React, TypeScript, Node.js"
+                dataCy={`career-project-technologies-input-${careerIndex}-${projectIndex}`}
             />
 
-            <Controller
+            <ChipsInput
+                label="Key Contributions"
                 name={`career.${careerIndex}.projects.${projectIndex}.keyContributions`}
                 control={control}
-                render={({field}) => (
-                    <Chips
-                        value={field.value}
-                        onChange={(e) => field.onChange(e.value)}
-                        className="w-full"
-                        placeholder="Key contributions (press Enter)"
-                    />
-                )}
+                placeholder="Key contributions (press Enter)"
             />
         </div>
     );
@@ -1068,21 +1034,13 @@ function PersonalProjectFields({control, projectIndex, watch, setValue}: any) {
 
     return (
         <div className="flex flex-col gap-4 mt-4">
-            <div>
-                <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Project Title</label>
-                <Controller
-                    name={`personalProjects.${projectIndex}.title`}
-                    control={control}
-                    render={({field}) => (
-                        <InputText
-                            {...field}
-                            className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                            placeholder="My Awesome Project"
-                            data-cy={`project-title-input-${projectIndex}`}
-                        />
-                    )}
-                />
-            </div>
+            <TextInput
+                label="Project Title"
+                name={`personalProjects.${projectIndex}.title`}
+                control={control}
+                placeholder="My Awesome Project"
+                dataCy={`project-title-input-${projectIndex}`}
+            />
 
             <div>
                 <div className="flex justify-between items-center mb-2">
@@ -1099,54 +1057,30 @@ function PersonalProjectFields({control, projectIndex, watch, setValue}: any) {
                         AI
                     </motion.button>
                 </div>
-                <Controller
+                <TextAreaInput
                     name={`personalProjects.${projectIndex}.description`}
                     control={control}
-                    render={({field}) => (
-                        <InputTextarea
-                            {...field}
-                            rows={4}
-                            className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                            placeholder="Describe your project..."
-                            data-cy={`project-description-input-${projectIndex}`}
-                        />
-                    )}
+                    placeholder="Describe your project..."
+                    dataCy={`project-description-input-${projectIndex}`}
+                    rows={4}
                 />
             </div>
 
-            <div>
-                <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Technologies</label>
-                <Controller
-                    name={`personalProjects.${projectIndex}.technologies`}
-                    control={control}
-                    render={({field}) => (
-                        <InputText
-                            {...field}
-                            className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
-                            placeholder="React, Firebase, TailwindCSS"
-                            data-cy={`project-technologies-input-${projectIndex}`}
-                        />
-                    )}
-                />
-            </div>
+            <TextInput
+                label="Technologies"
+                name={`personalProjects.${projectIndex}.technologies`}
+                control={control}
+                placeholder="React, Firebase, TailwindCSS"
+                dataCy={`project-technologies-input-${projectIndex}`}
+            />
 
-            <div>
-                <label className="block mb-2 text-sm font-medium text-[#5A6A6F]">Key Features</label>
-                <div data-cy={`project-keyFeatures-input-${projectIndex}`}>
-                    <Controller
-                        name={`personalProjects.${projectIndex}.keyFeatures`}
-                        control={control}
-                        render={({field}) => (
-                            <Chips
-                                value={field.value}
-                                onChange={(e) => field.onChange(e.value)}
-                                className="w-full"
-                                placeholder="Type and press Enter"
-                            />
-                        )}
-                    />
-                </div>
-            </div>
+            <ChipsInput
+                label="Key Features"
+                name={`personalProjects.${projectIndex}.keyFeatures`}
+                control={control}
+                dataCy={`project-keyFeatures-input-${projectIndex}`}
+                placeholder="Type and press Enter"
+            />
         </div>
     );
 }
