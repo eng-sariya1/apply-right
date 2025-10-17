@@ -1,4 +1,3 @@
-import './App.css';
 import { Route, Routes} from "react-router-dom";
 import LandingPage from "./pages/LandingPage.tsx";
 import CVBuilder from "./pages/CVBuilder.tsx";
