@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useCallback, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download, RefreshCw, FileSearch, X, Edit3, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Download, RefreshCw, FileSearch, Edit3 } from 'lucide-react';
 import { Dialog } from 'primereact/dialog';
 import CVFormInline from '../components/CVFormInline';
 import CVDisplay from '../components/CVDisplay';
+import CVPaginatedPreview from '../components/CVPaginatedPreview';
 import type { CVData } from '../types/cv.types';
 import { useCVContext } from '../context/CVContext';
 import '../styles/cv-builder.css';
@@ -13,8 +14,6 @@ export default function CVBuilder() {
   const navigate = useNavigate();
   const { cvData, setCvData } = useCVContext();
   const [showModal, setShowModal] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 3;
 
   const handleFormSubmit = useCallback((data: CVData) => {
     setCvData(data);
@@ -183,55 +182,28 @@ export default function CVBuilder() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="w-full lg:w-1/2 flex flex-col"
           >
-            {/* Header with Title and Button */}
-            <div className="w-full mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div>
-                <h2 className="text-xl font-bold text-[#017A8C] mb-1">Live Preview</h2>
-                <p className="text-sm text-[#88B7C4]">Your changes appear here in real-time</p>
+            <div className="bg-white/70 backdrop-blur-md rounded-xl shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 p-6">
+              {/* Header with Title and Button */}
+              <div className="w-full mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-bold text-[#017A8C] mb-1">Live Preview</h2>
+                  <p className="text-sm text-[#88B7C4]">Your changes appear here in real-time</p>
+                </div>
+
+                {/* View Full CV Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowModal(true)}
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 whitespace-nowrap sm:self-start"
+                >
+                  <FileSearch className="w-4 h-4" />
+                  View Full CV
+                </motion.button>
               </div>
 
-              {/* View Full CV Button */}
-              <motion.button
-                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowModal(true)}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 whitespace-nowrap sm:self-start"
-              >
-                <FileSearch className="w-4 h-4" />
-                View Full CV
-              </motion.button>
-            </div>
-
-            {/* A4 Preview Container - Scaled to fit viewport */}
-            <div className="a4-preview-scaled bg-white border shadow-md rounded-lg overflow-hidden">
-              <div className="a4-content-wrapper overflow-y-auto">
-                <CVDisplay data={cvData} />
-              </div>
-            </div>
-
-            {/* Pagination Controls */}
-            <div className="flex justify-center items-center gap-4 mt-4">
-              <button
-                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                disabled={currentPage === 1}
-                className="px-3 py-1 border rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                aria-label="Previous page"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-
-              <span className="text-sm font-medium text-gray-700">
-                {currentPage} / {totalPages}
-              </span>
-
-              <button
-                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                disabled={currentPage === totalPages}
-                className="px-3 py-1 border rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                aria-label="Next page"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
+              {/* A4 Paginated Preview */}
+              <CVPaginatedPreview data={cvData} />
             </div>
           </motion.div>
         </div>

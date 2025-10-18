@@ -97,6 +97,33 @@
   overflow: visible !important;
 }
 
+/* Page Break Rules - Prevent content cutting */
+.cv-container header,
+.cv-container .profile,
+.cv-container .skill,
+.cv-container .career > div,
+.cv-container .career h2 {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.cv-container p,
+.cv-container li,
+.cv-container h1,
+.cv-container h2 {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  orphans: 3;
+  widows: 3;
+}
+
+.cv-container .careerList li,
+.cv-container .mainCareerList > div,
+.cv-container .secondCareerList {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
 /* Responsive adjustments for smaller screens */
 @media (max-width: 1600px) {
   .cv-display-container.with-sidebar .cv-container {
