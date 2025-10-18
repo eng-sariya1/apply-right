@@ -1,11 +1,22 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, Sparkles, Download, Eye } from 'lucide-react';
+import { CheckCircle2, Sparkles, Download, Eye, Upload } from 'lucide-react';
+import { useState } from 'react';
+import UploadResumeModal from '../components/UploadResumeModal';
+import { useCVContext } from '../context/CVContext';
+import type { CVData } from '../types/cv.types';
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { setCvData } = useCVContext();
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   const handleCreateResume = () => {
+    navigate('/cv-builder');
+  };
+
+  const handleUploadSuccess = (cvData: CVData) => {
+    setCvData(cvData);
     navigate('/cv-builder');
   };
 
@@ -29,6 +40,7 @@ export default function LandingPage() {
           <div className="flex items-center justify-between">
             <motion.div
               whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
               className="text-2xl font-bold text-[#017A8C] tracking-tight"
             >
               Nuivo
@@ -56,8 +68,9 @@ export default function LandingPage() {
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
                 whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
                 onClick={handleCreateResume}
-                className="px-6 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+                className="px-6 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
               >
                 Create Resume
               </motion.button>
@@ -111,15 +124,41 @@ export default function LandingPage() {
                   Create your professional CV with ease — optimized for ATS and designed to impress.
                 </p>
 
-                {/* CTA Button */}
-                <motion.button
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleCreateResume}
-                  className="bg-[#017A8C] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#015C6A] transition-all duration-300 transform shadow-lg hover:shadow-xl shadow-[#017A8C]/20 hover:shadow-[#017A8C]/30 inline-block mt-4"
-                >
-                  Create my resume
-                </motion.button>
+                {/* Buttons - Large and Centered */}
+                <div className="flex flex-col items-center gap-4 mt-8">
+                  {/* Primary CTA Button */}
+                  <motion.button
+                    whileHover={{
+                      scale: 1.05,
+                      backgroundColor: '#019baf',
+                      boxShadow: '0 20px 40px rgba(1, 122, 140, 0.4)'
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={handleCreateResume}
+                    className="flex items-center justify-center gap-3 bg-[#017A8C] text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-xl shadow-[#017A8C]/30 transition-all duration-200 hover:shadow-2xl"
+                  >
+                    Create my resume
+                  </motion.button>
+
+                  <div className="flex items-center gap-3">
+                    <div className="h-px w-16 bg-[#88B7C4]/30"></div>
+                    <span className="text-sm text-[#88B7C4] font-medium">or</span>
+                    <div className="h-px w-16 bg-[#88B7C4]/30"></div>
+                  </div>
+
+                  {/* Upload Button - Smaller */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={() => setShowUploadModal(true)}
+                    className="flex items-center justify-center gap-2 bg-transparent border-2 border-[#017A8C] text-[#017A8C] px-6 py-2.5 rounded-lg font-semibold hover:bg-[#017A8C] hover:text-white transition-all duration-200"
+                  >
+                    <Upload className="w-4 h-4" />
+                    Upload My Resume
+                  </motion.button>
+                </div>
               </motion.div>
 
               {/* Right Column - CV Preview Image */}
@@ -131,7 +170,7 @@ export default function LandingPage() {
               >
                 <motion.div
                   whileHover={{ scale: 1.02, rotate: 1 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
                   className="bg-white p-4 md:p-6 rounded-2xl shadow-lg shadow-[#017A8C]/10 max-w-md lg:max-w-lg w-full lg:translate-x-8 relative z-10"
                 >
                   <img
@@ -197,8 +236,8 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-300"
+              whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
+              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
             >
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <CheckCircle2 className="w-7 h-7 text-white" />
@@ -218,8 +257,8 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-300"
+              whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
+              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
             >
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <Sparkles className="w-7 h-7 text-white" />
@@ -239,8 +278,8 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-300"
+              whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
+              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
             >
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <Download className="w-7 h-7 text-white" />
@@ -260,8 +299,8 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-300"
+              whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
+              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
             >
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <Eye className="w-7 h-7 text-white" />
@@ -296,8 +335,9 @@ export default function LandingPage() {
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(1, 122, 140, 0.3)' }}
               whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
               onClick={handleCreateResume}
-              className="px-10 py-4 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold text-lg rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+              className="px-10 py-4 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold text-lg rounded-lg shadow-xl hover:shadow-2xl transition-all duration-200"
             >
               Get Started Now
             </motion.button>
@@ -364,6 +404,13 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Upload Resume Modal */}
+      <UploadResumeModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onSuccess={handleUploadSuccess}
+      />
     </div>
   );
 }
