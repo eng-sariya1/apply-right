@@ -240,25 +240,6 @@
   box-shadow: 0 0 0 2px rgba(1, 122, 140, 0.3) !important;
 }
 
-/* Print styles */
-@media print {
-  .no-print,
-  header,
-  .custom-scrollbar,
-  button {
-    display: none !important;
-  }
-
-  body {
-    background: white !important;
-  }
-
-  .cv-container {
-    box-shadow: none !important;
-    border: none !important;
-  }
-}
-
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .lg\:sticky {

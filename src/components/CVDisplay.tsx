@@ -11,7 +11,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
   const themeColor = data.sectionTitleColor ? `#${data.sectionTitleColor}` : '#1e3a8a';
 
   return (
-    <div className="cv-container">
+    <div className="cv-container printable-cv">
       <div className="total">
         <header>
           <h1 className={"flex gap-1"} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', maxWidth: '100%' }}>
