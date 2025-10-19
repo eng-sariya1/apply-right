@@ -1,0 +1,172 @@
+/* ============================================
+   PRINT STYLES - Only CV Content
+   ============================================ */
+
+@media print {
+  /* Remove browser headers/footers and page numbers */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  /* Hide EVERYTHING first */
+  * {
+    visibility: hidden !important;
+  }
+
+  /* Then show only CV content */
+  .printable-cv,
+  .printable-cv *,
+  .cv-container,
+  .cv-container * {
+    visibility: visible !important;
+  }
+
+  /* Hide everything with no-print class */
+  .no-print,
+  .no-print * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Hide specific UI elements */
+  header:not(.cv-container header):not(.printable-cv header),
+  nav,
+  button,
+  form,
+  aside,
+  .cv-pagination-controls,
+  .cv-pagination-controls-fixed,
+  .cv-current-page-indicator,
+  .cv-page-card-wrapper,
+  .cv-page-card-viewport,
+  .cv-paginated-container,
+  .p-dialog,
+  .p-dialog-mask,
+  .p-dialog-header,
+  .p-dialog-content,
+  .p-sidebar,
+  .p-sidebar-mask,
+  motion-div {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Keep SVG icons inside CV visible */
+  .cv-container svg,
+  .printable-cv svg,
+  .cv-container .headerIcon,
+  .printable-cv .headerIcon {
+    visibility: visible !important;
+    display: inline !important;
+  }
+
+  /* Reset body for clean printing */
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Make CV container print-ready */
+  .printable-cv,
+  .cv-container {
+    display: block !important;
+    visibility: visible !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    margin: 0 !important;
+    padding: 1.5cm 2cm !important;
+    width: 100% !important;
+    max-width: 21cm !important;
+    height: auto !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+    border: none !important;
+    transform: none !important;
+    background: white !important;
+    font-size: 10pt !important;
+    line-height: 1.4 !important;
+    page-break-after: auto !important;
+  }
+
+  /* Reset inner CV content */
+  .printable-cv .total,
+  .cv-container .total {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    padding-bottom: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Typography for print */
+  .printable-cv h1,
+  .cv-container h1 {
+    font-size: 16pt !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .printable-cv h2,
+  .cv-container h2 {
+    font-size: 13pt !important;
+    margin-bottom: 0.5rem !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  .printable-cv p,
+  .printable-cv li,
+  .printable-cv span,
+  .printable-cv a,
+  .cv-container p,
+  .cv-container li,
+  .cv-container span,
+  .cv-container a {
+    font-size: 10pt !important;
+  }
+
+  /* Prevent awkward page breaks */
+  .printable-cv header,
+  .cv-container header {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  .printable-cv .profile,
+  .printable-cv .skill,
+  .printable-cv .career > div,
+  .cv-container .profile,
+  .cv-container .skill,
+  .cv-container .career > div {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Remove animations and transitions */
+  .printable-cv *,
+  .cv-container * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Ensure colors print correctly */
+  .printable-cv,
+  .printable-cv *,
+  .cv-container,
+  .cv-container * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Hide skeleton loaders */
+  .p-skeleton {
+    display: none !important;
+  }
+}
