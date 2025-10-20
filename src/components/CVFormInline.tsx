@@ -1,5 +1,5 @@
 import {useForm, useFieldArray, Controller} from 'react-hook-form';
-import {useEffect, useState, useRef} from 'react';
+import {useEffect, useState, useRef, useMemo} from 'react';
 import {motion} from 'framer-motion';
 import {Accordion, AccordionTab} from 'primereact/accordion';
 import {ColorPicker} from 'primereact/colorpicker';
@@ -66,6 +66,9 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
         defaultValues
     });
 
+    // Watch all form values for completion progress calculation
+    const cvData = watch();
+
     // File upload state management
     const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
     const [extractedText, setExtractedText] = useState<string>('');
@@ -79,6 +82,51 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
     const {improveText: improveEducationText, isLoading: isEducationLoading} = useGeminiEducation();
     const {isLoading: isATSLoading} = useGeminiATS();
     const {parseCV, isLoading: isParsing, error: parseError} = useGeminiCVParser();
+
+    // Calculate completion progress
+    const completionProgress = useMemo(() => {
+        let progress = 0;
+        const weights = {
+            personalDetails: 20,
+            abstract: 15,
+            skills: 15,
+            career: 25,
+            projects: 15,
+            education: 10
+        };
+
+        // Personal Details
+        if (cvData.header?.fullName && cvData.header?.email && cvData.header?.phone && cvData.header?.specialization) {
+            progress += weights.personalDetails;
+        }
+
+        // Abstract
+        if (cvData.abstract && cvData.abstract.length > 20) {
+            progress += weights.abstract;
+        }
+
+        // Skills
+        if (cvData.skills && cvData.skills.length >= 3) {
+            progress += weights.skills;
+        }
+
+        // Career
+        if (cvData.career && cvData.career.length > 0) {
+            progress += weights.career;
+        }
+
+        // Projects
+        if (cvData.personalProjects && cvData.personalProjects.length > 0) {
+            progress += weights.projects;
+        }
+
+        // Education
+        if (cvData.education && cvData.education.length > 10) {
+            progress += weights.education;
+        }
+
+        return progress;
+    }, [cvData]);
 
     // Update CV in real-time
     useEffect(() => {
@@ -311,6 +359,28 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
 
     return (
         <div className="flex flex-col gap-6">
+            {/* Completion Progress Bar */}
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 border border-[#017A8C]/10"
+            >
+                <div className="flex items-center gap-4">
+                    <span className="text-sm font-medium text-[#88B7C4] whitespace-nowrap">
+                        {completionProgress}% Complete
+                    </span>
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${completionProgress}%` }}
+                            transition={{ duration: 0.5, ease: 'easeOut' }}
+                            className="h-full bg-gradient-to-r from-[#017A8C] to-[#03A4BD] rounded-full"
+                        />
+                    </div>
+                </div>
+            </motion.div>
+
             {/* File Upload Section */}
             <motion.div
                 initial={{opacity: 0, y: 20}}

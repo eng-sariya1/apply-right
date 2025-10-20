@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download, RefreshCw, FileSearch, Edit3 } from 'lucide-react';
@@ -52,50 +52,6 @@ export default function CVBuilder() {
     }, 100);
   }, []);
 
-  // Calculate completion progress
-  const completionProgress = useMemo(() => {
-    let progress = 0;
-    const weights = {
-      personalDetails: 20,
-      abstract: 15,
-      skills: 15,
-      career: 25,
-      projects: 15,
-      education: 10
-    };
-
-    // Personal Details
-    if (cvData.header.fullName && cvData.header.email && cvData.header.phone && cvData.header.specialization) {
-      progress += weights.personalDetails;
-    }
-
-    // Abstract
-    if (cvData.abstract && cvData.abstract.length > 20) {
-      progress += weights.abstract;
-    }
-
-    // Skills
-    if (cvData.skills.length >= 3) {
-      progress += weights.skills;
-    }
-
-    // Career
-    if (cvData.career.length > 0) {
-      progress += weights.career;
-    }
-
-    // Projects
-    if (cvData.personalProjects.length > 0) {
-      progress += weights.projects;
-    }
-
-    // Education
-    if (cvData.education && cvData.education.length > 10) {
-      progress += weights.education;
-    }
-
-    return progress;
-  }, [cvData]);
 
   return (
     <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden no-print">
@@ -125,25 +81,6 @@ export default function CVBuilder() {
               <ArrowLeft className="w-4 h-4" />
               Back to Home
             </motion.button>
-          </div>
-        </div>
-
-        {/* Progress Indicator */}
-        <div className="px-6 pb-4">
-          <div className="container mx-auto">
-            <div className="flex items-center gap-4">
-              <span className="text-sm font-medium text-[#88B7C4] whitespace-nowrap">
-                {completionProgress}% Complete
-              </span>
-              <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${completionProgress}%` }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
-                  className="h-full bg-gradient-to-r from-[#017A8C] to-[#03A4BD] rounded-full"
-                />
-              </div>
-            </div>
           </div>
         </div>
       </motion.header>
