@@ -76,7 +76,7 @@ export default function CVBuilder() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/')}
-              className="flex items-center gap-2 px-4 py-2 bg-white/70 hover:bg-white text-[#017A8C] font-medium rounded-lg border border-[#017A8C]/20 transition-all duration-300 shadow-sm hover:shadow-md"
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 whitespace-nowrap sm:self-start"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Home
