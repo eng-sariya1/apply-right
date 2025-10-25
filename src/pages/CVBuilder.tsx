@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download, RefreshCw, FileSearch, Edit3 } from 'lucide-react';
 import { Dialog } from 'primereact/dialog';
+import { pdf } from '@react-pdf/renderer';
 import CVFormInline from '../components/CVFormInline';
 import CVDisplay from '../components/CVDisplay';
 import CVPaginatedPreview from '../components/CVPaginatedPreview';
+import CVPDFDocument from '../components/CVPDFDocument';
 import type { CVData } from '../types/cv.types';
 import { useCVContext } from '../context/CVContext';
 import '../styles/cv-builder.css';
@@ -37,20 +39,34 @@ export default function CVBuilder() {
     });
   }, [setCvData]);
 
-  const handlePrint = useCallback(() => {
-    // Add a class to body to trigger print-specific styles
-    document.body.classList.add('printing-cv');
+  const handleDownloadPDF = useCallback(async () => {
+    try {
+      // Generate PDF document
+      const blob = await pdf(<CVPDFDocument data={cvData} />).toBlob();
 
-    // Small delay to ensure styles are applied
-    setTimeout(() => {
-      window.print();
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
 
-      // Remove the class after printing (or if cancelled)
-      setTimeout(() => {
-        document.body.classList.remove('printing-cv');
-      }, 100);
-    }, 100);
-  }, []);
+      // Set filename
+      const fileName = cvData.header.fullName
+        ? `${cvData.header.fullName.replace(/\s+/g, '_')}_CV.pdf`
+        : 'CV.pdf';
+      link.download = fileName;
+
+      // Trigger download
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Failed to generate PDF. Please try again.');
+    }
+  }, [cvData]);
 
 
   return (
@@ -116,7 +132,7 @@ export default function CVBuilder() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={handlePrint}
+                    onClick={handleDownloadPDF}
                     className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <Download className="w-4 h-4" />
@@ -201,7 +217,7 @@ export default function CVBuilder() {
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
-            onClick={handlePrint}
+            onClick={handleDownloadPDF}
             className="flex items-center justify-center gap-2 px-8 py-3 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-lg shadow-lg transition-all duration-300"
           >
             <Download className="w-5 h-5" />
