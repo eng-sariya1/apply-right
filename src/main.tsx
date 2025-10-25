@@ -1,7 +1,6 @@
 import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
 import './index.css'
-import './styles/print.css'
 import {PrimeReactProvider} from "primereact/api";
 import App from "./App.tsx";
 import {BrowserRouter} from "react-router-dom";

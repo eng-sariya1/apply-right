@@ -1,21 +1,22 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download, RefreshCw, FileSearch, Edit3 } from 'lucide-react';
 import { Dialog } from 'primereact/dialog';
-import { pdf } from '@react-pdf/renderer';
+import html2pdf from 'html2pdf.js';
 import CVFormInline from '../components/CVFormInline';
 import CVDisplay from '../components/CVDisplay';
 import CVPaginatedPreview from '../components/CVPaginatedPreview';
-import CVPDFDocument from '../components/CVPDFDocument';
 import type { CVData } from '../types/cv.types';
 import { useCVContext } from '../context/CVContext';
 import '../styles/cv-builder.css';
+import '../styles/cv.css';
 
 export default function CVBuilder() {
   const navigate = useNavigate();
   const { cvData, setCvData } = useCVContext();
   const [showModal, setShowModal] = useState(false);
+  const cvDisplayRef = useRef<HTMLDivElement>(null);
 
   const handleFormSubmit = useCallback((data: CVData) => {
     setCvData(data);
@@ -39,29 +40,99 @@ export default function CVBuilder() {
     });
   }, [setCvData]);
 
-  const handleDownloadPDF = useCallback(async () => {
+  const handleSavePDF = useCallback(async () => {
+    if (!cvDisplayRef.current) {
+      alert('CV content not available. Please try again.');
+      return;
+    }
+
     try {
-      // Generate PDF document
-      const blob = await pdf(<CVPDFDocument data={cvData} />).toBlob();
-
-      // Create download link
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-
-      // Set filename
       const fileName = cvData.header.fullName
         ? `${cvData.header.fullName.replace(/\s+/g, '_')}_CV.pdf`
         : 'CV.pdf';
-      link.download = fileName;
 
-      // Trigger download
-      document.body.appendChild(link);
-      link.click();
+      const element = cvDisplayRef.current.cloneNode(true) as HTMLElement;
 
-      // Cleanup
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      // 310mm = 1169px at 96 DPI
+      const opt = {
+        margin: 0,
+        filename: fileName,
+        image: {
+          type: 'jpeg' as const,
+          quality: 0.95
+        },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          letterRendering: true,
+          logging: false,
+          scrollY: 0,
+          scrollX: 0,
+          width: 1169,
+          windowWidth: 1169
+        },
+        jsPDF: {
+          unit: 'px',
+          format: [1169, 1654],
+          orientation: 'portrait' as const,
+          hotfixes: ['px_scaling']
+        },
+        pagebreak: {
+          mode: ['avoid-all', 'css', 'legacy']
+        }
+      };
+
+      // @ts-ignore
+      await html2pdf().set(opt).from(element).save();
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Failed to generate PDF. Please try again.');
+    }
+  }, [cvData]);
+
+  const handleDownloadPDF = useCallback(async () => {
+    if (!cvDisplayRef.current) {
+      alert('CV content not available. Please try again.');
+      return;
+    }
+
+    try {
+      const fileName = cvData.header.fullName
+        ? `${cvData.header.fullName.replace(/\s+/g, '_')}_CV.pdf`
+        : 'CV.pdf';
+
+      const element = cvDisplayRef.current.cloneNode(true) as HTMLElement;
+
+      // 310mm = 1169px at 96 DPI
+      const opt = {
+        margin: 0,
+        filename: fileName,
+        image: {
+          type: 'jpeg',
+          quality: 0.95
+        },
+        enableLinks : true,
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          letterRendering: true,
+          logging: false,
+          scrollY: 0,
+          scrollX: 0,
+          width: 1169,
+          windowWidth: 1169
+        },
+        jsPDF: {
+          unit: 'px',
+          format: [1169, 1654],
+          orientation: 'portrait',
+        },
+      };
+
+      // @ts-ignore
+      await html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Failed to generate PDF. Please try again.');
@@ -132,7 +203,7 @@ export default function CVBuilder() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={handleDownloadPDF}
+                    onClick={handleSavePDF}
                     className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <Download className="w-4 h-4" />
@@ -234,6 +305,21 @@ export default function CVBuilder() {
           </motion.button>
         </div>
       </Dialog>
+
+      {/* Hidden CV Display for PDF Generation */}
+      <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+        <div
+          ref={cvDisplayRef}
+          className="cv-container"
+          style={{
+            transform: 'scale(1)',
+            transformOrigin: 'top left',
+            boxShadow: 'none'
+          }}
+        >
+          <CVDisplay data={cvData} />
+        </div>
+      </div>
     </div>
   );
 }
