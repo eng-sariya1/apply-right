@@ -55,7 +55,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
           </div>
         </header>
 
-        <div className="profile">
+        <div className="profile cv-section">
           <div>
             <h2 style={{ color: themeColor }}>Abstract</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -65,18 +65,14 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         </div>
 
         {data.skills.length > 0 && (
-          <div className="skill">
+          <div className="skill cv-section">
             <div>
               <h2 style={{ color: themeColor }}>Skills</h2>
             </div>
             <div>
-              <ul className="skills">
-                {Array.from({ length: Math.ceil(data.skills.length / 5) }).map((_, colIndex) => (
-                  <div key={colIndex}>
-                    {data.skills.slice(colIndex * 5, (colIndex + 1) * 5).map((skill, index) => (
-                      <li key={index} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word' }}>{skill}</li>
-                    ))}
-                  </div>
+              <ul className="cv-skills-list">
+                {data.skills.map((skill, index) => (
+                  <li key={index}>{skill}</li>
                 ))}
               </ul>
             </div>
@@ -84,7 +80,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         )}
 
         {data.career.length > 0 && (
-          <div className="career">
+          <div className="career cv-section">
             <div>
               <h2 style={{ color: themeColor }}>Career</h2>
             </div>
@@ -165,7 +161,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
         )}
 
         {data.personalProjects.length > 0 && (
-          <div className="career">
+          <div className="career cv-section">
             <div>
               <h2 style={{ color: themeColor }}>Personal Projects</h2>
             </div>
@@ -201,7 +197,7 @@ export default function CVDisplay({ data }: CVDisplayProps) {
           </div>
         )}
 
-        <div className="career">
+        <div className="career cv-section">
           <div>
             <h2 style={{ color: themeColor }}>Education</h2>
             <p style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', overflowWrap: 'break-word', wordBreak: 'break-word' }}>{data.education || <Skeleton width="100%" height="3rem" />}</p>

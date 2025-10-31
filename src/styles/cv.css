@@ -100,6 +100,12 @@
 
 /* Page Break Rules - Prevent content cutting */
 .cv-container header,
+.cv-container .cv-section {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}
+
 .cv-container .profile,
 .cv-container .skill,
 .cv-container .career > div,
@@ -260,6 +266,45 @@
   padding: 2rem 5rem 1.5rem 5rem;
 }
 
+/* Modern Skills Grid Layout */
+.cv-container .cv-skills-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px 12px;
+  padding-left: 2rem;
+  list-style: disc;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  align-items: start;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.cv-container .cv-skills-list li {
+  color: #000;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: none;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+  padding: 0;
+  text-align: left;
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* Responsive: 2 columns on medium screens */
+@media (max-width: 900px) {
+  .cv-container .cv-skills-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Fallback for older browsers */
 .cv-container .skills {
   display: flex;
   flex-direction: row;
@@ -267,9 +312,11 @@
   gap: 5rem;
   padding-left: 3rem;
 }
-ul{
+
+ul {
   list-style: disc;
 }
+
 .cv-container .skills li {
   color: #000;
 }
@@ -361,4 +408,41 @@ ul{
 
 .cv-container .p-skeleton::after {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
+}
+
+/* Print and PDF Export Optimization */
+@media print {
+  .cv-container {
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .cv-container .cv-section {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    -webkit-column-break-inside: avoid !important;
+  }
+
+  .cv-container .cv-skills-list {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .cv-container .cv-skills-list li {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .cv-container header {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  .cv-container h2 {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
 }
