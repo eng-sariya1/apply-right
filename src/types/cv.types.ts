@@ -47,3 +47,29 @@ export interface CVData {
   education: string;
   sectionTitleColor?: string;
 }
+
+export type SuggestionType = 'keyword' | 'phrasing' | 'skill' | 'summary';
+export type ConfidenceLevel = 'high' | 'medium' | 'low';
+
+export interface OptimizationSuggestion {
+  id: string;
+  type: SuggestionType;
+  section: string; // e.g., 'abstract', 'career[0].summarization', 'skills'
+  title: string; // Brief description of the change
+  original: string;
+  suggested: string;
+  confidence: ConfidenceLevel;
+  reason: string; // Why this change is recommended
+  approved?: boolean; // User approval status
+}
+
+export interface CVOptimizationResult {
+  suggestions: OptimizationSuggestion[];
+  summary: {
+    totalSuggestions: number;
+    keywordSuggestions: number;
+    phrasingSuggestions: number;
+    skillSuggestions: number;
+    highConfidenceCount: number;
+  };
+}
