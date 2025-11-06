@@ -100,19 +100,31 @@ export default function ATSPage() {
 
   const handleApplyOptimization = async () => {
     try {
+      console.log('Applying optimizations...', suggestions.filter(s => s.approved).length, 'approved suggestions');
+
       // Apply approved suggestions to CV
       const optimizedCV = applySuggestions(cvData, suggestions);
+      console.log('CV optimized, updating context...');
+
+      // Update CV data in context
       setCvData(optimizedCV);
 
       // Re-analyze the optimized CV to show improvement
+      console.log('Re-analyzing optimized CV...');
       const newAnalysis = await analyzeCV(optimizedCV, jobDescription);
+      console.log('New analysis received:', newAnalysis);
+
+      // Update analysis result with new score
       setAnalysisResult(newAnalysis);
 
-      // Reset optimization state
+      // Reset optimization state after successful application
       setOptimizationResult(null);
       setSuggestions([]);
+
+      console.log('Optimization applied successfully! New match score:', newAnalysis.matchPercentage);
     } catch (err) {
       console.error('Failed to apply optimizations:', err);
+      alert('Failed to apply optimizations. Please try again.');
     }
   };
 

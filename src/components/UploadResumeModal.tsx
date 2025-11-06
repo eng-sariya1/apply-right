@@ -6,8 +6,8 @@ import mammoth from 'mammoth';
 import { useGeminiCVParser } from '../hooks/useGeminiCVParser';
 import type { CVData } from '../types/cv.types';
 
-// Set up PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Set up PDF.js worker - use local worker file from public folder
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
 interface UploadResumeModalProps {
   isOpen: boolean;

@@ -145,6 +145,9 @@ IMPORTANT RULES:
 - Focus on rephrasing, keyword optimization, and skill highlighting
 - Be specific - provide exact text replacements
 - Prioritize suggestions that address missing keywords from the job description
+- For skills: Create ONE SEPARATE suggestion for EACH individual skill to add (never combine multiple skills in one suggestion)
+- For example, if suggesting to add "Docker" and "Kubernetes", create TWO separate suggestions, not one with "Docker, Kubernetes"
+- Each skill suggestion should have "suggested" containing only ONE skill name
 - Limit to 15-20 most impactful suggestions
 
 Return ONLY a valid JSON object in this exact structure (no markdown):
@@ -161,7 +164,9 @@ Return ONLY a valid JSON object in this exact structure (no markdown):
       "reason": "explanation"
     }
   ]
-}`,
+}
+
+REMEMBER: For type "skill", the "suggested" field must contain ONLY ONE skill, never a comma-separated list!`,
                   },
                 ],
               },
@@ -208,7 +213,10 @@ Return ONLY a valid JSON object in this exact structure (no markdown):
 
   const applySuggestions = (cvData: CVData, suggestions: OptimizationSuggestion[]): CVData => {
     const approvedSuggestions = suggestions.filter(s => s.approved);
+    console.log(`applySuggestions: ${approvedSuggestions.length} approved suggestions to apply`);
+
     if (approvedSuggestions.length === 0) {
+      console.log('applySuggestions: No approved suggestions, returning original CV');
       return cvData;
     }
 
@@ -216,25 +224,42 @@ Return ONLY a valid JSON object in this exact structure (no markdown):
     const optimizedCV = JSON.parse(JSON.stringify(cvData)) as CVData;
 
     // Apply each approved suggestion
-    approvedSuggestions.forEach(suggestion => {
+    approvedSuggestions.forEach((suggestion, index) => {
       const section = suggestion.section;
+      console.log(`Applying suggestion ${index + 1}/${approvedSuggestions.length}:`, {
+        section,
+        type: suggestion.type,
+        title: suggestion.title
+      });
 
       if (section === 'abstract') {
+        console.log('  → Updating abstract');
         optimizedCV.abstract = suggestion.suggested;
       } else if (section === 'skills') {
-        // For skills, we might be adding a new skill
-        if (suggestion.type === 'skill' && !optimizedCV.skills.includes(suggestion.suggested)) {
-          optimizedCV.skills.push(suggestion.suggested);
+        // For skills, add as a single skill (AI should suggest one skill per suggestion)
+        if (suggestion.type === 'skill') {
+          const skillToAdd = suggestion.suggested.trim();
+          if (skillToAdd && !optimizedCV.skills.includes(skillToAdd)) {
+            console.log('  → Adding skill:', skillToAdd);
+            optimizedCV.skills.push(skillToAdd);
+          } else {
+            console.log('  → Skill already exists or empty:', skillToAdd);
+          }
         }
-      } else if (section.startsWith('career[')) {
+      } else if (section.startsWith('career[') && !section.includes('.projects[')) {
         // Parse career index: career[0].summarization
         const match = section.match(/career\[(\d+)\]\.(\w+)/);
         if (match) {
           const index = parseInt(match[1]);
           const field = match[2];
           if (optimizedCV.career[index] && field === 'summarization') {
+            console.log(`  → Updating career[${index}].summarization`);
             optimizedCV.career[index].summarization = suggestion.suggested;
+          } else {
+            console.log(`  → Could not find career[${index}] or field ${field}`);
           }
+        } else {
+          console.log('  → Failed to parse career section:', section);
         }
       } else if (section.startsWith('career[') && section.includes('.projects[')) {
         // Parse career project: career[0].projects[1].description
@@ -245,9 +270,14 @@ Return ONLY a valid JSON object in this exact structure (no markdown):
           const field = match[3];
           if (optimizedCV.career[careerIndex]?.projects[projectIndex]) {
             if (field === 'description') {
+              console.log(`  → Updating career[${careerIndex}].projects[${projectIndex}].description`);
               optimizedCV.career[careerIndex].projects[projectIndex].description = suggestion.suggested;
             }
+          } else {
+            console.log(`  → Could not find career[${careerIndex}].projects[${projectIndex}]`);
           }
+        } else {
+          console.log('  → Failed to parse career project section:', section);
         }
       } else if (section.startsWith('personalProjects[')) {
         // Parse personal project: personalProjects[0].description
@@ -256,12 +286,20 @@ Return ONLY a valid JSON object in this exact structure (no markdown):
           const index = parseInt(match[1]);
           const field = match[2];
           if (optimizedCV.personalProjects[index] && field === 'description') {
+            console.log(`  → Updating personalProjects[${index}].description`);
             optimizedCV.personalProjects[index].description = suggestion.suggested;
+          } else {
+            console.log(`  → Could not find personalProjects[${index}]`);
           }
+        } else {
+          console.log('  → Failed to parse personalProjects section:', section);
         }
+      } else {
+        console.log('  → Unhandled section format:', section);
       }
     });
 
+    console.log('applySuggestions: All suggestions applied, returning optimized CV');
     return optimizedCV;
   };
 

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download, RefreshCw, FileSearch, Edit3 } from 'lucide-react';
 import { Dialog } from 'primereact/dialog';
-import html2pdf from 'html2pdf.js';
+import { useReactToPrint } from 'react-to-print';
 import CVFormInline from '../components/CVFormInline';
 import CVDisplay from '../components/CVDisplay';
 import CVPaginatedPreview from '../components/CVPaginatedPreview';
@@ -40,104 +40,29 @@ export default function CVBuilder() {
     });
   }, [setCvData]);
 
-  const handleSavePDF = useCallback(async () => {
+  // Use react-to-print for PDF generation with contentRef
+  const handlePrint = useReactToPrint({
+    contentRef: cvDisplayRef,
+    documentTitle: cvData.header.fullName
+      ? `${cvData.header.fullName.replace(/\s+/g, '_')}_CV`
+      : 'CV',
+  });
+
+  const handleSavePDF = useCallback(() => {
     if (!cvDisplayRef.current) {
       alert('CV content not available. Please try again.');
       return;
     }
+    handlePrint();
+  }, [handlePrint]);
 
-    try {
-      const fileName = cvData.header.fullName
-        ? `${cvData.header.fullName.replace(/\s+/g, '_')}_CV.pdf`
-        : 'CV.pdf';
-
-      const element = cvDisplayRef.current.cloneNode(true) as HTMLElement;
-
-      // 310mm = 1169px at 96 DPI
-      const opt = {
-        margin: 0,
-        filename: fileName,
-        image: {
-          type: 'jpeg' as const,
-          quality: 0.95
-        },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          letterRendering: true,
-          logging: false,
-          scrollY: 0,
-          scrollX: 0,
-          width: 1169,
-          windowWidth: 1169
-        },
-        jsPDF: {
-          unit: 'px',
-          format: [1169, 1654],
-          orientation: 'portrait' as const,
-          hotfixes: ['px_scaling']
-        },
-        pagebreak: {
-          mode: ['avoid-all', 'css', 'legacy']
-        }
-      };
-
-      // @ts-ignore
-      await html2pdf().set(opt).from(element).save();
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Failed to generate PDF. Please try again.');
-    }
-  }, [cvData]);
-
-  const handleDownloadPDF = useCallback(async () => {
+  const handleDownloadPDF = useCallback(() => {
     if (!cvDisplayRef.current) {
       alert('CV content not available. Please try again.');
       return;
     }
-
-    try {
-      const fileName = cvData.header.fullName
-        ? `${cvData.header.fullName.replace(/\s+/g, '_')}_CV.pdf`
-        : 'CV.pdf';
-
-      const element = cvDisplayRef.current.cloneNode(true) as HTMLElement;
-
-      // 310mm = 1169px at 96 DPI
-      const opt = {
-        margin: 0,
-        filename: fileName,
-        image: {
-          type: 'jpeg',
-          quality: 0.95
-        },
-        enableLinks : true,
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          letterRendering: true,
-          logging: false,
-          scrollY: 0,
-          scrollX: 0,
-          width: 1169,
-          windowWidth: 1169
-        },
-        jsPDF: {
-          unit: 'px',
-          format: [1169, 1654],
-          orientation: 'portrait',
-        },
-      };
-
-      // @ts-ignore
-      await html2pdf().set(opt).from(element).save();
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Failed to generate PDF. Please try again.');
-    }
-  }, [cvData]);
+    handlePrint();
+  }, [handlePrint]);
 
 
   return (
