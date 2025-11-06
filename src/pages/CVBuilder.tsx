@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from 'react';
+import { useCallback, useState, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download, RefreshCw, FileSearch, Edit3 } from 'lucide-react';
@@ -17,6 +17,51 @@ export default function CVBuilder() {
   const { cvData, setCvData } = useCVContext();
   const [showModal, setShowModal] = useState(false);
   const cvDisplayRef = useRef<HTMLDivElement>(null);
+
+  // Calculate completion progress
+  const completionProgress = useMemo(() => {
+    let progress = 0;
+    const weights = {
+      personalDetails: 20,
+      abstract: 15,
+      skills: 15,
+      career: 25,
+      projects: 15,
+      education: 10
+    };
+
+    // Personal Details
+    if (cvData.header?.fullName && cvData.header?.email && cvData.header?.phone && cvData.header?.specialization) {
+      progress += weights.personalDetails;
+    }
+
+    // Abstract
+    if (cvData.abstract && cvData.abstract.length > 20) {
+      progress += weights.abstract;
+    }
+
+    // Skills
+    if (cvData.skills && cvData.skills.length >= 3) {
+      progress += weights.skills;
+    }
+
+    // Career
+    if (cvData.career && cvData.career.length > 0) {
+      progress += weights.career;
+    }
+
+    // Projects
+    if (cvData.personalProjects && cvData.personalProjects.length > 0) {
+      progress += weights.projects;
+    }
+
+    // Education
+    if (cvData.education && cvData.education.length > 10) {
+      progress += weights.education;
+    }
+
+    return progress;
+  }, [cvData]);
 
   const handleFormSubmit = useCallback((data: CVData) => {
     setCvData(data);
@@ -107,14 +152,39 @@ export default function CVBuilder() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="w-full lg:w-1/2 no-print"
           >
-            <div className="bg-white/70 backdrop-blur-md rounded-xl shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 p-6 max-h-[calc(100vh-180px)] overflow-y-auto custom-scrollbar no-print">
-              <CVFormInline
-                onSubmit={handleFormSubmit}
-                initialData={cvData}
-              />
+            <div className="bg-white/70 backdrop-blur-md rounded-xl shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden custom-scrollbar no-print relative">
+              {/* Progress Bar - Fixed at Top */}
+              <div className="sticky top-0 z-50 bg-white/70 backdrop-blur-md px-6 py-4 -mx-6 -mt-0 mb-6 border-b border-[#017A8C]/10 shadow-sm w-[calc(100%+3rem)]">
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm font-medium text-[#88B7C4] whitespace-nowrap">
+                      {completionProgress}% Complete
+                    </span>
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${completionProgress}%` }}
+                        transition={{ duration: 0.5, ease: 'easeOut' }}
+                        className="h-full bg-gradient-to-r from-[#017A8C] to-[#03A4BD] rounded-full"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+
+              <div className="px-6 pb-6 w-full">
+                <CVFormInline
+                  onSubmit={handleFormSubmit}
+                  initialData={cvData}
+                />
+              </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col gap-3 mt-6 pt-6 border-t border-[#017A8C]/10">
+              <div className="flex flex-col gap-3 px-6 pb-6 pt-6 border-t border-[#017A8C]/10 w-full">
                 <div className="flex gap-3">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
