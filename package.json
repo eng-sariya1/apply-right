@@ -1,0 +1,40 @@
+{
+  "name": "apply-right",
+  "version": "1.0.0",
+  "description": "CV Builder with Gemini AI and ATS Optimization System",
+  "main": "server/dist/index.js",
+  "scripts": {
+    "server": "cd server && nodemon src/index.ts",
+    "client": "cd client && npm start",
+    "dev": "npm run server & npm run client",
+    "build:server": "cd server && tsc",
+    "build:client": "cd client && npm run build",
+    "build": "npm run build:server && npm run build:client",
+    "start": "cd server && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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:x-oauth-basic@github.com/sariya-ux/apply-right.git"
+  },
+  "keywords": ["cv-builder", "resume", "ats", "gemini-ai", "career"],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sariya-ux/apply-right/issues"
+  },
+  "homepage": "https://github.com/sariya-ux/apply-right#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
