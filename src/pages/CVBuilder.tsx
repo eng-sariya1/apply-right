@@ -153,30 +153,37 @@ export default function CVBuilder() {
             className="w-full lg:w-1/2 no-print"
           >
             <div className="bg-white/70 backdrop-blur-md rounded-xl shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden custom-scrollbar no-print relative">
-              {/* Progress Bar - Fixed at Top */}
-              <div className="sticky top-0 z-50 bg-white/70 backdrop-blur-md px-6 py-4 -mx-6 -mt-0 mb-6 border-b border-[#017A8C]/10 shadow-sm w-[calc(100%+3rem)]">
+              <div className="px-6 py-6 w-full">
+                {/* Progress Card */}
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
+                  className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10 mb-6"
                 >
+                  <h3 className="text-lg font-bold text-[#017A8C] mb-4">
+                    CV Completion Progress
+                  </h3>
                   <div className="flex items-center gap-4">
-                    <span className="text-sm font-medium text-[#88B7C4] whitespace-nowrap">
-                      {completionProgress}% Complete
+                    <span className="text-2xl font-bold text-[#017A8C] whitespace-nowrap">
+                      {completionProgress}%
                     </span>
-                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${completionProgress}%` }}
-                        transition={{ duration: 0.5, ease: 'easeOut' }}
-                        className="h-full bg-gradient-to-r from-[#017A8C] to-[#03A4BD] rounded-full"
-                      />
+                    <div className="flex-1">
+                      <div className="h-3 bg-[#FAF7F0] rounded-full overflow-hidden border border-[#C6DEE4]/30">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${completionProgress}%` }}
+                          transition={{ duration: 0.5, ease: 'easeOut' }}
+                          className="h-full bg-gradient-to-r from-[#017A8C] to-[#019baf] rounded-full shadow-sm"
+                        />
+                      </div>
+                      <p className="text-xs text-[#88B7C4] mt-2">
+                        Complete all sections to reach 100%
+                      </p>
                     </div>
                   </div>
                 </motion.div>
-              </div>
 
-              <div className="px-6 pb-6 w-full">
                 <CVFormInline
                   onSubmit={handleFormSubmit}
                   initialData={cvData}
