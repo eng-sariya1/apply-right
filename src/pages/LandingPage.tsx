@@ -137,6 +137,7 @@ export default function LandingPage() {
                     transition={{ duration: 0.2 }}
                     onClick={handleCreateResume}
                     className="flex items-center justify-center gap-3 bg-[#017A8C] text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-xl shadow-[#017A8C]/30 transition-all duration-200 hover:shadow-2xl"
+                    data-cy="create-resume-button"
                   >
                     Create my resume
                   </motion.button>
@@ -154,6 +155,7 @@ export default function LandingPage() {
                     transition={{ duration: 0.2 }}
                     onClick={() => setShowUploadModal(true)}
                     className="flex items-center justify-center gap-2 bg-transparent border-2 border-[#017A8C] text-[#017A8C] px-6 py-2.5 rounded-lg font-semibold hover:bg-[#017A8C] hover:text-white transition-all duration-200"
+                    data-cy="upload-resume-button"
                   >
                     <Upload className="w-4 h-4" />
                     Upload My Resume

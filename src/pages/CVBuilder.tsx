@@ -159,7 +159,7 @@ export default function CVBuilder() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10 mb-6"
+                  className="sticky top-0 z-50 bg-white/80 backdrop-blur-md rounded-2xl shadow-lg shadow-[#017A8C]/20 p-6 border border-[#017A8C]/10 mb-6"
                 >
                   <h3 className="text-lg font-bold text-[#017A8C] mb-4">
                     CV Completion Progress

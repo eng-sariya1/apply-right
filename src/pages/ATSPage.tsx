@@ -230,6 +230,7 @@ export default function ATSPage() {
                   disabled={!jobDescription.trim() || isLoading}
                   loading={isLoading}
                   className="whitespace-nowrap bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                  data-cy="analyze-cv-button"
                 />
               </div>
 
@@ -239,6 +240,7 @@ export default function ATSPage() {
                 rows={15}
                 className="w-full p-3 border border-[#017A8C]/20 rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/20 transition-all"
                 placeholder="Paste the job description here..."
+                data-cy="job-description-input"
               />
 
               {analysisResult && !optimizationResult && (
@@ -249,6 +251,7 @@ export default function ATSPage() {
                   disabled={isOptimizing || isLoading}
                   loading={isOptimizing}
                   className="whitespace-nowrap mt-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                  data-cy="optimize-cv-button"
                 />
               )}
 
@@ -308,12 +311,14 @@ export default function ATSPage() {
                         size="small"
                         onClick={handleSelectAll}
                         className="bg-white/20 hover:bg-white/30 text-white border-white/40"
+                        data-cy="select-all-button"
                       />
                       <Button
                         label="Deselect All"
                         size="small"
                         onClick={handleDeselectAll}
                         className="bg-white/20 hover:bg-white/30 text-white border-white/40"
+                        data-cy="deselect-all-button"
                       />
                     </div>
                   </div>
@@ -403,6 +408,7 @@ export default function ATSPage() {
                       onClick={handleApplyOptimization}
                       disabled={suggestions.filter(s => s.approved).length === 0}
                       className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg transition-all duration-300"
+                      data-cy="apply-changes-button"
                     />
                   </div>
                 </Card>

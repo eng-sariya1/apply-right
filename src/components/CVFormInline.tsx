@@ -478,6 +478,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                             }}
                             disabled={!watch('header.fullName') || !watch('abstract')?.trim() || isATSLoading}
                             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold rounded-lg hover:from-[#015C6A] hover:to-[#017A8C] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+                            data-cy="navigate-to-ats-button"
                         >
                             <Zap className="w-4 h-4"/>
                             {isATSLoading ? 'Optimizing...' : 'Optimize My CV for ATS'}
