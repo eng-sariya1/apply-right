@@ -27,6 +27,43 @@ This thesis presents the design and implementation of Nuivo, an intelligent CV/R
 
 ---
 
+## Table of Abbreviations
+
+| Abbreviation | Full Form |
+|--------------|-----------|
+| AI | Artificial Intelligence |
+| API | Application Programming Interface |
+| ATS | Applicant Tracking System |
+| BERT | Bidirectional Encoder Representations from Transformers |
+| CI/CD | Continuous Integration/Continuous Deployment |
+| CORS | Cross-Origin Resource Sharing |
+| CSS | Cascading Style Sheets |
+| CV | Curriculum Vitae |
+| DOCX | Microsoft Word Document (XML-based) |
+| DOM | Document Object Model |
+| DRY | Don't Repeat Yourself |
+| E2E | End-to-End |
+| GPT | Generative Pre-trained Transformer |
+| HMR | Hot Module Replacement |
+| HTML | HyperText Markup Language |
+| HTTP | Hypertext Transfer Protocol |
+| HTTPS | Hypertext Transfer Protocol Secure |
+| JSON | JavaScript Object Notation |
+| LLM | Large Language Model |
+| NLP | Natural Language Processing |
+| PDF | Portable Document Format |
+| REST | Representational State Transfer |
+| RTL | Right-to-Left |
+| SPA | Single Page Application |
+| SUS | System Usability Scale |
+| UI | User Interface |
+| URL | Uniform Resource Locator |
+| UX | User Experience |
+| WCAG | Web Content Accessibility Guidelines |
+| XSS | Cross-Site Scripting |
+
+---
+
 ## 1. Introduction
 
 ### 1.1 Background
