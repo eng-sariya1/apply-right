@@ -458,114 +458,226 @@ Applications are ranked by score, with top candidates forwarded to recruiters.
 - Technical parsing errors (formatting issues)
 - Keyword optimization required but not intuitive
 
-## 2.2 Artificial Intelligence and Natural Language Processing
+## 2.2 AI-Powered Text Generation for CV Building
 
-### 2.2.1 Evolution of Language Models
+### 2.2.1 Why AI for Resume Optimization?
 
-The field of NLP has evolved dramatically:
+Traditional CV builders provide templates and formatting, but they don't help with the most challenging aspect: writing compelling, professional content that passes ATS systems. This is where recent advances in Large Language Models (LLMs) become relevant.
 
-**2018: BERT (Google)**
-- Bidirectional transformer architecture
-- Contextualized word representations
-- Breakthrough in understanding language context
+**The CV Writing Challenge:**
+Job seekers struggle with several writing-related problems:
+- Converting casual experiences into professional language
+- Identifying which keywords to include from job descriptions
+- Writing concise but impactful summaries
+- Maintaining consistent professional tone
+- Knowing what ATS systems look for
 
-**2020: GPT-3 (OpenAI)**
-- 175 billion parameters
-- Few-shot learning capabilities
-- Human-quality text generation
+**What AI Can Offer:**
+Modern LLMs excel at natural language understanding and generation tasks that are directly applicable to CV creation:
+- **Text Improvement:** Rewriting casual text in professional tone while preserving meaning
+- **Keyword Extraction:** Analyzing job descriptions to identify important terms
+- **Content Analysis:** Comparing two documents (CV vs. job posting) for alignment
+- **Structured Data Extraction:** Parsing unstructured resume text into organized fields
+- **Suggestion Generation:** Proposing specific improvements based on context
 
-**2022: ChatGPT**
-- Conversational AI breakthrough
-- Mass adoption of LLM technology
-- Demonstrated practical applications
+**AI in This Project:**
+The core value proposition of Nuivo is leveraging AI for these exact tasks. Rather than just providing a template, the application acts as an AI-assisted writing tool specifically for resumes.
 
-**2023: GPT-4, Claude 2, PaLM 2**
-- Multimodal capabilities
-- Improved reasoning and accuracy
-- Longer context windows
+### 2.2.2 Choosing an AI API: Why Gemini?
 
-**2024: Gemini 2.5 (Google)**
-- Ultra-fast Flash Lite variant
-- Competitive pricing
-- Strong code understanding
-- Excellent at structured output (JSON)
+When I started this project, several LLM APIs were available: OpenAI's GPT-4/GPT-3.5, Anthropic's Claude, Google's Gemini, and others. I needed to choose one based on practical criteria for this project.
 
-### 2.2.2 Google Gemini API
+**Decision Criteria:**
+1. **Cost:** As a student project with no budget, API costs matter
+2. **Speed:** Users won't wait 15+ seconds for suggestions
+3. **Structured Output:** Need reliable JSON responses, not just text
+4. **Availability:** Must have accessible API (no waitlist)
+5. **Quality:** Must produce professional-sounding content
 
-**Gemini Family:**
-- **Gemini 1.5 Pro:** Most capable, multimodal, 2M token context
-- **Gemini 2.5 Flash:** Balanced performance and speed
-- **Gemini 2.5 Flash Lite:** Fastest, cost-effective (used in Nuivo)
+**Options Considered:**
 
-**Key Capabilities:**
-- Text generation and completion
-- Document analysis and summarization
-- Structured output generation (JSON)
-- Multi-turn conversations
-- Instruction following
+*OpenAI GPT-4:*
+- ✓ Excellent quality
+- ✓ Good structured output
+- ✗ Expensive ($0.03 per 1K tokens - 20x more than Gemini)
+- ✗ Slower responses (5-12 seconds typical)
 
-**API Configuration:**
+*OpenAI GPT-3.5-Turbo:*
+- ✓ Cheaper than GPT-4
+- ✓ Faster
+- ✗ Lower quality for professional writing
+- ✗ Still more expensive than Gemini
+
+*Anthropic Claude:*
+- ✓ Excellent quality
+- ✓ Good at following instructions
+- ✗ API access had waitlist at project start
+- ✗ Pricing similar to GPT-4
+
+*Google Gemini 2.5 Flash Lite:*
+- ✓ Very cheap ($0.075 per 1M input tokens)
+- ✓ Fast (3-7 seconds typical)
+- ✓ Good at structured JSON output
+- ✓ Immediately available with Google account
+- ✓ Good enough quality for professional content
+- ✓ Free tier generous for testing
+- ✗ Newer, less community support
+
+**My Choice: Gemini 2.5 Flash Lite**
+
+I chose Gemini primarily for practical reasons:
+1. **Cost:** Could afford extensive testing on student budget (spent ~$3.50 total during development)
+2. **Speed:** Fast enough for good UX (under 10 seconds)
+3. **Availability:** No waitlist, instant access
+4. **JSON Reliability:** Better at consistent structured output than GPT-3.5
+
+**Was it the best choice?** GPT-4 might produce slightly better writing quality, but the cost would have been prohibitive for testing and for end users. Gemini was the right balance of quality, speed, and cost for this project.
+
+### 2.2.3 How Gemini API Works
+
+**Basic Structure:**
+
+Gemini API is a REST API that accepts HTTP POST requests with JSON payloads. A typical request looks like:
+
 ```json
 {
-  "contents": [{"parts": [{"text": "prompt"}]}],
+  "contents": [{
+    "parts": [{
+      "text": "Rewrite this resume summary: I am a student looking for jobs..."
+    }]
+  }],
   "generationConfig": {
     "temperature": 0.7,
-    "maxOutputTokens": 8000
+    "maxOutputTokens": 500
   }
 }
 ```
 
-**Temperature Settings:**
-- **0.0-0.3:** Deterministic, factual (parsing, data extraction)
-- **0.4-0.7:** Balanced creativity (content improvement)
-- **0.8-1.0:** Creative, diverse (brainstorming, suggestions)
+**Key Parameters:**
 
-**Why Gemini for Nuivo:**
-- Fast response times (2-5 seconds)
-- Excellent structured output
-- Strong instruction following
-- Cost-effective ($0.075 per 1M input tokens)
-- Good at professional writing tone
+*Temperature (0.0-1.0):*
+Controls randomness/creativity in outputs
+- **Low (0.0-0.3):** Deterministic, factual - used for resume parsing where accuracy matters
+- **Medium (0.4-0.7):** Balanced - used for content improvement, professional but not robotic
+- **High (0.8-1.0):** Creative, diverse - used for generating multiple suggestion options
 
-### 2.2.3 Prompt Engineering
+*maxOutputTokens:*
+Limits response length (approximately 1 token ≈ 0.75 words)
+- Used 500 tokens for short improvements (abstracts, job titles)
+- Used 8000 tokens for complex tasks (full CV parsing, optimization suggestions)
 
-Effective AI integration requires careful prompt design:
+**Response Format:**
 
-**Best Practices:**
-1. **Clear Role Definition:** "You are an expert CV writer..."
-2. **Explicit Instructions:** Step-by-step what to do
-3. **Output Format:** Specify JSON structure or text format
-4. **Constraints:** "Do not fabricate information"
-5. **Examples:** Provide desired output examples
-6. **Context:** Include relevant background information
-
-**Example Prompt Structure:**
-```
-Role: You are an ATS analyzer expert.
-
-Task: Compare this CV against the job description.
-
-Input:
-CV: {cvData}
-Job: {jobDescription}
-
-Instructions:
-1. Calculate match percentage (0-100)
-2. Identify matched keywords
-3. Find missing critical keywords
-4. List strengths and weaknesses
-
-Output Format:
+Gemini returns JSON with this structure:
+```json
 {
-  "matchPercentage": number,
-  "strengths": string[],
-  ...
+  "candidates": [{
+    "content": {
+      "parts": [{
+        "text": "Generated response here..."
+      }]
+    }
+  }]
+}
+```
+
+**The JSON Challenge:**
+One major issue I encountered: Gemini often wraps JSON responses in markdown code blocks like:
+```
+```json
+{"result": "data"}
+```
+```
+
+This breaks JSON.parse(). I had to build a parser that:
+1. Tries direct JSON parsing first
+2. If it fails, strips markdown code blocks
+3. If that fails, uses regex to extract JSON object
+4. If all fail, shows error to user
+
+This is discussed in detail in Section 7.6 (Challenges).
+
+### 2.2.4 Prompt Engineering for CV Optimization
+
+"Prompt engineering" means crafting the text you send to the AI to get reliable, useful responses. This was one of the most time-consuming aspects of the project.
+
+**Initial Naive Approach (Didn't Work):**
+```
+Improve this abstract: {text}
+```
+
+Problems:
+- Sometimes returned explanations instead of improved text
+- Inconsistent format
+- Occasionally fabricated details
+- No control over output structure
+
+**Improved Approach (Used in Final Implementation):**
+
+```
+You are a professional CV writer. Rewrite the following resume abstract to be more professional and concise while keeping all factual information accurate.
+
+IMPORTANT:
+- Do NOT fabricate any experience or skills not mentioned
+- Keep the same length (150-180 words)
+- Use professional but not overly formal tone
+- Return ONLY the improved abstract, no explanations
+
+Original Abstract:
+{userText}
+
+Improved Abstract:
+```
+
+**Key Improvements:**
+1. **Role definition:** "You are a professional CV writer" - sets context
+2. **Constraints:** Explicitly say "do NOT fabricate" - critical for CVs
+3. **Output format:** "Return ONLY the improved abstract" - prevents explanations
+4. **Specific requirements:** Word count, tone guidelines
+
+**For Structured Data (ATS Analysis):**
+
+Getting JSON back required even more specific prompts:
+
+```
+Analyze the CV against this job description and return a JSON object.
+
+CV:
+{cvJson}
+
+Job Description:
+{jobText}
+
+Return a valid JSON object with this exact structure:
+{
+  "matchPercentage": number between 0-100,
+  "keywordMatches": {
+    "matched": ["keyword1", "keyword2"],
+    "missing": ["keyword3", "keyword4"]
+  },
+  "strengths": ["strength1", "strength2"],
+  "weaknesses": ["weakness1", "weakness2"]
 }
 
-Constraints:
-- Be objective and specific
-- Focus on ATS-relevant factors
+CRITICAL: Return ONLY valid JSON, no markdown formatting, no explanations.
 ```
+
+Even with this, I still needed the JSON parser mentioned earlier to handle inconsistencies.
+
+**Temperature Choices for Different Features:**
+
+| Feature | Temperature | Reasoning |
+|---------|-------------|-----------|
+| Resume Parsing | 0.2 | Need accurate data extraction, no creativity |
+| Abstract Improvement | 0.7 | Balance between professional and personal voice |
+| ATS Analysis | 0.5 | Objective analysis, some flexibility in wording |
+| Optimization Suggestions | 0.8 | Want diverse suggestions, not same ones every time |
+
+**Lessons Learned:**
+- More specific prompts = more consistent outputs
+- Always include "do not fabricate" for CVs (learned this after AI suggested experience users didn't have)
+- Examples in prompts help significantly
+- Still get ~3-5% failure rate with malformed responses despite best efforts
 
 ## 2.3 Modern Web Development Technologies
 
