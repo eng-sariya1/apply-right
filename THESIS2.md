@@ -8,7 +8,7 @@ for the Bachelor's Degree in Computer Science
 **Student Name:** [Your Name]
 **Student ID:** [Your ID]
 **Supervisor:** [Supervisor Name]
-**Department:** Computer Science
+**Department:** Computer Science336***3---
 **University:** [University Name]
 **Academic Year:** 2024-2025
 
@@ -174,13 +174,22 @@ I would also like to thank my family for their support and understanding during 
 
 The recruitment landscape has undergone dramatic transformation over the past two decades. What once relied on manual resume screening has evolved into highly automated systems that process millions of applications daily. At the forefront of this transformation are Applicant Tracking Systems (ATS), software applications that enable companies to electronically manage their recruitment processes.
 
+![Figure 1.1: Evolution of recruitment technology timeline](images/figure1-1.png)
+*Figure 1.1: Evolution of recruitment technology timeline*
+
 **Market Penetration:** Research indicates that 98% of Fortune 500 companies utilize ATS software, with adoption rates exceeding 75% among mid-sized organizations. These systems process over 250 million resumes annually in the United States alone.
+
+![Figure 1.2: ATS adoption rates by company size](images/figure1-2.png)
+*Figure 1.2: ATS adoption rates by company size*
 
 **The ATS Challenge:** While ATS technology has streamlined recruitment for employers, it has created significant barriers for job seekers. Studies show that approximately 75% of resumes are rejected by ATS algorithms before reaching human recruiters. The primary reasons include:
 - Poor keyword matching (45% of rejections)
 - Incompatible formatting (30% of rejections)
 - Missing required qualifications (15% of rejections)
 - Other technical parsing errors (10% of rejections)
+
+![Figure 1.3: CV rejection funnel through ATS systems](images/figure1-3.png)
+*Figure 1.3: CV rejection funnel through ATS systems*
 
 **The Rise of AI in Career Tools:** Recent advances in artificial intelligence, particularly Large Language Models (LLMs), have opened new possibilities for assisting job seekers. Models like GPT-4, Claude, and Google's Gemini can generate human-quality text, analyze documents, and provide intelligent suggestions—capabilities directly applicable to CV optimization.
 
@@ -217,6 +226,9 @@ Job seekers face multiple interconnected challenges in creating ATS-compatible r
 - Job seekers must customize CVs for each application
 - Manual optimization is time-consuming
 - Urgency to apply quickly reduces quality
+
+![Figure 1.4: ATS filtering process diagram](images/figure1-4.png)
+*Figure 1.4: ATS filtering process diagram*
 
 ## 1.3 Objectives
 
@@ -264,6 +276,9 @@ This project aims to develop Nuivo, an AI-powered CV builder that addresses the 
 **O8:** Ensure responsive design (mobile to desktop)
 **O9:** Maintain fast performance (<3s page load, <10s AI responses)
 **O10:** Create clean, maintainable codebase with TypeScript
+
+![Figure 1.5: Project objectives roadmap](images/figure1-5.png)
+*Figure 1.5: Project objectives roadmap*
 
 ## 1.4 Project Scope and Limitations
 
@@ -434,6 +449,9 @@ Applicant Tracking Systems are software applications designed to electronically 
 **Ranking Phase:**
 Applications are ranked by score, with top candidates forwarded to recruiters.
 
+![Figure 2.2: ATS processing workflow](images/figure2-2.png)
+*Figure 2.2: ATS processing workflow*
+
 ### 2.1.3 Industry Leaders
 
 | ATS Platform | Market Share | Key Features |
@@ -443,6 +461,9 @@ Applications are ranked by score, with top candidates forwarded to recruiters.
 | Lever | 15% | CRM-style candidate relationships |
 | Taleo (Oracle) | 12% | Legacy leader, comprehensive features |
 | iCIMS | 11% | Customizable workflows, large enterprises |
+
+![Figure 2.1: ATS market share distribution](images/figure2-1.png)
+*Figure 2.1: ATS market share distribution*
 
 ### 2.1.4 Impact on Recruitment
 
@@ -464,6 +485,9 @@ Applications are ranked by score, with top candidates forwarded to recruiters.
 
 Traditional CV builders provide templates and formatting, but they don't help with the most challenging aspect: writing compelling, professional content that passes ATS systems. This is where recent advances in Large Language Models (LLMs) become relevant.
 
+![Figure 2.3: Large Language Model evolution (2018-2024)](images/figure2-3.png)
+*Figure 2.3: Large Language Model evolution (2018-2024)*
+
 **The CV Writing Challenge:**
 Job seekers struggle with several writing-related problems:
 - Converting casual experiences into professional language
@@ -482,6 +506,9 @@ Modern LLMs excel at natural language understanding and generation tasks that ar
 
 **AI in This Project:**
 The core value proposition of Nuivo is leveraging AI for these exact tasks. Rather than just providing a template, the application acts as an AI-assisted writing tool specifically for resumes.
+
+![Figure 2.4: Transformer architecture overview](images/figure2-4.png)
+*Figure 2.4: Transformer architecture overview*
 
 ### 2.2.2 Choosing an AI API: Why Gemini?
 
@@ -535,16 +562,14 @@ I chose Gemini primarily for practical reasons:
 
 ### 2.2.3 How Gemini API Works
 
-**Basic Structure:**
+The Gemini API is a REST API that accepts HTTP POST requests with JSON payloads and returns AI-generated responses.
 
-Gemini API is a REST API that accepts HTTP POST requests with JSON payloads. A typical request looks like:
+**Request Structure:**
 
 ```json
 {
   "contents": [{
-    "parts": [{
-      "text": "Rewrite this resume summary: I am a student looking for jobs..."
-    }]
+    "parts": [{ "text": "Your prompt here..." }]
   }],
   "generationConfig": {
     "temperature": 0.7,
@@ -553,131 +578,78 @@ Gemini API is a REST API that accepts HTTP POST requests with JSON payloads. A t
 }
 ```
 
-**Key Parameters:**
+**Key Configuration Parameters:**
 
-*Temperature (0.0-1.0):*
-Controls randomness/creativity in outputs
-- **Low (0.0-0.3):** Deterministic, factual - used for resume parsing where accuracy matters
-- **Medium (0.4-0.7):** Balanced - used for content improvement, professional but not robotic
-- **High (0.8-1.0):** Creative, diverse - used for generating multiple suggestion options
+1. **Temperature (0.0-1.0):** Controls output randomness
+   - 0.0-0.3: Deterministic responses for parsing tasks
+   - 0.4-0.7: Balanced creativity for content improvement
+   - 0.8-1.0: High creativity for diverse suggestions
 
-*maxOutputTokens:*
-Limits response length (approximately 1 token ≈ 0.75 words)
-- Used 500 tokens for short improvements (abstracts, job titles)
-- Used 8000 tokens for complex tasks (full CV parsing, optimization suggestions)
+2. **maxOutputTokens:** Limits response length (~1 token = 0.75 words)
+   - 500 tokens: Short improvements
+   - 8000 tokens: Complex tasks like full CV parsing
 
 **Response Format:**
 
-Gemini returns JSON with this structure:
 ```json
 {
   "candidates": [{
     "content": {
-      "parts": [{
-        "text": "Generated response here..."
-      }]
+      "parts": [{ "text": "Generated response..." }]
     }
   }]
 }
 ```
 
-**The JSON Challenge:**
-One major issue I encountered: Gemini often wraps JSON responses in markdown code blocks like:
-```
-```json
-{"result": "data"}
-```
-```
+**Implementation Challenge:**
 
-This breaks JSON.parse(). I had to build a parser that:
-1. Tries direct JSON parsing first
-2. If it fails, strips markdown code blocks
-3. If that fails, uses regex to extract JSON object
-4. If all fail, shows error to user
-
-This is discussed in detail in Section 7.6 (Challenges).
+Gemini sometimes wraps JSON in markdown code blocks, breaking standard parsing. The solution requires a multi-step parser: attempt direct parsing, strip markdown if needed, then extract using regex as fallback.
 
 ### 2.2.4 Prompt Engineering for CV Optimization
 
-"Prompt engineering" means crafting the text you send to the AI to get reliable, useful responses. This was one of the most time-consuming aspects of the project.
+Prompt engineering—crafting effective instructions for AI—was critical to achieving reliable outputs. This required iterative refinement to balance accuracy, consistency, and quality.
 
-**Initial Naive Approach (Didn't Work):**
-```
-Improve this abstract: {text}
-```
+**Evolution from Naive to Effective Prompts:**
 
-Problems:
-- Sometimes returned explanations instead of improved text
-- Inconsistent format
-- Occasionally fabricated details
-- No control over output structure
+Early attempts with simple prompts ("Improve this abstract: {text}") failed due to inconsistent formatting, fabricated details, and unwanted explanations. The solution required structured prompts with clear role definition, explicit constraints, and output specifications.
 
-**Improved Approach (Used in Final Implementation):**
+**Effective Prompt Structure:**
 
-```
-You are a professional CV writer. Rewrite the following resume abstract to be more professional and concise while keeping all factual information accurate.
+Successful prompts include four key elements:
 
-IMPORTANT:
-- Do NOT fabricate any experience or skills not mentioned
-- Keep the same length (150-180 words)
-- Use professional but not overly formal tone
-- Return ONLY the improved abstract, no explanations
+1. **Role Context:** "You are a professional CV writer..."
+2. **Task Constraints:** "Do NOT fabricate any experience or skills"
+3. **Output Format:** "Return ONLY the improved text, no explanations"
+4. **Specific Requirements:** Word count, tone, structure guidelines
 
-Original Abstract:
-{userText}
+**Structured Data Extraction:**
 
-Improved Abstract:
-```
+For JSON responses (ATS analysis, CV parsing), prompts must specify exact schema structure and explicitly prohibit markdown formatting. Example:
 
-**Key Improvements:**
-1. **Role definition:** "You are a professional CV writer" - sets context
-2. **Constraints:** Explicitly say "do NOT fabricate" - critical for CVs
-3. **Output format:** "Return ONLY the improved abstract" - prevents explanations
-4. **Specific requirements:** Word count, tone guidelines
-
-**For Structured Data (ATS Analysis):**
-
-Getting JSON back required even more specific prompts:
-
-```
-Analyze the CV against this job description and return a JSON object.
-
-CV:
-{cvJson}
-
-Job Description:
-{jobText}
-
-Return a valid JSON object with this exact structure:
+```json
 {
-  "matchPercentage": number between 0-100,
+  "matchPercentage": "number between 0-100",
   "keywordMatches": {
-    "matched": ["keyword1", "keyword2"],
-    "missing": ["keyword3", "keyword4"]
+    "matched": ["..."],
+    "missing": ["..."]
   },
-  "strengths": ["strength1", "strength2"],
-  "weaknesses": ["weakness1", "weakness2"]
+  "strengths": ["..."],
+  "weaknesses": ["..."]
 }
-
-CRITICAL: Return ONLY valid JSON, no markdown formatting, no explanations.
 ```
 
-Even with this, I still needed the JSON parser mentioned earlier to handle inconsistencies.
+**Temperature Configuration by Task:**
 
-**Temperature Choices for Different Features:**
+| Task | Temperature | Rationale |
+|------|-------------|-----------|
+| Resume Parsing | 0.2 | Accuracy-critical data extraction |
+| Abstract Improvement | 0.7 | Balance professionalism with personality |
+| ATS Analysis | 0.5 | Objective evaluation with flexibility |
+| Optimization Suggestions | 0.8 | Diverse, creative recommendations |
 
-| Feature | Temperature | Reasoning |
-|---------|-------------|-----------|
-| Resume Parsing | 0.2 | Need accurate data extraction, no creativity |
-| Abstract Improvement | 0.7 | Balance between professional and personal voice |
-| ATS Analysis | 0.5 | Objective analysis, some flexibility in wording |
-| Optimization Suggestions | 0.8 | Want diverse suggestions, not same ones every time |
+**Key Insights:**
 
-**Lessons Learned:**
-- More specific prompts = more consistent outputs
-- Always include "do not fabricate" for CVs (learned this after AI suggested experience users didn't have)
-- Examples in prompts help significantly
-- Still get ~3-5% failure rate with malformed responses despite best efforts
+Specificity improves consistency, but ~3-5% of responses still require error handling. The "do not fabricate" constraint proved essential after initial testing revealed AI-generated experiences that users never had.
 
 ## 2.3 Modern Web Development Technologies
 
@@ -688,6 +660,9 @@ Even with this, I still needed the JSON parser mentioned earlier to handle incon
 - Virtual DOM for efficient updates
 - Declarative programming model
 - Unidirectional data flow
+
+![Figure 2.6: Virtual DOM vs Real DOM comparison](images/figure2-6.png)
+*Figure 2.6: Virtual DOM vs Real DOM comparison*
 
 **React 19 Features:**
 - Server Components
@@ -711,6 +686,9 @@ useMemo     // Performance optimization
 useCallback // Function memoization
 useRef      // DOM references (PDF export)
 ```
+
+![Figure 2.5: React component hierarchy](images/figure2-5.png)
+*Figure 2.5: React component hierarchy*
 
 ### 2.3.2 TypeScript for Type Safety
 
@@ -1049,6 +1027,9 @@ An integrated, free solution combining AI-powered content improvement, ATS analy
 
 ## 3.4 Use Cases
 
+![Figure 3.1: Use case diagram](images/figure3-1.png)
+*Figure 3.1: Use case diagram*
+
 ### Use Case 1: Create CV from Scratch
 
 **Actor:** Job Seeker
@@ -1075,6 +1056,9 @@ An integrated, free solution combining AI-powered content improvement, ATS analy
 - 4a. User skips optional sections → progress percentage lower
 - 9a. AI call fails → error message displayed, user retries
 - 12a. User clicks "View Full CV" → modal opens with enlarged preview
+
+![Figure 3.2: "Create CV" activity diagram](images/figure3-2.png)
+*Figure 3.2: "Create CV" activity diagram*
 
 ### Use Case 2: Upload and Parse Resume
 
@@ -1117,6 +1101,9 @@ An integrated, free solution combining AI-powered content improvement, ATS analy
    - Recommendations list
 
 **Postconditions:** User understands CV-job fit
+
+![Figure 3.3: "ATS Analysis" sequence diagram](images/figure3-3.png)
+*Figure 3.3: "ATS Analysis" sequence diagram*
 
 ### Use Case 4: Optimize CV with Suggestions
 
@@ -1250,6 +1237,12 @@ Nuivo follows a **Single Page Application (SPA)** architecture with client-side-
 └─────────────────────────────────────────┘
 ```
 
+![Figure 4.1: System architecture (layered view)](images/figure4-1.png)
+*Figure 4.1: System architecture (layered view)*
+
+![Figure 4.3: Data flow diagram](images/figure4-3.png)
+*Figure 4.3: Data flow diagram*
+
 ## 4.2 Component Architecture
 
 **Application Structure:**
@@ -1309,6 +1302,9 @@ App.tsx (CVProvider wrapper)
 - Chart.js integration (Doughnut, Bar)
 - Conditional rendering (empty/analysis/suggestions states)
 - Checkbox-based suggestion approval
+
+![Figure 4.2: Component interaction diagram](images/figure4-2.png)
+*Figure 4.2: Component interaction diagram*
 
 ## 4.3 Data Model Design
 
@@ -1385,6 +1381,9 @@ interface OptimizationSuggestion {
 - **Type safety:** TypeScript catches errors at compile-time
 - **Null handling:** Explicit null for "present" jobs
 
+![Figure 4.4: CVData entity-relationship model](images/figure4-4.png)
+*Figure 4.4: CVData entity-relationship model*
+
 ## 4.4 State Management Architecture
 
 **React Context API Pattern:**
@@ -1424,6 +1423,9 @@ export const useCVContext = () => {
 - Minimal boilerplate
 - Sufficient for app size
 - Easy to understand and maintain
+
+![Figure 4.5: State management flow](images/figure4-5.png)
+*Figure 4.5: State management flow*
 
 ## 4.5 AI Integration Architecture
 
@@ -1489,6 +1491,12 @@ export const useGeminiFeature = () => {
 - JSON parsing errors handled gracefully
 - Markdown code blocks removed from responses
 - Regex fallback for malformed JSON
+
+![Figure 4.6: AI integration architecture](images/figure4-6.png)
+*Figure 4.6: AI integration architecture*
+
+![Figure 4.7: Gemini API sequence diagram](images/figure4-7.png)
+*Figure 4.7: Gemini API sequence diagram*
 
 ## 4.6 User Interface Design
 
