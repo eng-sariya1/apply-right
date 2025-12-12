@@ -777,85 +777,261 @@ interface CVData {
 
 ## 2.4 Related Work and Competitive Analysis
 
-### 2.4.1 Resume.io
-**Strengths:**
-- 20+ professional templates
-- Clean, intuitive interface
-- Real-time preview
-- 4M+ users
+### 2.4.1 Methodology for Competitive Analysis
+
+This analysis was conducted during the planning phase (Week 1-2) to understand the existing market and identify gaps. The methodology was:
+
+**Selection Criteria:**
+- Popular CV builders with significant user base
+- Tools specifically marketing ATS optimization
+- Mix of free and paid services
+- Web-based applications (excluded desktop software like Microsoft Word templates)
+
+**Analysis Method:**
+- Free tier testing where available
+- Review of marketing materials and feature lists
+- YouTube tutorials and user reviews
+- Reddit discussions (r/resumes, r/jobs) about these tools
 
 **Limitations:**
-- No AI content generation
-- No ATS analysis
-- Limited free tier
-- Template-focused, not optimization-focused
+- Did not purchase premium subscriptions (limited to free tiers and trials)
+- Analysis based on publicly available information
+- Could not evaluate full functionality of paid tools
+- User counts and statistics from company websites (not independently verified)
+- Competitive landscape may have changed since initial analysis
 
-### 2.4.2 Zety
-**Strengths:**
-- Step-by-step wizard
-- Content suggestions
-- 18+ templates
-- Cover letter builder
+### 2.4.2 Resume.io
 
-**Limitations:**
-- Basic AI (pre-written phrases, not generative)
-- No job-specific analysis
-- Paid subscription required for download
+**Overview:**
+One of the most popular CV builders with reported 4M+ users. Focuses primarily on templates and ease of use.
 
-### 2.4.3 Rezi
-**Strengths:**
-- ATS-focused design
-- Score calculation
-- GPT-4 integration
-- Keyword targeting
+**What They Do Well:**
+- Extensive template library (20+ designs)
+- Very polished, professional-looking output
+- Intuitive interface that's easy to learn
+- Real-time preview works smoothly
+- Strong brand and marketing presence
 
-**Limitations:**
-- Premium pricing ($29/month)
-- Limited free version
-- Fewer templates
-- Less intuitive UX
+**What They Don't Offer (Relevant to This Project):**
+- No AI text generation (as of my research in January 2024)
+- No ATS analysis or scoring
+- No job description comparison
+- No content suggestions beyond pre-written examples
 
-**Closest Competitor:** Rezi is Nuivo's primary competitor due to ATS focus.
+**Business Model:**
+- Free to create and edit
+- Paid subscription ($2.95/month) required to download PDF
+- This is a common monetization pattern in the industry
 
-### 2.4.4 Competitive Gap Analysis
+**Positioning:**
+Template-focused tool for users who know what to write but need professional formatting.
+
+### 2.4.3 Zety
+
+**Overview:**
+CV builder with guided wizard approach and large template collection.
+
+**What They Do Well:**
+- Step-by-step guidance through CV creation
+- 18+ professional templates
+- Cover letter builder included
+- Pre-written content examples for different job roles
+- Career advice blog with good SEO
+
+**AI/Optimization Features:**
+During testing, I found they offer "content suggestions," but these appear to be:
+- Pre-written phrases pulled from a database
+- Not generative AI (just template text)
+- Generic suggestions not tailored to specific jobs
+- No ATS analysis functionality
+
+**Business Model:**
+- Free to create
+- $2.70/month subscription for downloads
+- 14-day trial period
+
+**Positioning:**
+Beginner-friendly tool with hand-holding approach, but still primarily template-focused.
+
+### 2.4.4 Rezi
+
+**Overview:**
+Rezi is the most direct competitor to Nuivo, explicitly positioning itself as an "ATS-optimized resume builder."
+
+**What They Do Well:**
+- Clear focus on ATS compatibility
+- Resume score calculation (their proprietary algorithm)
+- Keyword targeting features
+- Recently added GPT-4 integration (as of 2023)
+- Clean, functional interface
+- Educational content about ATS systems
+
+**AI Features (Based on Free Trial):**
+- AI text improvement using GPT-4
+- Resume scoring system
+- Keyword suggestions
+- However, most AI features locked behind premium tier
+
+**Business Model:**
+- Limited free version (can create 1 resume)
+- Premium: $29/month (expensive compared to others)
+- Lifetime access: $129 (one-time payment)
+
+**My Assessment:**
+Rezi is the closest to what I wanted to build. Their main advantages:
+- More mature product (been around longer)
+- Professional scoring algorithm
+- Better established brand
+
+Why I still built Nuivo:
+- Rezi is expensive ($29/month is a lot for students)
+- Free version very limited (1 resume only)
+- Wanted to explore different approach (confidence-based suggestions)
+- Learning opportunity to build something similar
+
+**Honest Admission:**
+If Rezi had been free or $5/month, I might have just used it instead of building Nuivo. But the $29/month price point felt like it left room for a free alternative.
+
+### 2.4.5 Other Tools Considered
+
+**Canva Resume Builder:**
+- Beautiful templates, design-focused
+- Free tier generous
+- But: Templates often too graphical for ATS (ironic)
+- Not suitable for ATS optimization focus
+
+**LinkedIn Resume Builder:**
+- Convenient for LinkedIn users
+- Free
+- But: Very basic, minimal customization, no AI features
+
+**ChatGPT (Direct Use):**
+Many job seekers just use ChatGPT directly to improve resume text. This is:
+- Free (or $20/month for GPT-4)
+- Flexible
+- But: Requires prompt engineering skills, no integrated workflow, no ATS analysis
+
+### 2.4.6 Feature Comparison Matrix
+
+Based on testing and research, here's an honest comparison:
 
 | Feature | Nuivo | Resume.io | Zety | Rezi |
 |---------|-------|-----------|------|------|
-| AI Content Generation | ✓ (Gemini) | ✗ | Partial | ✓ (GPT-4) |
-| Resume Parsing | ✓ | ✗ | ✗ | ✓ |
-| ATS Analysis | ✓ | ✗ | ✗ | ✓ |
-| Job-Specific Optimization | ✓ | ✗ | ✗ | Partial |
-| Free Full Access | ✓ | Limited | Limited | Limited |
-| Real-time Preview | ✓ | ✓ | ✓ | ✓ |
-| Template Variety | 1 | 20+ | 18+ | 5+ |
+| **Templates** | 1 basic | 20+ premium | 18+ | ~5 ATS-friendly |
+| **AI Text Generation** | ✓ Full (Gemini) | ✗ None | ✗ Pre-written only | ✓ Limited free, Full paid (GPT-4) |
+| **Resume Upload/Parse** | ✓ Free | ✗ | ✗ | ✓ Paid only |
+| **ATS Score/Analysis** | ✓ Free | ✗ | ✗ | ✓ Free basic, Paid detailed |
+| **Job-Specific Optimization** | ✓ Free | ✗ | ✗ | ✓ Paid only |
+| **Real-time Preview** | ✓ | ✓ | ✓ | ✓ |
+| **PDF Export** | ✓ Free (browser print) | Paid ($2.95/mo) | Paid ($2.70/mo) | ✓ Free |
+| **Price (Full Features)** | Free* | $2.95/mo | $2.70/mo | $29/mo |
+| **Polish/UX Quality** | Student project | Very polished | Very polished | Polished |
 
-**Nuivo's Unique Position:**
-- **Only free, fully-featured ATS optimizer**
-- **Comprehensive AI integration** across entire CV lifecycle
-- **Job-specific optimization** with confidence levels
-- **Re-analysis feedback loop** showing improvement
+*Requires user to provide own Gemini API key (technically free but requires setup)
 
-**Trade-off:**
-- Fewer templates (focus on functionality over variety)
+### 2.4.7 Honest Assessment of Nuivo's Position
+
+**Where Nuivo Competes Well:**
+1. **Price:** Completely free (if you have API key) vs $29/month for Rezi
+2. **AI Integration:** More comprehensive than free tiers of competitors
+3. **Educational Value:** Good for students learning about ATS
+4. **Transparency:** Open about how it works, not black-box algorithm
+
+**Where Nuivo Falls Short:**
+1. **Templates:** Only 1 template vs 20+ from competitors
+   - This is a significant limitation for users who want design variety
+   - Competitors' templates are professionally designed
+   - My single template is functional but basic
+
+2. **Polish:** Nuivo looks like a student project because it is one
+   - Resume.io and Zety have professional UI/UX design
+   - Their interfaces feel more refined
+   - Better animations, transitions, overall aesthetic
+
+3. **Reliability:** Established companies have:
+   - Better uptime guarantees
+   - Customer support
+   - Bug fixes and updates
+   - Nuivo is a prototype with no ongoing maintenance
+
+4. **Features:** Competitors offer:
+   - Cover letter builders
+   - Multiple CV versions
+   - LinkedIn integration
+   - Job application tracking
+   - Nuivo focuses narrowly on CV optimization only
+
+5. **Trust:** Established brands vs student project
+   - Users trust Resume.io because millions use it
+   - Nuivo has no reputation or reviews
+
+**Realistic Market Position:**
+
+Nuivo is not a "better" product than Resume.io or even Rezi. It's a different approach:
+- **Better for:** Students/job seekers with limited budget who want free ATS optimization
+- **Better for:** People comfortable with tech (API key setup)
+- **Better for:** Users who value functionality over template variety
+- **Worse for:** Users who want multiple template designs
+- **Worse for:** Non-technical users (API key is barrier)
+- **Worse for:** People who need guaranteed support
+
+**Why Build It Anyway?**
+
+Even though better products exist:
+1. Learning experience in full-stack development
+2. Exploring AI integration in practical application
+3. Providing free alternative to expensive tools
+4. Academic exercise in building complete application
+5. Personal need: I wanted something free while job hunting
+
+This is an academic project, not a commercial product. The goal was learning and demonstrating capability, not competing with established companies.
 
 ## 2.5 Summary and Research Gap
 
-**Key Findings:**
-1. ATS systems create significant barriers (75% rejection rate)
-2. Modern LLMs (Gemini) enable sophisticated content generation
-3. Existing CV builders focus on templates, not optimization
-4. Only premium tools offer ATS analysis
-5. No free tool provides comprehensive AI-powered optimization
+**Literature Review Key Findings:**
 
-**Research Gap:**
-Lack of accessible, AI-powered tools that provide:
-- Job-specific CV optimization
-- Real-time ATS compatibility analysis
-- Intelligent suggestion system with confidence levels
-- Complete workflow (create → analyze → optimize → export)
+1. **ATS Technology:** Widespread adoption (75%+ of large companies) creates barrier for job seekers who don't optimize for machine parsing
 
-**Nuivo's Contribution:**
-An integrated, free solution combining AI-powered content improvement, ATS analysis, and job-specific optimization in a single application, democratizing access to professional CV optimization tools.
+2. **AI Capabilities:** Recent LLMs (Gemini, GPT-4) have reached quality level suitable for professional writing assistance, making AI-powered CV tools feasible
+
+3. **Competitive Landscape:**
+   - Template-focused tools (Resume.io, Zety) dominate by user count but don't address ATS optimization
+   - ATS-focused tools exist (Rezi) but are expensive ($29/month)
+   - Free AI tools are limited in scope
+
+4. **Technology Stack:** Modern web technologies (React, TypeScript, Vite) enable rapid development of sophisticated web applications without backend infrastructure
+
+**Identified Gap:**
+
+Lack of **free, comprehensive** tools that combine:
+- AI-powered content improvement
+- ATS compatibility analysis
+- Job-specific optimization guidance
+- Complete workflow integration
+
+Rezi fills this gap but at premium pricing. No free alternative exists with comparable features (as of research period).
+
+**Nuivo's Contribution to This Gap:**
+
+A proof-of-concept demonstrating that AI-powered CV optimization can be built as:
+- Free tool (using client-side architecture)
+- Comprehensive workflow (create → analyze → optimize → export)
+- Accessible to students (main target users)
+
+**Academic Contribution:**
+- Practical implementation of LLM integration patterns
+- User acceptance study of AI-generated suggestions
+- Analysis of confidence-based suggestion systems
+- Documentation of challenges in building AI-powered applications
+
+**Limitations of This Work:**
+- Small-scale user testing (10 participants)
+- Single template design
+- No validation against actual ATS systems
+- Client-side only architecture limits features
+- Not intended as commercial product
+
+This project should be viewed as an academic exploration of AI-powered CV optimization, not as a competitor to established commercial products.
 
 ---
 
