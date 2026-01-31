@@ -1,3 +1,0 @@
-[CV Builder with Gemini model and ATS system .docx](..%2FDownloads%2FCV%20Builder%20with%20Gemini%20model%20and%20ATS%20system%20.docx)
-depend on thises file above i want to make a md file presentation and i want to look like a human writing not ai 
-and the The presentation should be 16 to 17 pages long. We need to follow the ideas in the same order as in the file, with the last idea being "cypress test".

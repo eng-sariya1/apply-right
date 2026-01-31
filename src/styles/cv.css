@@ -1,6 +1,27 @@
+/**
+ * CV Display Styles (cv.css)
+ *
+ * Purpose: Core CV document layout and print-ready styling
+ * Used by: CVDisplay.tsx, CVBuilder.tsx
+ *
+ * Scope:
+ *   - .cv-container and all CV content elements
+ *   - Print/PDF export optimization with @media print rules
+ *   - A4 page formatting and layout
+ *   - CV theme color customization
+ *
+ * Related files:
+ *   - cv-paginated.css: Paginated preview specific styles
+ *   - cv-builder.css: Form and builder UI styles
+ *
+ * Modification Guide:
+ *   - Edit this file for: CV document appearance, print layout, theme colors
+ *   - Edit cv-builder.css for: Form controls, builder UI, sidebar styles
+ *   - Edit cv-paginated.css for: Preview pagination controls and modal
+ */
 
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap');
-/*
+
 /* ============ CV Display Layout ============ */
 .cv-display-container {
   display: flex;

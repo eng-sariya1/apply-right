@@ -1,3 +1,25 @@
+/**
+ * CV Paginated Preview Styles (cv-paginated.css)
+ *
+ * Purpose: Paginated preview modal and A4 page navigation controls
+ * Used by: CVPaginatedPreview.tsx, CVBuilder.tsx
+ *
+ * Scope:
+ *   - Paginated container and page layout
+ *   - Page navigation controls (next/prev buttons, page indicators)
+ *   - Modal overlay and full CV preview
+ *   - A4-sized page rendering
+ *
+ * Related files:
+ *   - cv.css: Core CV document display and content styles
+ *   - cv-builder.css: Form and builder UI styles
+ *
+ * Modification Guide:
+ *   - Edit this file for: Preview modal, pagination controls, page navigation
+ *   - Edit cv.css for: CV content layout and print styling
+ *   - Edit cv-builder.css for: Form and builder interface
+ */
+
 /* ============ CV Paginated Preview ============ */
 
 .cv-paginated-container {

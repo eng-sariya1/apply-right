@@ -1,3 +1,25 @@
+/**
+ * CV Builder Styles (cv-builder.css)
+ *
+ * Purpose: Form controls, builder UI, and interactive elements styling
+ * Used by: CVBuilder.tsx, CVFormInline.tsx
+ *
+ * Scope:
+ *   - CV preview wrapper and builder layout
+ *   - Form inputs and PrimeReact component customization
+ *   - Progress bar and completion tracking
+ *   - Buttons, accordions, and interactive controls
+ *
+ * Related files:
+ *   - cv.css: CV document display and print styles
+ *   - cv-paginated.css: Preview pagination controls
+ *
+ * Modification Guide:
+ *   - Edit this file for: Form styling, builder UI, PrimeReact overrides
+ *   - Edit cv.css for: CV document appearance and print layout
+ *   - Edit cv-paginated.css for: Preview modal and pagination
+ */
+
 /* CV Preview Container - Override any conflicting styles */
 .cv-preview-wrapper {
   overflow: visible !important;
