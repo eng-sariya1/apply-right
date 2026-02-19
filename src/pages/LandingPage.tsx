@@ -1,18 +1,40 @@
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { CheckCircle2, Sparkles, Download, Eye, Upload } from 'lucide-react';
 import { useState } from 'react';
 import UploadResumeModal from '../components/UploadResumeModal';
 import { useCVContext } from '../context/CVContext';
+import { useAuth } from '../AuthContext';
 import type { CVData } from '../types/cv.types';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const { setCvData } = useCVContext();
+  const { currentUser, userRole, logout } = useAuth();
   const [showUploadModal, setShowUploadModal] = useState(false);
 
   const handleCreateResume = () => {
-    navigate('/cv-builder');
+    if (currentUser) {
+      navigate('/cv-builder');
+    } else {
+      navigate('/signup');
+    }
+  };
+
+  const handleUploadClick = () => {
+    if (currentUser) {
+      setShowUploadModal(true);
+    } else {
+      navigate('/signup');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Failed to log out:', error);
+    }
   };
 
   const handleUploadSuccess = (cvData: CVData) => {
@@ -65,6 +87,42 @@ export default function LandingPage() {
               >
                 Contact
               </a>
+              {currentUser ? (
+                <>
+                  {userRole === 'admin' && (
+                    <Link to="/dashboard">
+                      <motion.button
+                        whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="px-6 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+                      >
+                        Dashboard
+                      </motion.button>
+                    </Link>
+                  )}
+                  <motion.button
+                    whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={handleLogout}
+                    className="px-6 py-2 border-2 border-[#017A8C] text-[#017A8C] font-semibold rounded-xl hover:bg-[#017A8C] hover:text-white transition-all duration-200"
+                  >
+                    Log Out
+                  </motion.button>
+                </>
+              ) : (
+                <Link to="/signup">
+                  <motion.button
+                    whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="px-6 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+                  >
+                    Sign Up
+                  </motion.button>
+                </Link>
+              )}
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
                 whileTap={{ scale: 0.95 }}
@@ -153,7 +211,7 @@ export default function LandingPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ duration: 0.2 }}
-                    onClick={() => setShowUploadModal(true)}
+                    onClick={handleUploadClick}
                     className="flex items-center justify-center gap-2 bg-transparent border-2 border-[#017A8C] text-[#017A8C] px-6 py-2.5 rounded-lg font-semibold hover:bg-[#017A8C] hover:text-white transition-all duration-200"
                     data-cy="upload-resume-button"
                   >
