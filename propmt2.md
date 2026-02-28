@@ -1,0 +1,1 @@
+[CV Builder with Gemini model and ATS system .docx](..%2F..%2FDesktop%2FCV%20Builder%20with%20Gemini%20model%20and%20ATS%20system%20.docx)ok

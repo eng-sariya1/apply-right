@@ -361,3 +361,56 @@
     transform: scale(0.7);
   }
 }
+
+/* ============ Template 2 Paginated Preview Overrides ============ */
+
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-header,
+.cv-page-card .cv-container.cv-t2 .cv-t2-header {
+  padding: 1rem 1.5rem 0.75rem 1.5rem !important;
+}
+
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-section,
+.cv-page-card .cv-container.cv-t2 .cv-t2-section {
+  padding: 0.5rem 1.5rem !important;
+}
+
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-name,
+.cv-page-card .cv-container.cv-t2 .cv-t2-name {
+  font-size: 1.1rem !important;
+}
+
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-specialization,
+.cv-page-card .cv-container.cv-t2 .cv-t2-specialization {
+  font-size: 0.75rem !important;
+}
+
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-contact,
+.cv-page-card .cv-container.cv-t2 .cv-t2-contact {
+  font-size: 0.6rem !important;
+}
+
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-section-title,
+.cv-page-card .cv-container.cv-t2 .cv-t2-section-title {
+  font-size: 0.7rem !important;
+}
+
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-summary-text,
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-job-title,
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-job-dates,
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-bullets li,
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-education-text,
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-skills-grid li,
+.cv-page-card .cv-container.cv-t2 .cv-t2-summary-text,
+.cv-page-card .cv-container.cv-t2 .cv-t2-job-title,
+.cv-page-card .cv-container.cv-t2 .cv-t2-job-dates,
+.cv-page-card .cv-container.cv-t2 .cv-t2-bullets li,
+.cv-page-card .cv-container.cv-t2 .cv-t2-education-text,
+.cv-page-card .cv-container.cv-t2 .cv-t2-skills-grid li {
+  font-size: 0.65rem !important;
+}
+
+.cv-page-card-wrapper .cv-container.cv-t2 .cv-t2-photo,
+.cv-page-card .cv-container.cv-t2 .cv-t2-photo {
+  width: 50px !important;
+  height: 50px !important;
+}

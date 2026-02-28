@@ -7,7 +7,11 @@ import { useReactToPrint } from 'react-to-print';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db, auth } from '../firebase';
 import CVFormInline from '../components/CVFormInline';
+import CVFormTemplate2 from '../components/CVFormTemplate2';
+import CVFormTemplate3 from '../components/CVFormTemplate3';
 import CVDisplay from '../components/CVDisplay';
+import CVDisplayTemplate2 from '../components/CVDisplayTemplate2';
+import CVDisplayTemplate3 from '../components/CVDisplayTemplate3';
 import CVPaginatedPreview from '../components/CVPaginatedPreview';
 import type { CVData } from '../types/cv.types';
 import { useCVContext } from '../context/CVContext';
@@ -32,7 +36,9 @@ const emptyCVData: CVData = {
   career: [],
   personalProjects: [],
   education: '',
-  sectionTitleColor: '017A8C'
+  sectionTitleColor: '017A8C',
+  templateId: 'template1',
+  additionalInfo: ''
 };
 
 export default function CVBuilder() {
@@ -79,6 +85,9 @@ export default function CVBuilder() {
     return () => unsubscribe();
   }, []);
 
+  const isTemplate2 = cvData.templateId === 'template2';
+  const isTemplate3 = cvData.templateId === 'template3';
+
   // Calculate completion progress
   const completionProgress = useMemo(() => {
     let progress = 0;
@@ -103,15 +112,31 @@ export default function CVBuilder() {
     if (cvData.career && cvData.career.length > 0) {
       progress += weights.career;
     }
-    if (cvData.personalProjects && cvData.personalProjects.length > 0) {
-      progress += weights.projects;
-    }
-    if (cvData.education && cvData.education.length > 10) {
-      progress += weights.education;
+    if (isTemplate3) {
+      if (cvData.certifications && cvData.certifications.length > 5) {
+        progress += weights.projects;
+      }
+      if (cvData.educationEntries && cvData.educationEntries.length > 0) {
+        progress += weights.education;
+      }
+    } else if (isTemplate2) {
+      if (cvData.additionalInfo && cvData.additionalInfo.length > 5) {
+        progress += weights.projects;
+      }
+      if (cvData.education && cvData.education.length > 10) {
+        progress += weights.education;
+      }
+    } else {
+      if (cvData.personalProjects && cvData.personalProjects.length > 0) {
+        progress += weights.projects;
+      }
+      if (cvData.education && cvData.education.length > 10) {
+        progress += weights.education;
+      }
     }
 
     return progress;
-  }, [cvData]);
+  }, [cvData, isTemplate2]);
 
   const handleFormSubmit = useCallback((data: CVData) => {
     setCvData(data);
@@ -282,6 +307,8 @@ export default function CVBuilder() {
             <div className="flex items-center gap-1.5 text-white/60 text-sm mb-3">
               <Home className="w-3.5 h-3.5" />
               <button onClick={() => navigate('/')} className="hover:text-white/90 transition-colors">Home</button>
+              <ChevronRight className="w-3.5 h-3.5" />
+              <button onClick={() => navigate('/templates')} className="hover:text-white/90 transition-colors">Templates</button>
               <ChevronRight className="w-3.5 h-3.5" />
               <span className="text-white font-medium">Resume Builder</span>
             </div>
@@ -490,11 +517,25 @@ export default function CVBuilder() {
             <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 max-h-[calc(100vh-240px)] overflow-y-auto overflow-x-hidden custom-scrollbar no-print relative">
               <div className="h-1 bg-gradient-to-r from-[#017A8C] via-[#019baf] to-[#88B7C4]" />
               <div className="px-6 py-6 w-full">
-                <CVFormInline
-                  key={activeCvId || 'new'}
-                  onSubmit={handleFormSubmit}
-                  initialData={cvData}
-                />
+                {isTemplate3 ? (
+                  <CVFormTemplate3
+                    key={activeCvId || 'new'}
+                    onSubmit={handleFormSubmit}
+                    initialData={cvData}
+                  />
+                ) : isTemplate2 ? (
+                  <CVFormTemplate2
+                    key={activeCvId || 'new'}
+                    onSubmit={handleFormSubmit}
+                    initialData={cvData}
+                  />
+                ) : (
+                  <CVFormInline
+                    key={activeCvId || 'new'}
+                    onSubmit={handleFormSubmit}
+                    initialData={cvData}
+                  />
+                )}
               </div>
 
               {/* Action Buttons */}
@@ -563,7 +604,14 @@ export default function CVBuilder() {
               </div>
 
               {/* A4 Paginated Preview */}
-              <CVPaginatedPreview data={cvData} />
+              <CVPaginatedPreview
+                data={cvData}
+                renderDisplay={
+                isTemplate3 ? (d) => <CVDisplayTemplate3 data={d} /> :
+                isTemplate2 ? (d) => <CVDisplayTemplate2 data={d} /> :
+                undefined
+              }
+              />
               </div>
             </div>
           </motion.div>
@@ -600,7 +648,7 @@ export default function CVBuilder() {
               maxWidth: '100%',
             }}
           >
-            <CVDisplay data={cvData} />
+            {isTemplate3 ? <CVDisplayTemplate3 data={cvData} /> : isTemplate2 ? <CVDisplayTemplate2 data={cvData} /> : <CVDisplay data={cvData} />}
           </div>
         </div>
 
@@ -638,7 +686,7 @@ export default function CVBuilder() {
             boxShadow: 'none'
           }}
         >
-          <CVDisplay data={cvData} />
+          {isTemplate3 ? <CVDisplayTemplate3 data={cvData} /> : isTemplate2 ? <CVDisplayTemplate2 data={cvData} /> : <CVDisplay data={cvData} />}
         </div>
       </div>
     </div>

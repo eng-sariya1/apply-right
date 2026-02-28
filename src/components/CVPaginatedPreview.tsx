@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CVDisplay from './CVDisplay';
 import type { CVData } from '../types/cv.types';
@@ -6,9 +7,10 @@ import '../styles/cv-paginated.css';
 
 interface CVPaginatedPreviewProps {
   data: CVData;
+  renderDisplay?: (data: CVData) => ReactNode;
 }
 
-export default function CVPaginatedPreview({ data }: CVPaginatedPreviewProps) {
+export default function CVPaginatedPreview({ data, renderDisplay }: CVPaginatedPreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -78,7 +80,7 @@ export default function CVPaginatedPreview({ data }: CVPaginatedPreviewProps) {
               transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           >
-            <CVDisplay data={data} />
+            {renderDisplay ? renderDisplay(data) : <CVDisplay data={data} />}
           </div>
         </div>
 

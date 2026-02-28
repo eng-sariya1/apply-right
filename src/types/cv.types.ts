@@ -4,6 +4,8 @@ export interface CVHeader {
   email: string;
   phone: string;
   links: Link[];
+  address?: string;
+  photoUrl?: string;
 }
 
 export interface Link {
@@ -38,6 +40,15 @@ export interface PersonalProject {
   keyFeatures: string[];
 }
 
+export interface EducationEntry {
+  degree: string;
+  institution: string;
+  location: string;
+  graduationYear: string;
+}
+
+export type TemplateId = 'template1' | 'template2' | 'template3';
+
 export interface CVData {
   header: CVHeader;
   abstract: string;
@@ -46,6 +57,10 @@ export interface CVData {
   personalProjects: PersonalProject[];
   education: string;
   sectionTitleColor?: string;
+  templateId?: TemplateId;
+  additionalInfo?: string;
+  certifications?: string;
+  educationEntries?: EducationEntry[];
 }
 
 export type SuggestionType = 'keyword' | 'phrasing' | 'skill' | 'summary';

@@ -15,7 +15,7 @@ export default function LandingPage() {
 
   const handleCreateResume = () => {
     if (currentUser) {
-      navigate('/cv-builder');
+      navigate('/templates');
     } else {
       navigate('/signup');
     }
@@ -234,7 +234,7 @@ export default function LandingPage() {
                   className="bg-white p-4 md:p-6 rounded-2xl shadow-lg shadow-[#017A8C]/10 max-w-md lg:max-w-lg w-full lg:translate-x-8 relative z-10"
                 >
                   <img
-                    src="/images/typing-hero-19c17dfac3e22fdc206c80e7f4d80e2c2feaa5cc2ac34f29257ec4da6ec6c722.png"
+                    src="/images/typing-hero.png"
                     alt="CV Builder Preview"
                     className="w-full h-auto rounded-lg"
                   />

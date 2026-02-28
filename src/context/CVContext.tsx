@@ -19,7 +19,9 @@ const defaultCVData: CVData = {
   career: [],
   personalProjects: [],
   education: '',
-  sectionTitleColor: '017A8C'
+  sectionTitleColor: '017A8C',
+  templateId: 'template1',
+  additionalInfo: ''
 };
 
 const CVContext = createContext<CVContextType | undefined>(undefined);

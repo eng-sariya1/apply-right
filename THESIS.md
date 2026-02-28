@@ -689,6 +689,9 @@ The application implements comprehensive End-to-End (E2E) testing using Cypress:
 - ATS analysis workflow
 - Resume upload and parsing
 
+![ATS Input Page](./screenshots/05-ats-input.png)
+*Figure 3.11: ATS analysis page showing the job description input interface with clear call-to-action button. This interface was extensively tested for input validation and API integration.*
+
 **Sample Test Implementation:**
 ```javascript
 describe('CV Builder', () => {
@@ -795,12 +798,24 @@ describe('CV Builder', () => {
 - Responsive design for all device sizes
 - Intuitive drag-and-drop interface
 
+![CV Builder Interface](./screenshots/02-cv-builder-main.png)
+*Figure 3.1: The CV Builder interface showing the split-screen layout with form inputs on the left and real-time paginated preview on the right. The interface demonstrates the clean, professional design and intuitive organization of CV sections.*
+
+![CV Form Sections](./screenshots/03-cv-builder-form.png)
+*Figure 3.2: Detailed view of CV form sections showing dynamic input fields, AI assistance buttons (sparkle icons), and add/remove controls for managing multiple entries.*
+
 ✅ **AI-Powered Features**
 - Content improvement suggestions for abstracts and descriptions
 - Career description generation based on job titles
 - Education achievement suggestions
 - Project description enhancement
 - Resume parsing from PDF and DOCX files
+
+![AI Content Generation](./screenshots/10-ai-generation.png)
+*Figure 3.3: AI-powered content generation in action, showing the improvement suggestions for career descriptions and project summaries with before/after comparison.*
+
+![Resume Upload & Parsing](./screenshots/11-resume-upload.png)
+*Figure 3.4: Resume upload modal demonstrating support for PDF and DOCX file formats with drag-and-drop functionality and parsing progress indication.*
 
 ✅ **ATS Analysis**
 - Job description matching with keyword extraction
@@ -809,17 +824,29 @@ describe('CV Builder', () => {
 - Missing keyword highlighting
 - Visual analytics with charts
 
+![ATS Analysis Results](./screenshots/06-ats-results.png)
+*Figure 3.5: ATS analysis results displaying the match percentage score, comprehensive breakdown of CV-job description compatibility, and visual analytics.*
+
+![Keyword Analysis](./screenshots/07-ats-keywords.png)
+*Figure 3.6: Detailed keyword comparison showing matched keywords (green), missing keywords (red), and importance scores, helping users understand exactly what to improve.*
+
 ✅ **CV Optimization**
 - AI-generated improvement suggestions
 - Selective application of changes
 - Immediate re-analysis after optimization
 - Impact assessment for each suggestion
 
+![Optimization Suggestions](./screenshots/08-ats-optimization.png)
+*Figure 3.7: CV optimization panel showing AI-generated suggestions with impact indicators (high/medium/low), selective checkboxes for choosing which improvements to apply, and before/after previews.*
+
 ✅ **Export Functionality**
 - High-quality PDF generation via browser print
 - Professional formatting with maintained styling
 - Custom document naming
 - A4 page size compliance
+
+![PDF Export Sample](./screenshots/09-pdf-export.png)
+*Figure 3.8: Professional PDF export demonstrating high-quality formatting, proper A4 page dimensions, consistent typography, and print-ready output suitable for job applications.*
 
 #### 3.3.2 Performance Evaluation
 
@@ -852,6 +879,12 @@ describe('CV Builder', () => {
 **System Usability Scale (SUS) Score: 84/100 (Grade A)**
 
 This score indicates excellent usability, placing the system in the top 10% of systems evaluated using SUS methodology.
+
+![Landing Page](./screenshots/01-landing-page.png)
+*Figure 3.9: The application landing page with hero section, clear value proposition, and call-to-action button. The design uses the primary color scheme (#017A8C) and presents a professional, trustworthy first impression.*
+
+![Live Preview](./screenshots/04-cv-builder-preview.png)
+*Figure 3.10: Real-time paginated preview showing accurate A4 page dimensions with professional formatting. The preview updates instantly as users type, providing immediate visual feedback.*
 
 **Task Completion Rates:**
 
@@ -1284,33 +1317,47 @@ Ultimately, this project contributes to the broader goal of making technology se
 ### Appendix A: System Screenshots
 
 **A.1 Landing Page**
-- Hero section with call-to-action and value proposition
-- Feature highlights showcasing AI capabilities
-- Clean navigation menu with responsive design
-- Modern aesthetic using primary color scheme (#017A8C)
+
+![Landing Page - Hero Section](./screenshots/01-landing-page.png)
+*Figure A.1: Landing page featuring hero section with call-to-action, value proposition, and feature highlights showcasing AI capabilities. The design uses the primary color scheme (#017A8C) with clean navigation.*
 
 **A.2 CV Builder Interface**
-- Split-screen layout with form and preview
-- Left panel: Collapsible sections (Header, Career, Education, Projects, Skills)
-- Right panel: Real-time A4-sized paginated preview
-- Action buttons for AI assistance and PDF export
-- Responsive layout adapting to mobile devices
+
+![CV Builder - Main Interface](./screenshots/02-cv-builder-main.png)
+*Figure A.2: Main CV builder interface showing split-screen layout. Left panel contains collapsible form sections (Header, Career, Education, Projects, Skills), while right panel displays real-time A4-sized paginated preview.*
+
+![CV Builder - Form Sections](./screenshots/03-cv-builder-form.png)
+*Figure A.3: Detailed view of CV form sections with input fields, AI assistance buttons, and dynamic add/remove controls.*
+
+![CV Builder - Live Preview](./screenshots/04-cv-builder-preview.png)
+*Figure A.4: Real-time paginated preview showing professional CV formatting with A4 dimensions and accurate page breaks.*
 
 **A.3 ATS Analysis Page**
-- Job description input area with text formatting
-- "Analyze CV" action button with loading states
-- Analysis results section with match percentage visualization
-- Keyword comparison charts showing matches and gaps
-- Strengths and weaknesses cards with detailed insights
-- Optimization suggestions panel with selective application
+
+![ATS Analysis - Input](./screenshots/05-ats-input.png)
+*Figure A.5: ATS analysis page with job description input area and "Analyze CV" action button.*
+
+![ATS Analysis - Results](./screenshots/06-ats-results.png)
+*Figure A.6: ATS analysis results displaying match percentage, keyword comparison charts, and detailed insights.*
+
+![ATS Analysis - Keywords](./screenshots/07-ats-keywords.png)
+*Figure A.7: Keyword analysis visualization showing matched keywords, missing keywords, and their importance scores.*
+
+![ATS Optimization - Suggestions](./screenshots/08-ats-optimization.png)
+*Figure A.8: CV optimization suggestions panel with selective application checkboxes and impact indicators.*
 
 **A.4 PDF Export Sample**
-- Professional CV layout with clear hierarchy
-- A4 page formatting (210mm × 297mm)
-- All sections properly formatted and styled
-- Contact information and links prominently displayed
-- Consistent typography and spacing
-- Print-ready quality suitable for job applications
+
+![PDF Export - Sample CV](./screenshots/09-pdf-export.png)
+*Figure A.9: Professional PDF export sample showing complete CV with proper formatting, A4 page size (210mm × 297mm), consistent typography, and print-ready quality suitable for job applications.*
+
+**A.5 AI Features in Action**
+
+![AI Content Generation](./screenshots/10-ai-generation.png)
+*Figure A.10: AI-powered content generation feature improving career descriptions and project summaries.*
+
+![Resume Upload & Parsing](./screenshots/11-resume-upload.png)
+*Figure A.11: Resume upload modal showing support for PDF and DOCX formats with parsing progress.*
 
 ### Appendix B: Code Samples
 

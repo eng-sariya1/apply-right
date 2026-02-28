@@ -3,6 +3,7 @@ import { Route, Routes} from "react-router-dom";
 import LandingPage from "./pages/LandingPage.tsx";
 import CVBuilder from "./pages/CVBuilder.tsx";
 import ATSPage from "./pages/ATSPage.tsx";
+import TemplatePage from "./pages/TemplatePage.tsx";
 import { CVProvider } from "./context/CVContext.tsx";
 import Signup from './pages/Signup.tsx';
 import Login from './pages/Login.tsx';
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
 
                     {/* Requires login (any role) */}
+                    <Route path="/templates" element={<ProtectedRoute><TemplatePage /></ProtectedRoute>} />
                     <Route path="/cv-builder" element={<ProtectedRoute><CVBuilder /></ProtectedRoute>} />
                     <Route path="/ats" element={<ProtectedRoute><ATSPage /></ProtectedRoute>} />
 
