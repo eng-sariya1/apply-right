@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, FileSearch, TrendingUp, Sparkles, Lightbulb, Home, ChevronRight } from 'lucide-react';
+import { ArrowLeft, FileSearch, TrendingUp, Sparkles, Lightbulb, Home, ChevronRight, Briefcase, FileText } from 'lucide-react';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Card } from 'primereact/card';
@@ -21,6 +21,7 @@ import {
 import { useCVContext } from '../context/CVContext';
 import { useGeminiATSAnalysis } from '../hooks/useGeminiATSAnalysis';
 import { useGeminiCVOptimizer } from '../hooks/useGeminiCVOptimizer';
+import { useGeminiProfessionalBackground } from '../hooks/useGeminiProfessionalBackground';
 import type { OptimizationSuggestion, CVOptimizationResult } from '../types/cv.types';
 
 // Register Chart.js components
@@ -39,7 +40,11 @@ export default function ATSPage() {
   const { cvData, setCvData } = useCVContext();
   const { analyzeCV, isLoading, error } = useGeminiATSAnalysis();
   const { generateSuggestions, applySuggestions, isLoading: isOptimizing, error: optimizeError } = useGeminiCVOptimizer();
+  const { generateDescription, isLoading: isGenerating } = useGeminiProfessionalBackground();
+  const [mode, setMode] = useState<'job-description' | 'professional-background'>('job-description');
   const [jobDescription, setJobDescription] = useState('');
+  const [professionalBackground, setCareerField] = useState('');
+  const [activeJobDescription, setActiveJobDescription] = useState('');
   const [analysisResult, setAnalysisResult] = useState<{
     matchPercentage: number;
     strengths: string[];
@@ -53,13 +58,29 @@ export default function ATSPage() {
   const [optimizationResult, setOptimizationResult] = useState<CVOptimizationResult | null>(null);
   const [suggestions, setSuggestions] = useState<OptimizationSuggestion[]>([]);
 
+  const handleModeSwitch = (newMode: 'job-description' | 'professional-background') => {
+    setMode(newMode);
+    setAnalysisResult(null);
+    setOptimizationResult(null);
+    setSuggestions([]);
+    setActiveJobDescription('');
+  };
+
   const handleAnalyze = async () => {
-    if (!jobDescription.trim()) {
-      return;
+    let descriptionToUse = '';
+
+    if (mode === 'job-description') {
+      if (!jobDescription.trim()) return;
+      descriptionToUse = jobDescription;
+    } else {
+      if (!professionalBackground.trim()) return;
+      descriptionToUse = await generateDescription(professionalBackground);
     }
 
+    setActiveJobDescription(descriptionToUse);
+
     try {
-      const result = await analyzeCV(cvData, jobDescription);
+      const result = await analyzeCV(cvData, descriptionToUse);
       setAnalysisResult(result);
       // Reset optimization state when doing a fresh analysis
       setOptimizationResult(null);
@@ -70,13 +91,13 @@ export default function ATSPage() {
   };
 
   const handleOptimizeCV = async () => {
-    if (!analysisResult || !jobDescription.trim()) {
+    if (!analysisResult || !activeJobDescription.trim()) {
       return;
     }
 
     try {
       // Generate optimization suggestions
-      const result = await generateSuggestions(cvData, jobDescription);
+      const result = await generateSuggestions(cvData, activeJobDescription);
       setOptimizationResult(result);
       setSuggestions(result.suggestions);
     } catch (err) {
@@ -111,7 +132,7 @@ export default function ATSPage() {
 
       // Re-analyze the optimized CV to show improvement
       console.log('Re-analyzing optimized CV...');
-      const newAnalysis = await analyzeCV(optimizedCV, jobDescription);
+      const newAnalysis = await analyzeCV(optimizedCV, activeJobDescription);
       console.log('New analysis received:', newAnalysis);
 
       // Update analysis result with new score
@@ -241,32 +262,80 @@ export default function ATSPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+              {/* Mode Tabs */}
+              <div className="flex gap-1 p-1 bg-[#FAF7F0] rounded-xl mb-5 border border-[#C6DEE4]/40">
+                {[
+                  { id: 'job-description', label: 'Job Description', icon: FileText },
+                  { id: 'professional-background', label: 'Professional Background', icon: Briefcase },
+                ].map(({ id, label, icon: Icon }) => (
+                  <button
+                    key={id}
+                    onClick={() => handleModeSwitch(id as 'job-description' | 'professional-background')}
+                    className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                      mode === id
+                        ? 'bg-[#017A8C] text-white shadow-md'
+                        : 'text-[#88B7C4] hover:text-[#017A8C]'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {label}
+                  </button>
+                ))}
+              </div>
+
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                 <div>
-                  <h2 className="text-xl font-bold text-[#017A8C] mb-1">Job Description</h2>
+                  <h2 className="text-xl font-bold text-[#017A8C] mb-1">
+                    {mode === 'job-description' ? 'Job Description' : 'Professional Background'}
+                  </h2>
                   <p className="text-sm text-[#88B7C4]">
-                    Paste the job description below to analyze how well your CV matches
+                    {mode === 'job-description'
+                      ? 'Paste the job description below to analyze how well your CV matches'
+                      : 'Enter a professional background to generate keywords and analyze your CV alignment'}
                   </p>
                 </div>
                 <Button
-                  label={isLoading ? 'Analyzing...' : 'Analyze CV'}
+                  label={isLoading || isGenerating ? 'Analyzing...' : 'Analyze CV'}
                   icon="pi pi-chart-line"
                   onClick={handleAnalyze}
-                  disabled={!jobDescription.trim() || isLoading}
-                  loading={isLoading}
-                  className="whitespace-nowrap bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                  disabled={
+                    mode === 'job-description'
+                      ? (!jobDescription.trim() || isLoading)
+                      : (!professionalBackground.trim() || isLoading || isGenerating)
+                  }
+                  loading={isLoading || isGenerating}
+                  className="shrink-0 whitespace-nowrap bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
                   data-cy="analyze-cv-button"
                 />
               </div>
 
-              <InputTextarea
-                value={jobDescription}
-                onChange={(e) => setJobDescription(e.target.value)}
-                rows={15}
-                className="w-full p-3 border border-[#017A8C]/20 rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/20 transition-all"
-                placeholder="Paste the job description here..."
-                data-cy="job-description-input"
-              />
+              {mode === 'job-description' ? (
+                <InputTextarea
+                  value={jobDescription}
+                  onChange={(e) => setJobDescription(e.target.value)}
+                  rows={15}
+                  className="w-full p-3 border border-[#017A8C]/20 rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/20 transition-all"
+                  placeholder="Paste the job description here..."
+                  data-cy="job-description-input"
+                />
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <InputTextarea
+                    value={professionalBackground}
+                    onChange={(e) => setCareerField(e.target.value)}
+                    rows={15}
+                    placeholder="e.g. Software Engineer, Digital Marketing Specialist, Financial Analyst..."
+                    className="w-full p-3 border border-[#017A8C]/20 rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/20 transition-all"
+                    data-cy="professional-background-input"
+                  />
+                  {isGenerating && (
+                    <motion.div className="flex items-center gap-2 text-sm text-[#88B7C4] px-1">
+                      <div className="w-4 h-4 border-2 border-[#017A8C] border-t-transparent rounded-full animate-spin" />
+                      Generating job description for "{professionalBackground}"...
+                    </motion.div>
+                  )}
+                </div>
+              )}
 
               {analysisResult && !optimizationResult && (
                 <Button
@@ -557,7 +626,9 @@ export default function ATSPage() {
                   <FileSearch className="w-16 h-16 text-[#88B7C4] mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-[#017A8C] mb-2">No Analysis Yet</h3>
                   <p className="text-[#88B7C4]">
-                    Paste a job description and click "Analyze CV" to see results
+                    {mode === 'job-description'
+                      ? 'Paste a job description and click "Analyze CV" to see results'
+                      : 'Enter a Professional Background and click "Analyze CV" to see results'}
                   </p>
                 </div>
               </Card>
