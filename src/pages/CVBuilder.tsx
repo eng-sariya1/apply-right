@@ -88,6 +88,10 @@ export default function CVBuilder() {
   const isTemplate2 = cvData.templateId === 'template2';
   const isTemplate3 = cvData.templateId === 'template3';
 
+  const handleSwitchTemplate = useCallback((templateId: 'template1' | 'template2' | 'template3') => {
+    setCvData({ ...cvData, templateId });
+  }, [cvData, setCvData]);
+
   // Calculate completion progress
   const completionProgress = useMemo(() => {
     let progress = 0;
@@ -504,6 +508,42 @@ export default function CVBuilder() {
         </motion.div>
       )}
 
+      {/* Template Switcher */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.15 }}
+        className="px-10 pt-3 pb-1 no-print"
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-semibold text-[#88B7C4] uppercase tracking-wider whitespace-nowrap">Template:</span>
+          <div className="flex gap-2">
+            {([
+              { id: 'template1', label: 'Classic' },
+              { id: 'template2', label: 'Professional' },
+              { id: 'template3', label: 'Modern' },
+            ] as const).map((t) => {
+              const active = cvData.templateId === t.id;
+              return (
+                <motion.button
+                  key={t.id}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => handleSwitchTemplate(t.id)}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-200 ${
+                    active
+                      ? 'bg-[#017A8C] border-[#017A8C] text-white shadow-md'
+                      : 'bg-white border-[#C6DEE4]/60 text-[#5A6A6F] hover:border-[#017A8C]/50 hover:text-[#017A8C]'
+                  }`}
+                >
+                  {t.label}
+                </motion.button>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
+
       {/* Main Content - Resume.io Style Layout */}
       <div className="px-10 pt-4 pb-6 no-print">
         <div className="flex flex-col lg:flex-row gap-6">
@@ -519,19 +559,19 @@ export default function CVBuilder() {
               <div className="px-6 py-6 w-full">
                 {isTemplate3 ? (
                   <CVFormTemplate3
-                    key={activeCvId || 'new'}
+                    key={`${activeCvId || 'new'}-template3`}
                     onSubmit={handleFormSubmit}
                     initialData={cvData}
                   />
                 ) : isTemplate2 ? (
                   <CVFormTemplate2
-                    key={activeCvId || 'new'}
+                    key={`${activeCvId || 'new'}-template2`}
                     onSubmit={handleFormSubmit}
                     initialData={cvData}
                   />
                 ) : (
                   <CVFormInline
-                    key={activeCvId || 'new'}
+                    key={`${activeCvId || 'new'}-template1`}
                     onSubmit={handleFormSubmit}
                     initialData={cvData}
                   />

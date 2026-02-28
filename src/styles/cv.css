@@ -800,13 +800,19 @@ ul {
 }
 
 /* Print and PDF Export Optimization */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
 @media print {
   .cv-container {
     box-shadow: none;
     margin: 0;
     padding: 0;
-    width: 100% !important;
-    max-width: 100% !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-height: 297mm !important;
   }
 
   .cv-container .cv-section {
