@@ -636,6 +636,5 @@ export default function ATSPage() {
           </motion.div>
         </div>
       </div>
-    </div>
-  );
+    </div> );
 }

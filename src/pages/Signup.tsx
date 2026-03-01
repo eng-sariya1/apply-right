@@ -14,7 +14,7 @@ function Signup() {
 
     // Redirect if already logged in
     if (currentUser) {
-        return <Navigate to={userRole === 'admin' ? '/dashboard' : '/'} replace />;
+        return <Navigate to={userRole === 'admin' ? '/dashboard' : '/home'} replace />;
     }
 
     async function handleGoogleSignIn() {
@@ -22,7 +22,7 @@ function Signup() {
             setError('');
             setLoading(true);
             const role = await loginWithGoogle();
-            navigate(role === 'admin' ? '/dashboard' : '/');
+            navigate(role === 'admin' ? '/dashboard' : '/home');
         } catch (err: any) {
             if (err.code === 'auth/popup-closed-by-user') {
                 setError('Sign-in cancelled');
@@ -47,7 +47,7 @@ function Signup() {
             setError('');
             setLoading(true);
             const role = await signup(email, password);
-            navigate(role === 'admin' ? '/dashboard' : '/');
+            navigate(role === 'admin' ? '/dashboard' : '/home');
         } catch (error: any) {
             setError('Failed to create account: ' + error.message);
         }

@@ -92,46 +92,42 @@ export default function LandingPage() {
                   {userRole === 'admin' && (
                     <Link to="/dashboard">
                       <motion.button
-                        whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
+                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.2 }}
-                        className="px-6 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+                        className="px-6 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md transition-all duration-200"
                       >
                         Dashboard
                       </motion.button>
                     </Link>
                   )}
                   <motion.button
-                    whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
                     onClick={handleLogout}
-                    className="px-6 py-2 border-2 border-[#017A8C] text-[#017A8C] font-semibold rounded-xl hover:bg-[#017A8C] hover:text-white transition-all duration-200"
+                    className="px-5 py-2 border border-[#017A8C] text-[#017A8C] font-semibold rounded-xl hover:bg-[#017A8C] hover:text-white transition-all duration-200"
                   >
                     Log Out
                   </motion.button>
                 </>
               ) : (
-                <Link to="/signup">
-                  <motion.button
-                    whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="px-6 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+                <div className="flex items-center gap-3">
+                  <Link
+                    to="/login"
+                    className="text-sm font-medium text-[#02343F] hover:text-[#017A8C] transition-colors duration-200"
                   >
-                    Sign Up
-                  </motion.button>
-                </Link>
+                    Log in
+                  </Link>
+                  <Link to="/signup">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="px-5 py-2 border border-[#02343F] text-[#02343F] font-semibold rounded-xl hover:bg-[#02343F] hover:text-white transition-all duration-200 text-sm"
+                    >
+                      Sign up
+                    </motion.button>
+                  </Link>
+                </div>
               )}
-              <motion.button
-                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                onClick={handleCreateResume}
-                className="px-6 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
-              >
-                Create Resume
-              </motion.button>
             </div>
 
             {/* Mobile Menu Button */}

@@ -14,7 +14,7 @@ function Login() {
 
     // Redirect if already logged in
     if (currentUser) {
-        return <Navigate to={userRole === 'admin' ? '/dashboard' : '/'} replace />;
+        return <Navigate to={userRole === 'admin' ? '/dashboard' : '/home'} replace />;
     }
 
     async function handleGoogleSignIn() {
@@ -22,7 +22,7 @@ function Login() {
             setError('');
             setLoading(true);
             const role = await loginWithGoogle();
-            navigate(role === 'admin' ? '/dashboard' : '/');
+            navigate(role === 'admin' ? '/dashboard' : '/home');
         } catch (err: any) {
             if (err.code === 'auth/popup-closed-by-user') {
                 setError('Sign-in cancelled');
@@ -43,7 +43,7 @@ function Login() {
             setError('');
             setLoading(true);
             const role = await login(email, password);
-            navigate(role === 'admin' ? '/dashboard' : '/');
+            navigate(role === 'admin' ? '/dashboard' : '/home');
         } catch (error: any) {
             setError('Failed to log in: ' + error.message);
         }

@@ -9,8 +9,10 @@ import Signup from './pages/Signup.tsx';
 import Login from './pages/Login.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import UsersManagement from './pages/UsersManagement.tsx';
+import HomePage from './pages/HomePage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
 import AdminRoute from './components/AdminRoute.tsx';
+import AppLayout from './components/AppLayout.tsx';
 
 function App() {
     return (
@@ -23,9 +25,10 @@ function App() {
                     <Route path="/login" element={<Login />} />
 
                     {/* Requires login (any role) */}
-                    <Route path="/templates" element={<ProtectedRoute><TemplatePage /></ProtectedRoute>} />
-                    <Route path="/cv-builder" element={<ProtectedRoute><CVBuilder /></ProtectedRoute>} />
-                    <Route path="/ats" element={<ProtectedRoute><ATSPage /></ProtectedRoute>} />
+                    <Route path="/home" element={<ProtectedRoute><AppLayout><HomePage /></AppLayout></ProtectedRoute>} />
+                    <Route path="/templates" element={<ProtectedRoute><AppLayout><TemplatePage /></AppLayout></ProtectedRoute>} />
+                    <Route path="/cv-builder" element={<ProtectedRoute><AppLayout><CVBuilder /></AppLayout></ProtectedRoute>} />
+                    <Route path="/ats" element={<ProtectedRoute><AppLayout><ATSPage /></AppLayout></ProtectedRoute>} />
 
                     {/* Admin only */}
                     <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
