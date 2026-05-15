@@ -1,8 +1,9 @@
-import { AuthProvider } from './AuthContext';
-import { Route, Routes} from "react-router-dom";
+import { AuthProvider, useAuth } from './AuthContext';
+import { Navigate, Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/LandingPage.tsx";
 import CVBuilder from "./pages/CVBuilder.tsx";
 import ATSPage from "./pages/ATSPage.tsx";
+import SuggestionJobsPage from "./pages/SuggestionJobsPage.tsx";
 import TemplatePage from "./pages/TemplatePage.tsx";
 import { CVProvider } from "./context/CVContext.tsx";
 import Signup from './pages/Signup.tsx';
@@ -14,13 +15,21 @@ import ProtectedRoute from './components/ProtectedRoute.tsx';
 import AdminRoute from './components/AdminRoute.tsx';
 import AppLayout from './components/AppLayout.tsx';
 
+function LandingPageGate() {
+    const { currentUser, userRole } = useAuth();
+    if (currentUser) {
+        return <Navigate to={userRole === 'admin' ? '/dashboard' : '/home'} replace />;
+    }
+    return <LandingPage />;
+}
+
 function App() {
     return (
         <AuthProvider>
             <CVProvider>
                 <Routes>
                     {/* Public */}
-                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/" element={<LandingPageGate />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/login" element={<Login />} />
 
@@ -29,6 +38,7 @@ function App() {
                     <Route path="/templates" element={<ProtectedRoute><AppLayout><TemplatePage /></AppLayout></ProtectedRoute>} />
                     <Route path="/cv-builder" element={<ProtectedRoute><AppLayout><CVBuilder /></AppLayout></ProtectedRoute>} />
                     <Route path="/ats" element={<ProtectedRoute><AppLayout><ATSPage /></AppLayout></ProtectedRoute>} />
+                    <Route path="/suggested-jobs" element={<ProtectedRoute><AppLayout><SuggestionJobsPage /></AppLayout></ProtectedRoute>} />
 
                     {/* Admin only */}
                     <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />

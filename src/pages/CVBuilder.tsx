@@ -15,6 +15,7 @@ import CVDisplayTemplate3 from '../components/CVDisplayTemplate3';
 import CVPaginatedPreview from '../components/CVPaginatedPreview';
 import type { CVData } from '../types/cv.types';
 import { useCVContext } from '../context/CVContext';
+import { getCompletionProgress } from '../utils/cvCompletion';
 import '../styles/cv-builder.css';
 import '../styles/cv.css';
 
@@ -93,54 +94,7 @@ export default function CVBuilder() {
   }, [cvData, setCvData]);
 
   // Calculate completion progress
-  const completionProgress = useMemo(() => {
-    let progress = 0;
-    const weights = {
-      personalDetails: 20,
-      abstract: 15,
-      skills: 15,
-      career: 25,
-      projects: 15,
-      education: 10
-    };
-
-    if (cvData.header?.fullName && cvData.header?.email && cvData.header?.phone && cvData.header?.specialization) {
-      progress += weights.personalDetails;
-    }
-    if (cvData.abstract && cvData.abstract.length > 20) {
-      progress += weights.abstract;
-    }
-    if (cvData.skills && cvData.skills.length >= 3) {
-      progress += weights.skills;
-    }
-    if (cvData.career && cvData.career.length > 0) {
-      progress += weights.career;
-    }
-    if (isTemplate3) {
-      if (cvData.certifications && cvData.certifications.length > 5) {
-        progress += weights.projects;
-      }
-      if (cvData.educationEntries && cvData.educationEntries.length > 0) {
-        progress += weights.education;
-      }
-    } else if (isTemplate2) {
-      if (cvData.additionalInfo && cvData.additionalInfo.length > 5) {
-        progress += weights.projects;
-      }
-      if (cvData.education && cvData.education.length > 10) {
-        progress += weights.education;
-      }
-    } else {
-      if (cvData.personalProjects && cvData.personalProjects.length > 0) {
-        progress += weights.projects;
-      }
-      if (cvData.education && cvData.education.length > 10) {
-        progress += weights.education;
-      }
-    }
-
-    return progress;
-  }, [cvData, isTemplate2]);
+  const completionProgress = useMemo(() => getCompletionProgress(cvData), [cvData]);
 
   const handleFormSubmit = useCallback((data: CVData) => {
     setCvData(data);
@@ -217,7 +171,8 @@ export default function CVBuilder() {
       alert('CV saved successfully!');
     } catch (error) {
       console.error('Error saving CV:', error);
-      alert('Failed to save CV. Please try again.');
+      const msg = error instanceof Error ? error.message : 'Unknown error';
+      alert(`Failed to save CV: ${msg}`);
     } finally {
       setSaving(false);
     }

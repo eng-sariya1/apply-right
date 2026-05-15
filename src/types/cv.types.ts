@@ -63,6 +63,17 @@ export interface CVData {
   educationEntries?: EducationEntry[];
 }
 
+export interface ATSAnalysisResult {
+  matchPercentage: number;
+  strengths: string[];
+  weaknesses: string[];
+  recommendations: string[];
+  keywordMatches: {
+    matched: string[];
+    missing: string[];
+  };
+}
+
 export type SuggestionType = 'keyword' | 'phrasing' | 'skill' | 'summary';
 export type ConfidenceLevel = 'high' | 'medium' | 'low';
 

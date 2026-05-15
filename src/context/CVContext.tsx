@@ -1,9 +1,11 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import type { CVData } from '../types/cv.types';
+import type { CVData, ATSAnalysisResult } from '../types/cv.types';
 
 interface CVContextType {
   cvData: CVData;
   setCvData: (data: CVData) => void;
+  atsResult: ATSAnalysisResult | null;
+  setAtsResult: (result: ATSAnalysisResult | null) => void;
 }
 
 const defaultCVData: CVData = {
@@ -28,9 +30,10 @@ const CVContext = createContext<CVContextType | undefined>(undefined);
 
 export const CVProvider = ({ children }: { children: ReactNode }) => {
   const [cvData, setCvData] = useState<CVData>(defaultCVData);
+  const [atsResult, setAtsResult] = useState<ATSAnalysisResult | null>(null);
 
   return (
-    <CVContext.Provider value={{ cvData, setCvData }}>
+    <CVContext.Provider value={{ cvData, setCvData, atsResult, setAtsResult }}>
       {children}
     </CVContext.Provider>
   );

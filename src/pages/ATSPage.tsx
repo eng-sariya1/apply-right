@@ -22,6 +22,7 @@ import { useCVContext } from '../context/CVContext';
 import { useGeminiATSAnalysis } from '../hooks/useGeminiATSAnalysis';
 import { useGeminiCVOptimizer } from '../hooks/useGeminiCVOptimizer';
 import { useGeminiProfessionalBackground } from '../hooks/useGeminiProfessionalBackground';
+import LinkedInJobsCard from '../components/LinkedInJobsCard';
 import type { OptimizationSuggestion, CVOptimizationResult } from '../types/cv.types';
 
 // Register Chart.js components
@@ -37,7 +38,7 @@ ChartJS.register(
 
 export default function ATSPage() {
   const navigate = useNavigate();
-  const { cvData, setCvData } = useCVContext();
+  const { cvData, setCvData, atsResult: analysisResult, setAtsResult: setAnalysisResult } = useCVContext();
   const { analyzeCV, isLoading, error } = useGeminiATSAnalysis();
   const { generateSuggestions, applySuggestions, isLoading: isOptimizing, error: optimizeError } = useGeminiCVOptimizer();
   const { generateDescription, isLoading: isGenerating } = useGeminiProfessionalBackground();
@@ -45,16 +46,6 @@ export default function ATSPage() {
   const [jobDescription, setJobDescription] = useState('');
   const [professionalBackground, setCareerField] = useState('');
   const [activeJobDescription, setActiveJobDescription] = useState('');
-  const [analysisResult, setAnalysisResult] = useState<{
-    matchPercentage: number;
-    strengths: string[];
-    weaknesses: string[];
-    recommendations: string[];
-    keywordMatches: {
-      matched: string[];
-      missing: string[];
-    };
-  } | null>(null);
   const [optimizationResult, setOptimizationResult] = useState<CVOptimizationResult | null>(null);
   const [suggestions, setSuggestions] = useState<OptimizationSuggestion[]>([]);
 
@@ -619,6 +610,9 @@ export default function ATSPage() {
                     </div>
                   </Card>
                 )}
+
+                {/* Find Matching Jobs on LinkedIn */}
+                <LinkedInJobsCard cvData={cvData} />
               </div>
             ) : (
               <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 h-full flex items-center justify-center">

@@ -1,14 +1,14 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Globe, LayoutDashboard, FileText, FileSearch, LayoutTemplate, LogOut, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, FileText, FileSearch, LayoutTemplate, Briefcase, LogOut, ChevronRight } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 
 const NAV_ITEMS = [
-  { label: 'Landing Page', icon: Globe, path: '/' },
   { label: 'Home', icon: LayoutDashboard, path: '/home' },
   { label: 'CV Builder', icon: FileText, path: '/cv-builder' },
   { label: 'ATS Analysis', icon: FileSearch, path: '/ats' },
   { label: 'Templates', icon: LayoutTemplate, path: '/templates' },
+  { label: 'Suggested Jobs', icon: Briefcase, path: '/suggested-jobs' },
 ];
 
 interface SidebarProps {
