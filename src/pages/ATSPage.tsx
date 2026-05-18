@@ -22,7 +22,6 @@ import { useCVContext } from '../context/CVContext';
 import { useGeminiATSAnalysis } from '../hooks/useGeminiATSAnalysis';
 import { useGeminiCVOptimizer } from '../hooks/useGeminiCVOptimizer';
 import { useGeminiProfessionalBackground } from '../hooks/useGeminiProfessionalBackground';
-import LinkedInJobsCard from '../components/LinkedInJobsCard';
 import type { OptimizationSuggestion, CVOptimizationResult } from '../types/cv.types';
 
 // Register Chart.js components
@@ -610,9 +609,6 @@ export default function ATSPage() {
                     </div>
                   </Card>
                 )}
-
-                {/* Find Matching Jobs on LinkedIn */}
-                <LinkedInJobsCard cvData={cvData} />
               </div>
             ) : (
               <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 h-full flex items-center justify-center">

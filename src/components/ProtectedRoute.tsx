@@ -19,6 +19,11 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
         return <Navigate to="/" replace />;
     }
 
+    // Unverified email — block app access; Login shows the verify panel.
+    if (!currentUser.emailVerified) {
+        return <Navigate to="/login" replace />;
+    }
+
     if (userStatus === 'blocked') {
         return (
             <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden flex items-center justify-center">

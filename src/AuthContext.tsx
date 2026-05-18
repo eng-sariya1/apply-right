@@ -5,6 +5,12 @@ import {
     signOut,
     onAuthStateChanged,
     signInWithPopup,
+    sendEmailVerification,
+    sendPasswordResetEmail,
+    updateProfile,
+    updatePassword,
+    reauthenticateWithCredential,
+    EmailAuthProvider,
     getIdToken,
     type User
 } from 'firebase/auth';
@@ -24,6 +30,11 @@ interface AuthContextType {
     loginWithGoogle: () => Promise<UserRole>;
     logout: () => Promise<void>;
     refreshToken: () => Promise<void>;
+    sendVerificationEmail: () => Promise<void>;
+    reloadAndRefresh: () => Promise<boolean>;
+    resetPassword: (email: string) => Promise<void>;
+    updateDisplayName: (name: string) => Promise<void>;
+    changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
     loading: boolean;
 }
 
@@ -63,6 +74,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [userStatus, setUserStatus] = useState<UserStatus>(null);
     const [token, setToken] = useState<string | null>(() => localStorage.getItem('authToken'));
     const [loading, setLoading] = useState(true);
+    // Bumped after a profile edit to force consumers (e.g. the sidebar) to
+    // re-read the in-place-mutated Firebase user object.
+    const [, setProfileVersion] = useState(0);
     const refreshIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     async function handleTokenRefresh(user: User) {
@@ -73,6 +87,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function signup(email: string, password: string): Promise<UserRole> {
         const credential = await createUserWithEmailAndPassword(auth, email, password);
+        // Prove the email belongs to the user before they can access the app.
+        await sendEmailVerification(credential.user);
         if (auth.currentUser){
             const freshToken = await getIdToken(auth?.currentUser, true);
             localStorage.setItem('authToken', freshToken);
@@ -122,6 +138,64 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (currentUser) {
             await handleTokenRefresh(currentUser);
         }
+    }
+
+    async function sendVerificationEmail() {
+        if (!auth.currentUser) {
+            throw new Error('No signed-in user to verify');
+        }
+        await sendEmailVerification(auth.currentUser);
+    }
+
+    // Re-checks verification after the user clicks the email link. Returns true
+    // once verified. The ID token still carries the old email_verified claim
+    // until force-refreshed, so refresh it before any Firestore access.
+    async function reloadAndRefresh(): Promise<boolean> {
+        if (!auth.currentUser) {
+            return false;
+        }
+        await auth.currentUser.reload();
+        const user = auth.currentUser;
+        if (user && user.emailVerified) {
+            await handleTokenRefresh(user);
+            setCurrentUser(user);
+            return true;
+        }
+        return false;
+    }
+
+    async function resetPassword(email: string) {
+        await sendPasswordResetEmail(auth, email);
+    }
+
+    async function updateDisplayName(name: string) {
+        const user = auth.currentUser;
+        if (!user) {
+            throw new Error('No signed-in user');
+        }
+        await updateProfile(user, { displayName: name });
+        // Refresh the in-memory user, then force a re-render so the sidebar
+        // reflects the new name immediately. This must happen before the
+        // Firestore write so a Firestore hiccup can't block the UI update.
+        await user.reload();
+        setProfileVersion((v) => v + 1);
+        // Mirror into Firestore for the admin view — best-effort, non-fatal
+        // (the sidebar reads the Auth profile, not this doc).
+        try {
+            await setDoc(doc(db, 'users', user.uid), { displayName: name }, { merge: true });
+        } catch (err) {
+            console.error('Failed to mirror displayName to Firestore:', err);
+        }
+    }
+
+    async function changePassword(currentPassword: string, newPassword: string) {
+        const user = auth.currentUser;
+        if (!user || !user.email) {
+            throw new Error('No signed-in user');
+        }
+        const credential = EmailAuthProvider.credential(user.email, currentPassword);
+        await reauthenticateWithCredential(user, credential);
+        await updatePassword(user, newPassword);
     }
 
     // Listen to auth state changes
@@ -186,6 +260,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginWithGoogle,
         logout,
         refreshToken,
+        sendVerificationEmail,
+        reloadAndRefresh,
+        resetPassword,
+        updateDisplayName,
+        changePassword,
         loading,
     };
 

@@ -12,8 +12,9 @@ function Signup() {
     const { signup, loginWithGoogle, currentUser, userRole } = useAuth();
     const navigate = useNavigate();
 
-    // Redirect if already logged in
-    if (currentUser) {
+    // Redirect if already logged in AND verified (unverified users go to the
+    // Login page's verify panel instead).
+    if (currentUser && currentUser.emailVerified) {
         return <Navigate to={userRole === 'admin' ? '/dashboard' : '/home'} replace />;
     }
 
@@ -46,8 +47,10 @@ function Signup() {
         try {
             setError('');
             setLoading(true);
-            const role = await signup(email, password);
-            navigate(role === 'admin' ? '/dashboard' : '/home');
+            await signup(email, password);
+            // Account created; a verification email was sent. The user stays
+            // signed in but unverified — the Login page shows the verify panel.
+            navigate('/login');
         } catch (error: any) {
             setError('Failed to create account: ' + error.message);
         }

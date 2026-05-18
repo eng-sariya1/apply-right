@@ -41,25 +41,32 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {/* Profile section */}
       <div className="px-3 pt-5 pb-3 flex-shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#017A8C] to-[#019baf] flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-md select-none">
-            {initials}
-          </div>
+          <button
+            type="button"
+            onClick={() => navigate('/profile')}
+            title="My Profile"
+            className="flex items-center gap-3 flex-1 min-w-0 rounded-xl p-1 -m-1 text-left hover:bg-[#017A8C]/5 transition-colors"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#017A8C] to-[#019baf] flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-md select-none">
+              {initials}
+            </div>
 
-          <AnimatePresence mode="wait">
-            {!collapsed && (
-              <motion.div
-                key="profile-text"
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.2 }}
-                className="flex-1 min-w-0"
-              >
-                <p className="text-sm font-semibold text-[#02343F] truncate leading-tight">{displayName}</p>
-                <p className="text-xs text-[#88B7C4] truncate leading-tight mt-0.5">{currentUser?.email || ''}</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            <AnimatePresence mode="wait">
+              {!collapsed && (
+                <motion.div
+                  key="profile-text"
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -8 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex-1 min-w-0"
+                >
+                  <p className="text-sm font-semibold text-[#02343F] truncate leading-tight">{displayName}</p>
+                  <p className="text-xs text-[#88B7C4] truncate leading-tight mt-0.5">{currentUser?.email || ''}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </button>
 
           <button
             onClick={onToggle}

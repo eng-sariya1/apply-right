@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Profile docs. The owner may create/read their own profile WITHOUT email
+    // verification so signup can bootstrap it. Admins can read all profiles and
+    // update them (e.g. change status). No one may delete except an admin.
+    match /users/{uid} {
+      allow read:          if request.auth.uid == uid || isAdmin();
+      allow create, update: if request.auth.uid == uid || isAdmin();
+      allow delete:         if isAdmin();
+    }
+
+    // Application data. Requires a VERIFIED email. Admins keep full access for
+    // the dashboard / user management.
+    match /cvs/{uid} {
+      allow read, write: if (request.auth.uid == uid && isVerified()) || isAdmin();
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

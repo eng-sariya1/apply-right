@@ -11,13 +11,14 @@ import Login from './pages/Login.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import UsersManagement from './pages/UsersManagement.tsx';
 import HomePage from './pages/HomePage.tsx';
+import ProfilePage from './pages/ProfilePage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
 import AdminRoute from './components/AdminRoute.tsx';
 import AppLayout from './components/AppLayout.tsx';
 
 function LandingPageGate() {
     const { currentUser, userRole } = useAuth();
-    if (currentUser) {
+    if (currentUser && currentUser.emailVerified) {
         return <Navigate to={userRole === 'admin' ? '/dashboard' : '/home'} replace />;
     }
     return <LandingPage />;
@@ -39,6 +40,7 @@ function App() {
                     <Route path="/cv-builder" element={<ProtectedRoute><AppLayout><CVBuilder /></AppLayout></ProtectedRoute>} />
                     <Route path="/ats" element={<ProtectedRoute><AppLayout><ATSPage /></AppLayout></ProtectedRoute>} />
                     <Route path="/suggested-jobs" element={<ProtectedRoute><AppLayout><SuggestionJobsPage /></AppLayout></ProtectedRoute>} />
+                    <Route path="/profile" element={<ProtectedRoute><AppLayout><ProfilePage /></AppLayout></ProtectedRoute>} />
 
                     {/* Admin only */}
                     <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
