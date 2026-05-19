@@ -628,8 +628,8 @@ function CareerFieldsT3({control, careerIndex, watch, setValue}: any) {
                                     <Trash2 className="w-3 h-3"/>
                                 </motion.button>
                             </div>
-                            <TextInput label="Project Name" name={`career.${careerIndex}.projects.${projIndex}.name`} control={control} placeholder="Project Name"/>
-                            <TextAreaInput name={`career.${careerIndex}.projects.${projIndex}.description`} control={control} placeholder="Project description..." rows={2}/>
+                            <TextInput label="Project Name" name={`career.${careerIndex}.projects.${projIndex}.name`} control={control} placeholder="Project Name" dataCy={`career-project-name-input-${careerIndex}-${projIndex}`}/>
+                            <TextAreaInput name={`career.${careerIndex}.projects.${projIndex}.description`} control={control} placeholder="Project description..." rows={2} dataCy={`career-project-description-input-${careerIndex}-${projIndex}`}/>
                         </div>
                     ))}
                 </div>
