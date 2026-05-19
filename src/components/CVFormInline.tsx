@@ -1,4 +1,4 @@
-import {useForm, useFieldArray, Controller} from 'react-hook-form';
+import {useForm, useFieldArray, Controller, type Control, type FieldValues, type UseFormWatch, type UseFormSetValue} from 'react-hook-form';
 import {useEffect, useState, useRef} from 'react';
 import {motion} from 'framer-motion';
 import {Accordion, AccordionTab} from 'primereact/accordion';
@@ -13,7 +13,7 @@ import {useGeminiEducation} from '../hooks/useGeminiEducation';
 import {useGeminiATS} from '../hooks/useGeminiATS';
 import {useGeminiCVParser} from '../hooks/useGeminiCVParser';
 import {useNavigate} from "react-router-dom";
-import {FileUpload} from "primereact/fileupload";
+import {FileUpload, type FileUploadSelectEvent} from "primereact/fileupload";
 import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
 import TextInput from "./form/TextInput.tsx";
@@ -62,9 +62,16 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
         sectionTitleColor: '017A8C'
     };
     const navigate = useNavigate();
-    const {control, watch, setValue} = useForm<CVData>({
+    // RHF is typed against CVData internally, while the shared field wrappers
+    // and the career/project subcomponents are typed against the generic
+    // FieldValues. RHF's Control/UseForm* generics are invariant, so erase the
+    // type here once — runtime is unchanged (same function references).
+    const form = useForm<CVData>({
         defaultValues
     });
+    const control = form.control as unknown as Control<FieldValues>;
+    const watch = form.watch as unknown as UseFormWatch<FieldValues>;
+    const setValue = form.setValue as unknown as UseFormSetValue<FieldValues>;
 
     // File upload state management
     const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
@@ -142,7 +149,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 const page = await pdf.getPage(i);
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items
-                    .map((item: any) => item.str)
+                    .map((item) => (item as { str: string }).str)
                     .join(' ');
                 fullText += pageText + '\n';
             }
@@ -167,7 +174,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
     };
 
     // File upload handler with validation and text extraction
-    const handleFileSelect = async (event: any) => {
+    const handleFileSelect = async (event: FileUploadSelectEvent) => {
         setUploadError('');
         setExtractedText('');
         const file = event.files[0];
@@ -840,7 +847,12 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
 }
 
 // Career Fields Component
-function CareerFields({control, careerIndex, watch, setValue}: any) {
+function CareerFields({control, careerIndex, watch, setValue}: {
+    control: Control<FieldValues>;
+    careerIndex: number;
+    watch: UseFormWatch<FieldValues>;
+    setValue: UseFormSetValue<FieldValues>;
+}) {
     const {fields: projectFields, append: appendProject, remove: removeProject} = useFieldArray({
         control,
         name: `career.${careerIndex}.projects`
@@ -979,7 +991,11 @@ function CareerFields({control, careerIndex, watch, setValue}: any) {
 }
 
 // Project Fields Component (for career projects)
-function ProjectFields({control, careerIndex, projectIndex}: any) {
+function ProjectFields({control, careerIndex, projectIndex}: {
+    control: Control<FieldValues>;
+    careerIndex: number;
+    projectIndex: number;
+}) {
     return (
         <div className="flex flex-col gap-3">
             <TextInput
@@ -1018,7 +1034,12 @@ function ProjectFields({control, careerIndex, projectIndex}: any) {
 }
 
 // Personal Project Fields Component
-function PersonalProjectFields({control, projectIndex, watch, setValue}: any) {
+function PersonalProjectFields({control, projectIndex, watch, setValue}: {
+    control: Control<FieldValues>;
+    projectIndex: number;
+    watch: UseFormWatch<FieldValues>;
+    setValue: UseFormSetValue<FieldValues>;
+}) {
     const {improveText: improveProjectText, isLoading: isProjectLoading} = useGeminiProjects();
 
     const handleImproveProjectDescription = async () => {

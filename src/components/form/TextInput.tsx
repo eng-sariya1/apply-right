@@ -1,10 +1,10 @@
-import {Controller} from "react-hook-form";
+import {Controller, type Control, type FieldValues} from "react-hook-form";
 import {InputText} from "primereact/inputtext";
 
 const TextInput = ({label, name, control, dataCy, placeholder}: {
     label: string,
     name: string,
-    control: any,
+    control: Control<FieldValues>,
     dataCy: string,
     placeholder: string
 }) => {

@@ -1,48 +1,25 @@
+Fix the following security and quality issues. Do NOT change any existing functionality, UI, or business logic.
+Firestore Rules — Privilege Escalation (firestore.rules)
+Users can currently overwrite their own role and status fields. Fix the /users/{uid} update rule so that only admins can change role and status
+2- Blocked User Enforcement in Firestore Rules
+Update the /cvs/{uid} rules to check that the user's status is not blocked
+3- Fix lint script in package.json
+Change the lint script from eslint my-app to eslint src/.
+4- Fix all ESLint errors
 
-src/components/CVFormTemplate2.tsx:31:7 - error TS6133: 'jobTypeOptions' is declared but its value is never read.
+Replace any types with proper TypeScript types.
+Prefix intentionally unused destructured variables with _ (e.g. _id, _savedAt).
+Add // eslint-disable-next-line react-refresh/only-export-components in AuthContext.tsx and CVContext.tsx where needed.
+5-  Preserve original errors in catch blocks
+In extractTextFromPDF and extractTextFromDOCX, change
+6-Gemini API Key Exposure
 
-31 const jobTypeOptions = [
-~~~~~~~~~~~~~~
-
-src/components/CVFormTemplate2.tsx:691:30 - error TS2741: Property 'dataCy' is missing in type '{ label: string; name: string; control: any; placeholder: string; }' but required in type '{ label: string; name: string; control: any; dataCy: string; placeholder: string; }'.
-
-691                             <TextInput label="Project Name" name={`career.${careerIndex}.projects.${projIndex}.name`} control={control} placeholder="Project Name"/>
-~~~~~~~~~
-
-src/components/form/TextInput.tsx:8:5
-8     dataCy: string,
-~~~~~~
-'dataCy' is declared here.
-
-src/components/CVFormTemplate2.tsx:692:30 - error TS2741: Property 'dataCy' is missing in type '{ name: string; control: any; placeholder: string; rows: number; }' but required in type '{ label?: string | undefined; name: string; control: any; dataCy: string; placeholder: string; rows?: number | undefined; }'.
-
-692                             <TextAreaInput name={`career.${careerIndex}.projects.${projIndex}.description`} control={control} placeholder="Project description..." rows={2}/>   
-~~~~~~~~~~~~~
-
-src/components/form/TextAreaInput.tsx:8:5
-8     dataCy: string,
-~~~~~~
-'dataCy' is declared here.
-
-src/components/CVFormTemplate3.tsx:631:30 - error TS2741: Property 'dataCy' is missing in type '{ label: string; name: string; control: any; placeholder: string; }' but required in type '{ label: string; name: string; control: any; dataCy: string; placeholder: string; }'.
-
-631                             <TextInput label="Project Name" name={`career.${careerIndex}.projects.${projIndex}.name`} control={control} placeholder="Project Name"/>
-~~~~~~~~~
-
-src/components/form/TextInput.tsx:8:5
-8     dataCy: string,
-~~~~~~
-'dataCy' is declared here.
-
-src/components/CVFormTemplate3.tsx:632:30 - error TS2741: Property 'dataCy' is missing in type '{ name: string; control: any; placeholder: string; rows: number; }' but required in type '{ label?: string | undefined; name: string; control: any; dataCy: string; placeholder: string; rows?: number | undefined; }'.
-
-632                             <TextAreaInput name={`career.${careerIndex}.projects.${projIndex}.description`} control={control} placeholder="Project description..." rows={2}/>   
-~~~~~~~~~~~~~
-
-src/components/form/TextAreaInput.tsx:8:5
-8     dataCy: string,
-~~~~~~
-'dataCy' is declared here.
+Add .env to .gitignore
+Run git rm --cached .env so it's untracked
+Create a Firebase Cloud Function (or Netlify serverless function) that proxies all Gemini API calls. The function reads the API key from server-side environment variables (not VITE_-prefixed).
+Update all useGemini* hooks in the frontend to call your new proxy endpoint instead of calling the Gemini API directly.
+Remove the VITE_GEMINI_API_KEY variable from .env — replace it with a non-VITE key used only by the backend function.
 
 
-Found 5 errors.
+
+Do not change any functionality, component behavior, or UI. Only fix security rules, move the API key to the backend, and resolve linting/error-handling issues.

@@ -63,7 +63,7 @@ export default function HomePage() {
   };
 
   const handleEdit = (cv: SavedCV) => {
-    const { id, savedAt, ...cvDataWithoutMeta } = cv;
+    const { id: _id, savedAt: _savedAt, ...cvDataWithoutMeta } = cv;
     setCvData(cvDataWithoutMeta);
     navigate('/cv-builder');
   };

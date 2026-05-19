@@ -77,7 +77,7 @@ export default function UploadResumeModal({ isOpen, onClose, onSuccess }: Upload
       const page = await pdf.getPage(i);
       const textContent = await page.getTextContent();
       const pageText = textContent.items
-        .map((item: any) => item.str)
+        .map((item) => (item as { str: string }).str)
         .join(' ');
       fullText += pageText + '\n';
     }

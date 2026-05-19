@@ -32,10 +32,11 @@ function Login() {
             setLoading(true);
             const role = await loginWithGoogle();
             navigate(role === 'admin' ? '/dashboard' : '/home');
-        } catch (err: any) {
-            if (err.code === 'auth/popup-closed-by-user') {
+        } catch (err: unknown) {
+            const code = (err as { code?: string }).code;
+            if (code === 'auth/popup-closed-by-user') {
                 setError('Sign-in cancelled');
-            } else if (err.code === 'auth/cancelled-popup-request') {
+            } else if (code === 'auth/cancelled-popup-request') {
                 // User closed popup, ignore
             } else {
                 setError('Failed to sign in with Google');
@@ -60,8 +61,8 @@ function Login() {
                 return;
             }
             navigate(role === 'admin' ? '/dashboard' : '/home');
-        } catch (error: any) {
-            setError('Failed to log in: ' + error.message);
+        } catch (error: unknown) {
+            setError('Failed to log in: ' + (error instanceof Error ? error.message : String(error)));
         }
         setLoading(false);
     }

@@ -1,4 +1,4 @@
-import {useForm, useFieldArray, Controller} from 'react-hook-form';
+import {useForm, useFieldArray, Controller, type Control, type FieldValues, type UseFormWatch, type UseFormSetValue} from 'react-hook-form';
 import {useEffect, useState, useRef} from 'react';
 import {motion} from 'framer-motion';
 import {Accordion, AccordionTab} from 'primereact/accordion';
@@ -12,7 +12,7 @@ import {useGeminiEducation} from '../hooks/useGeminiEducation';
 import {useGeminiATS} from '../hooks/useGeminiATS';
 import {useGeminiCVParser} from '../hooks/useGeminiCVParser';
 import {useNavigate} from "react-router-dom";
-import {FileUpload} from "primereact/fileupload";
+import {FileUpload, type FileUploadSelectEvent} from "primereact/fileupload";
 import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
 import TextInput from "./form/TextInput.tsx";
@@ -58,7 +58,13 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
     };
 
     const navigate = useNavigate();
-    const {control, watch, setValue} = useForm<CVData>({defaultValues});
+    // RHF's Control/UseForm* generics are invariant; the shared field wrappers
+    // are typed against the generic FieldValues. Erase the type once here —
+    // runtime is unchanged (same function references).
+    const form = useForm<CVData>({defaultValues});
+    const control = form.control as unknown as Control<FieldValues>;
+    const watch = form.watch as unknown as UseFormWatch<FieldValues>;
+    const setValue = form.setValue as unknown as UseFormSetValue<FieldValues>;
 
     // File upload state
     const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
@@ -156,11 +162,11 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
             for (let i = 1; i <= pdf.numPages; i++) {
                 const page = await pdf.getPage(i);
                 const textContent = await page.getTextContent();
-                fullText += textContent.items.map((item: any) => item.str).join(' ') + '\n';
+                fullText += textContent.items.map((item) => (item as { str: string }).str).join(' ') + '\n';
             }
             return fullText.trim();
         } catch (error) {
-            throw new Error('Failed to extract text from PDF');
+            throw new Error('Failed to extract text from PDF', { cause: error });
         }
     };
 
@@ -170,11 +176,11 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
             const result = await mammoth.extractRawText({arrayBuffer});
             return result.value.trim();
         } catch (error) {
-            throw new Error('Failed to extract text from DOC/DOCX');
+            throw new Error('Failed to extract text from DOC/DOCX', { cause: error });
         }
     };
 
-    const handleFileSelect = async (event: any) => {
+    const handleFileSelect = async (event: FileUploadSelectEvent) => {
         setUploadError('');
         setExtractedText('');
         const file = event.files[0];
@@ -606,7 +612,12 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
 }
 
 // Career Fields subcomponent for Template 2
-function CareerFieldsT2({control, careerIndex, watch, setValue}: any) {
+function CareerFieldsT2({control, careerIndex, watch, setValue}: {
+    control: Control<FieldValues>;
+    careerIndex: number;
+    watch: UseFormWatch<FieldValues>;
+    setValue: UseFormSetValue<FieldValues>;
+}) {
     const {fields: projectFields, append: appendProject, remove: removeProject} = useFieldArray({
         control,
         name: `career.${careerIndex}.projects`

@@ -180,7 +180,7 @@ export default function CVBuilder() {
 
   // Load a saved CV into the editor
   const handleLoadCV = useCallback((cv: SavedCV) => {
-    const { id, savedAt, ...cvDataWithoutMeta } = cv;
+    const { id, savedAt: _savedAt, ...cvDataWithoutMeta } = cv;
     setCvData(cvDataWithoutMeta);
     setActiveCvId(id);
   }, [setCvData]);

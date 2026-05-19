@@ -24,10 +24,11 @@ function Signup() {
             setLoading(true);
             const role = await loginWithGoogle();
             navigate(role === 'admin' ? '/dashboard' : '/home');
-        } catch (err: any) {
-            if (err.code === 'auth/popup-closed-by-user') {
+        } catch (err: unknown) {
+            const code = (err as { code?: string }).code;
+            if (code === 'auth/popup-closed-by-user') {
                 setError('Sign-in cancelled');
-            } else if (err.code === 'auth/cancelled-popup-request') {
+            } else if (code === 'auth/cancelled-popup-request') {
                 // User closed popup, ignore
             } else {
                 setError('Failed to sign in with Google');
@@ -51,8 +52,8 @@ function Signup() {
             // Account created; a verification email was sent. The user stays
             // signed in but unverified — the Login page shows the verify panel.
             navigate('/login');
-        } catch (error: any) {
-            setError('Failed to create account: ' + error.message);
+        } catch (error: unknown) {
+            setError('Failed to create account: ' + (error instanceof Error ? error.message : String(error)));
         }
         setLoading(false);
     }
