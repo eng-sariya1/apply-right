@@ -1,0 +1,66 @@
+@import "tailwindcss";
+@import 'tw-animate-css';
+
+/* Users DataTable custom theme overrides */
+.users-datatable .p-datatable-thead > tr > th {
+    background: #FAF7F0 !important;
+    color: #02343F !important;
+    font-weight: 700 !important;
+    border-color: #C6DEE4 !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.users-datatable .p-datatable-tbody > tr {
+    background: transparent !important;
+    transition: background 0.15s;
+}
+
+.users-datatable .p-datatable-tbody > tr:hover {
+    background: rgba(1, 122, 140, 0.04) !important;
+}
+
+.users-datatable .p-datatable-tbody > tr > td {
+    border-color: #C6DEE4 !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.users-datatable .p-paginator {
+    background: transparent !important;
+    border: none !important;
+    padding: 1rem 0 0 !important;
+}
+
+.users-datatable .p-inputtext:focus {
+    box-shadow: 0 0 0 2px rgba(1, 122, 140, 0.2) !important;
+    border-color: #017A8C !important;
+}
+
+.users-datatable .p-dropdown:focus,
+.users-datatable .p-dropdown.p-focus {
+    box-shadow: 0 0 0 2px rgba(1, 122, 140, 0.2) !important;
+    border-color: #017A8C !important;
+}
+
+.users-datatable .p-sortable-column:focus {
+    box-shadow: inset 0 0 0 2px rgba(1, 122, 140, 0.2) !important;
+}
+
+.users-datatable .p-tag.p-tag-success {
+    background: #dcfce7 !important;
+    color: #166534 !important;
+}
+
+.users-datatable .p-tag.p-tag-danger {
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+}
+
+.users-datatable .p-tag.p-tag-warning {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+}
+
+.users-datatable .p-tag.p-tag-info {
+    background: #e0f2fe !important;
+    color: #075985 !important;
+}
