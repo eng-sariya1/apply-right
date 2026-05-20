@@ -14,7 +14,7 @@ import {
     getIdToken,
     type User
 } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, writeBatch } from 'firebase/firestore';
 import { auth, db, googleProvider } from './firebase';
 
 export type UserRole = 'admin' | 'user' | null;
@@ -25,9 +25,10 @@ interface AuthContextType {
     userRole: UserRole;
     userStatus: UserStatus;
     token: string | null;
-    signup: (email: string, password: string) => Promise<UserRole>;
+    signup: (email: string, password: string, name: string) => Promise<UserRole>;
     login: (email: string, password: string) => Promise<UserRole>;
     loginWithGoogle: () => Promise<UserRole>;
+    lookupUsername: (name: string) => Promise<{ uid: string; email: string } | null>;
     logout: () => Promise<void>;
     refreshToken: () => Promise<void>;
     sendVerificationEmail: () => Promise<void>;
@@ -49,7 +50,10 @@ export function useAuth() {
     return context;
 }
 
-async function fetchUserData(user: User): Promise<{ role: UserRole; status: UserStatus }> {
+async function fetchUserData(
+    user: User,
+    displayName?: string,
+): Promise<{ role: UserRole; status: UserStatus }> {
     const userDocRef = doc(db, 'users', user.uid);
     const userDoc = await getDoc(userDocRef);
     if (userDoc.exists()) {
@@ -61,12 +65,25 @@ async function fetchUserData(user: User): Promise<{ role: UserRole; status: User
     }
     await setDoc(userDocRef, {
         email: user.email,
-        displayName: user.displayName || null,
+        // For email/password signup we pass the Full Name explicitly; for
+        // Google sign-in we fall back to the Google-provided displayName.
+        displayName: displayName ?? user.displayName ?? null,
         role: 'user',
         status: 'active',
         createdAt: new Date().toISOString(),
     });
     return { role: 'user', status: 'active' };
+}
+
+// Normalize a free-form name into a Firestore doc ID for /usernames lookup.
+// Collapses whitespace, lowercases, and replaces '/' (forbidden in doc IDs)
+// with a space. Throws on empty / reserved IDs ('.', '..', '__*__').
+function usernameKey(s: string): string {
+    const k = s.replace(/\s+/g, ' ').replace(/\//g, ' ').trim().toLowerCase();
+    if (!k || k === '.' || k === '..' || /^__.*__$/.test(k)) {
+        throw new Error('Invalid name');
+    }
+    return k;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -86,16 +103,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('authToken', freshToken);
     }
 
-    async function signup(email: string, password: string): Promise<UserRole> {
+    async function signup(email: string, password: string, name: string): Promise<UserRole> {
         const credential = await createUserWithEmailAndPassword(auth, email, password);
         // Prove the email belongs to the user before they can access the app.
         await sendEmailVerification(credential.user);
+        // The signup field IS the user's displayed name AND their login handle.
+        // Set the Auth profile so the rest of the app (Sidebar, ProfilePage,
+        // admin views) sees it consistently from this point on.
+        await updateProfile(credential.user, { displayName: name });
+        // Reserve the name -> {uid, email} mapping under the normalized key.
+        // Rules enforce uniqueness atomically — a second user's claim would
+        // become an update op that fails the ownership check.
+        await setDoc(doc(db, 'usernames', usernameKey(name)), {
+            uid: credential.user.uid,
+            email: credential.user.email ?? email,
+        });
         if (auth.currentUser){
             const freshToken = await getIdToken(auth?.currentUser, true);
             localStorage.setItem('authToken', freshToken);
             setToken(freshToken);
         }
-        const { role, status } = await fetchUserData(credential.user);
+        const { role, status } = await fetchUserData(credential.user, name);
         setUserRole(role);
         setUserStatus(status);
         return role;
@@ -125,6 +153,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUserRole(role);
         setUserStatus(status);
         return role;
+    }
+
+    async function lookupUsername(name: string): Promise<{ uid: string; email: string } | null> {
+        // Normalize internally so the raw login input "Sariya Jabr",
+        // "sariya  jabr", or "  SARIYA jabr  " all resolve to the same doc ID.
+        // Invalid input -> no match (the Login form falls through to its
+        // "not found" branch cleanly).
+        let key: string;
+        try {
+            key = usernameKey(name);
+        } catch {
+            return null;
+        }
+        const snap = await getDoc(doc(db, 'usernames', key));
+        if (!snap.exists()) {
+            return null;
+        }
+        const data = snap.data();
+        return { uid: data.uid as string, email: data.email as string };
     }
 
     async function logout() {
@@ -174,19 +221,59 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!user) {
             throw new Error('No signed-in user');
         }
+        // Throws 'Invalid name' on empty/reserved input — ProfilePage maps it.
+        const newKey = usernameKey(name);
+
+        // Friendly uniqueness pre-check. Rules enforce the real guarantee (a
+        // second user's claim becomes an `update` op that fails because they
+        // are not the current owner), but checking up front gives a clean
+        // error without leaving the Auth profile half-updated.
+        const newSnap = await getDoc(doc(db, 'usernames', newKey));
+        if (newSnap.exists() && (newSnap.data().uid as string) !== user.uid) {
+            throw new Error('name-taken');
+        }
+
+        // Best-effort: derive the old key so we can release it on rename. If
+        // the user's current displayName is itself invalid, don't block.
+        let oldKey: string | null = null;
+        if (user.displayName) {
+            try {
+                oldKey = usernameKey(user.displayName);
+            } catch {
+                oldKey = null;
+            }
+        }
+
+        const batch = writeBatch(db);
+        batch.set(doc(db, 'usernames', newKey), {
+            uid: user.uid,
+            email: user.email ?? '',
+        });
+        if (oldKey && oldKey !== newKey) {
+            // Only include the delete if the old doc actually exists and we
+            // own it — otherwise the rule evaluates against a null resource
+            // and aborts the whole batch.
+            const oldSnap = await getDoc(doc(db, 'usernames', oldKey));
+            if (oldSnap.exists() && (oldSnap.data().uid as string) === user.uid) {
+                batch.delete(doc(db, 'usernames', oldKey));
+            }
+        }
+        // Mirror into the user profile doc in the same atomic commit. If the
+        // rules layer rejects the mapping, this rolls back too — so the admin
+        // view never shows a name the public mapping disagrees with.
+        batch.set(
+            doc(db, 'users', user.uid),
+            { displayName: name },
+            { merge: true },
+        );
+        await batch.commit();
+
+        // Only update the Auth profile once the Firestore claim succeeded;
+        // that way a lost race never leaves the in-memory profile ahead of
+        // the source of truth.
         await updateProfile(user, { displayName: name });
-        // Refresh the in-memory user, then force a re-render so the sidebar
-        // reflects the new name immediately. This must happen before the
-        // Firestore write so a Firestore hiccup can't block the UI update.
         await user.reload();
         setProfileVersion((v) => v + 1);
-        // Mirror into Firestore for the admin view — best-effort, non-fatal
-        // (the sidebar reads the Auth profile, not this doc).
-        try {
-            await setDoc(doc(db, 'users', user.uid), { displayName: name }, { merge: true });
-        } catch (err) {
-            console.error('Failed to mirror displayName to Firestore:', err);
-        }
     }
 
     async function changePassword(currentPassword: string, newPassword: string) {
@@ -259,6 +346,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signup,
         login,
         loginWithGoogle,
+        lookupUsername,
         logout,
         refreshToken,
         sendVerificationEmail,

@@ -12,6 +12,7 @@ import {
     Loader2,
 } from 'lucide-react';
 import { useAuth } from '../AuthContext';
+import PasswordInput from '../components/PasswordInput';
 
 export default function ProfilePage() {
     const navigate = useNavigate();
@@ -48,8 +49,15 @@ export default function ProfilePage() {
             setSavingName(true);
             await updateDisplayName(trimmed);
             setNameNotice('Your name has been updated.');
-        } catch {
-            setNameError('Could not update your name. Please try again.');
+        } catch (err: unknown) {
+            const msg = (err as Error)?.message;
+            if (msg === 'name-taken') {
+                setNameError('That name is already in use, please choose a different one.');
+            } else if (msg === 'Invalid name') {
+                setNameError('Please enter a valid name.');
+            } else {
+                setNameError('Could not update your name. Please try again.');
+            }
         } finally {
             setSavingName(false);
         }
@@ -272,38 +280,38 @@ export default function ProfilePage() {
                             <form onSubmit={handleChangePassword} className="space-y-5">
                                 <div>
                                     <label htmlFor="current-password" className={labelClass}>Current password</label>
-                                    <input
+                                    <PasswordInput
                                         id="current-password"
-                                        type="password"
                                         value={currentPassword}
                                         onChange={(e) => setCurrentPassword(e.target.value)}
                                         required
-                                        className={inputClass}
+                                        autoComplete="current-password"
                                         placeholder="Enter your current password"
+                                        className={inputClass + ' pr-12'}
                                     />
                                 </div>
                                 <div>
                                     <label htmlFor="new-password" className={labelClass}>New password</label>
-                                    <input
+                                    <PasswordInput
                                         id="new-password"
-                                        type="password"
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
                                         required
-                                        className={inputClass}
+                                        autoComplete="new-password"
                                         placeholder="Minimum 6 characters"
+                                        className={inputClass + ' pr-12'}
                                     />
                                 </div>
                                 <div>
                                     <label htmlFor="confirm-password" className={labelClass}>Confirm new password</label>
-                                    <input
+                                    <PasswordInput
                                         id="confirm-password"
-                                        type="password"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         required
-                                        className={inputClass}
+                                        autoComplete="new-password"
                                         placeholder="Re-enter the new password"
+                                        className={inputClass + ' pr-12'}
                                     />
                                 </div>
                                 <motion.button

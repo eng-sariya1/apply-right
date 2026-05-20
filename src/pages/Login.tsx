@@ -4,6 +4,7 @@ import { auth } from '../firebase';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { AlertCircle, CheckCircle2, MailCheck, Loader2 } from 'lucide-react';
+import PasswordInput from '../components/PasswordInput';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ function Login() {
     const [loading, setLoading] = useState(false);
     const [verifying, setVerifying] = useState(false);
     const [showReset, setShowReset] = useState(false);
-    const { login, loginWithGoogle, logout, currentUser, userRole, sendVerificationEmail, reloadAndRefresh, resetPassword } = useAuth();
+    const { login, loginWithGoogle, logout, lookupUsername, currentUser, userRole, sendVerificationEmail, reloadAndRefresh, resetPassword } = useAuth();
     const navigate = useNavigate();
 
     // Fully authenticated (verified) — go to the app.
@@ -53,7 +54,37 @@ function Login() {
             setError('');
             setNotice('');
             setLoading(true);
-            const role = await login(email, password);
+            // An "@" means it's an email — sign in directly. Otherwise treat
+            // the field as the user's name (their Full Name on Profile, which
+            // doubles as their login handle) and resolve it to an email.
+            const identifier = email.trim();
+            let loginEmail = identifier;
+            if (!identifier.includes('@')) {
+                let match: { uid: string; email: string } | null = null;
+                try {
+                    // lookupUsername normalizes internally (trim, collapse
+                    // whitespace, lowercase) so casing and stray spaces don't
+                    // matter.
+                    match = await lookupUsername(identifier);
+                } catch (lookupErr) {
+                    // Almost always Firestore permission-denied because the
+                    // /usernames rules haven't been deployed yet (also catches
+                    // transient network failures). Log the real cause for
+                    // debugging; show the user a friendlier message that
+                    // points at the working path (email).
+                    console.error('Identifier lookup failed:', lookupErr);
+                    setError('Login lookup is temporarily unavailable. Please try logging in with your email address.');
+                    setLoading(false);
+                    return;
+                }
+                if (!match) {
+                    setError('No account found for that name');
+                    setLoading(false);
+                    return;
+                }
+                loginEmail = match.email;
+            }
+            const role = await login(loginEmail, password);
             if (!auth.currentUser?.emailVerified) {
                 // Unverified: stay on this page; the verify panel will render
                 // once the auth state propagates. Do not enter the app.
@@ -382,16 +413,17 @@ function Login() {
                             {/* Email Input */}
                             <div>
                                 <label htmlFor="email" className="block text-sm font-semibold text-[#02343F] mb-2">
-                                    Email Address
+                                    Email or Name
                                 </label>
                                 <input
                                     id="email"
-                                    type="email"
+                                    type="text"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
+                                    autoComplete="username"
                                     className="w-full px-4 py-3 border border-[#C6DEE4] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-white/50"
-                                    placeholder="you@example.com"
+                                    placeholder="you@example.com or your full name"
                                 />
                             </div>
 
@@ -400,13 +432,12 @@ function Login() {
                                 <label htmlFor="password" className="block text-sm font-semibold text-[#02343F] mb-2">
                                     Password
                                 </label>
-                                <input
+                                <PasswordInput
                                     id="password"
-                                    type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
-                                    className="w-full px-4 py-3 border border-[#C6DEE4] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-white/50"
+                                    autoComplete="current-password"
                                     placeholder="Enter your password"
                                 />
                             </div>

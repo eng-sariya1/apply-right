@@ -3,13 +3,15 @@ import { useAuth } from '../AuthContext';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { AlertCircle, Loader2 } from 'lucide-react';
+import PasswordInput from '../components/PasswordInput';
 
 function Signup() {
+    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { signup, loginWithGoogle, currentUser, userRole } = useAuth();
+    const { signup, loginWithGoogle, lookupUsername, currentUser, userRole } = useAuth();
     const navigate = useNavigate();
 
     // Redirect if already logged in AND verified (unverified users go to the
@@ -41,6 +43,21 @@ function Signup() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
+        // Permissive validation: this value becomes both the displayed Full
+        // Name and the login handle, so it has to accept real names with
+        // spaces / accents / apostrophes. Reject only the things that would
+        // break: too short/long, no alphanumerics at all, or '/' (Firestore
+        // doc-ID limit).
+        const cleanedName = fullName.trim().replace(/\s+/g, ' ');
+        if (
+            cleanedName.length < 2
+            || cleanedName.length > 50
+            || !/[\p{L}\p{N}]/u.test(cleanedName)
+            || cleanedName.includes('/')
+        ) {
+            return setError('Please enter a valid name (2–50 characters).');
+        }
+
         if (password.length < 6) {
             return setError('Password must be at least 6 characters long');
         }
@@ -48,7 +65,16 @@ function Signup() {
         try {
             setError('');
             setLoading(true);
-            await signup(email, password);
+            // Friendly pre-check before creating the account. The rules layer
+            // is the real uniqueness guard (only the current owner can update
+            // an existing /usernames doc), which the catch below surfaces if
+            // a race slips past this.
+            if (await lookupUsername(cleanedName)) {
+                setError('That name is already taken. Please choose another.');
+                setLoading(false);
+                return;
+            }
+            await signup(email, password, cleanedName);
             // Account created; a verification email was sent. The user stays
             // signed in but unverified — the Login page shows the verify panel.
             navigate('/login');
@@ -146,6 +172,23 @@ function Signup() {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Full Name Input */}
+                    <div>
+                        <label htmlFor="fullName" className="block text-sm font-semibold text-[#02343F] mb-2">
+                            Full Name
+                        </label>
+                        <input
+                            id="fullName"
+                            type="text"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            required
+                            autoComplete="name"
+                            className="w-full px-4 py-3 border border-[#C6DEE4] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-white/50"
+                            placeholder="Your full name, e.g"
+                        />
+                    </div>
+
                     {/* Email Input */}
                     <div>
                         <label htmlFor="email" className="block text-sm font-semibold text-[#02343F] mb-2">
@@ -167,13 +210,12 @@ function Signup() {
                         <label htmlFor="password" className="block text-sm font-semibold text-[#02343F] mb-2">
                             Password
                         </label>
-                        <input
+                        <PasswordInput
                             id="password"
-                            type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full px-4 py-3 border border-[#C6DEE4] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-white/50"
+                            autoComplete="new-password"
                             placeholder="Minimum 6 characters"
                         />
                     </div>

@@ -1,25 +1,26 @@
-Fix the following security and quality issues. Do NOT change any existing functionality, UI, or business logic.
-Firestore Rules — Privilege Escalation (firestore.rules)
-Users can currently overwrite their own role and status fields. Fix the /users/{uid} update rule so that only admins can change role and status
-2- Blocked User Enforcement in Firestore Rules
-Update the /cvs/{uid} rules to check that the user's status is not blocked
-3- Fix lint script in package.json
-Change the lint script from eslint my-app to eslint src/.
-4- Fix all ESLint errors
+Add username-based login to the existing Email/Password authentication. Do NOT change any existing functionality.
+1. Signup — add username field:
 
-Replace any types with proper TypeScript types.
-Prefix intentionally unused destructured variables with _ (e.g. _id, _savedAt).
-Add // eslint-disable-next-line react-refresh/only-export-components in AuthContext.tsx and CVContext.tsx where needed.
-5-  Preserve original errors in catch blocks
-In extractTextFromPDF and extractTextFromDOCX, change
-6-Gemini API Key Exposure
+In Signup.tsx, add a "Username" text input above the email field.
+After Firebase createUserWithEmailAndPassword succeeds, save the username to the user's Firestore document at /users/{uid} with field username (lowercase, trimmed).
+Validate: username must be 3-20 characters, alphanumeric and underscores only (/^[a-zA-Z0-9_]{3,20}$/).
+Before creating the account, check Firestore to make sure the username is not already taken (query /users where username == inputUsername). Show an error if taken.
 
-Add .env to .gitignore
-Run git rm --cached .env so it's untracked
-Create a Firebase Cloud Function (or Netlify serverless function) that proxies all Gemini API calls. The function reads the API key from server-side environment variables (not VITE_-prefixed).
-Update all useGemini* hooks in the frontend to call your new proxy endpoint instead of calling the Gemini API directly.
-Remove the VITE_GEMINI_API_KEY variable from .env — replace it with a non-VITE key used only by the backend function.
+2. Firestore — add username index:
 
+In firestore.rules, allow the username uniqueness query by ensuring users can read the username field for validation:
 
+allow read: if request.auth != null;
+(This may already exist via the existing read rule — just make sure the query works.)
+3. Login — accept username OR email:
 
-Do not change any functionality, component behavior, or UI. Only fix security rules, move the API key to the backend, and resolve linting/error-handling issues.
+In Login.tsx, change the email input label to "Email or Username".
+On submit: if the input contains @, treat it as email and sign in directly with signInWithEmailAndPassword.
+If it does NOT contain @, query Firestore /users where username == input to get the matching user's email, then use that email with signInWithEmailAndPassword.
+If no user found with that username, show error "Username not found".
+
+4. Username display:
+
+Wherever the app shows the user's email or display name, also show the username if available (e.g. profile, navbar).
+
+Do not change any existing authentication flow, Firestore rules logic, or other functionality. The Google sign-in flow should remain unchanged. Users who signed up before this change (without a username) should still be able to log in with their email as before
