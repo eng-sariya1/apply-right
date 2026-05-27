@@ -19,6 +19,7 @@ import {
   Legend,
 } from 'chart.js';
 import { useCVContext } from '../context/CVContext';
+import { useToast } from '../context/ToastContext';
 import { useGeminiATSAnalysis } from '../hooks/useGeminiATSAnalysis';
 import { useGeminiCVOptimizer } from '../hooks/useGeminiCVOptimizer';
 import { useGeminiProfessionalBackground } from '../hooks/useGeminiProfessionalBackground';
@@ -38,6 +39,7 @@ ChartJS.register(
 export default function ATSPage() {
   const navigate = useNavigate();
   const { cvData, setCvData, atsResult: analysisResult, setAtsResult: setAnalysisResult } = useCVContext();
+  const { showToast } = useToast();
   const { analyzeCV, isLoading, error } = useGeminiATSAnalysis();
   const { generateSuggestions, applySuggestions, isLoading: isOptimizing, error: optimizeError } = useGeminiCVOptimizer();
   const { generateDescription, isLoading: isGenerating } = useGeminiProfessionalBackground();
@@ -135,7 +137,7 @@ export default function ATSPage() {
       console.log('Optimization applied successfully! New match score:', newAnalysis.matchPercentage);
     } catch (err) {
       console.error('Failed to apply optimizations:', err);
-      alert('Failed to apply optimizations. Please try again.');
+      showToast('error', 'Optimization Failed', 'Failed to apply optimizations. Please try again.');
     }
   };
 
@@ -183,7 +185,7 @@ export default function ATSPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--color-bg)] relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
@@ -251,9 +253,9 @@ export default function ATSPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+            <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
               {/* Mode Tabs */}
-              <div className="flex gap-1 p-1 bg-[#FAF7F0] rounded-xl mb-5 border border-[#C6DEE4]/40">
+              <div className="flex gap-1 p-1 bg-[var(--color-bg)] rounded-xl mb-5 border border-[var(--color-border)]/40">
                 {[
                   { id: 'job-description', label: 'Job Description', icon: FileText },
                   { id: 'professional-background', label: 'Professional Background', icon: Briefcase },
@@ -264,7 +266,7 @@ export default function ATSPage() {
                     className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
                       mode === id
                         ? 'bg-[#017A8C] text-white shadow-md'
-                        : 'text-[#88B7C4] hover:text-[#017A8C]'
+                        : 'text-[var(--color-text-light)] hover:text-[#017A8C]'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -278,7 +280,7 @@ export default function ATSPage() {
                   <h2 className="text-xl font-bold text-[#017A8C] mb-1">
                     {mode === 'job-description' ? 'Job Description' : 'Professional Background'}
                   </h2>
-                  <p className="text-sm text-[#88B7C4]">
+                  <p className="text-sm text-[var(--color-text-light)]">
                     {mode === 'job-description'
                       ? 'Paste the job description below to analyze how well your CV matches'
                       : 'Enter a professional background to generate keywords and analyze your CV alignment'}
@@ -319,7 +321,7 @@ export default function ATSPage() {
                     data-cy="professional-background-input"
                   />
                   {isGenerating && (
-                    <motion.div className="flex items-center gap-2 text-sm text-[#88B7C4] px-1">
+                    <motion.div className="flex items-center gap-2 text-sm text-[var(--color-text-light)] px-1">
                       <div className="w-4 h-4 border-2 border-[#017A8C] border-t-transparent rounded-full animate-spin" />
                       Generating job description for "{professionalBackground}"...
                     </motion.div>
@@ -413,7 +415,7 @@ export default function ATSPage() {
                   {suggestions.map((suggestion) => (
                     <Card
                       key={suggestion.id}
-                      className={`bg-white/70 backdrop-blur-md shadow-md border-2 transition-all ${
+                      className={`bg-[var(--color-surface)] backdrop-blur-md shadow-md border-2 transition-all ${
                         suggestion.approved
                           ? 'border-purple-400 bg-purple-50/50'
                           : 'border-gray-200 hover:border-gray-300'
@@ -476,7 +478,7 @@ export default function ATSPage() {
                 </div>
 
                 {/* Apply Button */}
-                <Card className="bg-white/70 backdrop-blur-md shadow-lg border border-purple-200 sticky bottom-0">
+                <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg border border-purple-200 sticky bottom-0">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-semibold text-gray-800">
@@ -500,7 +502,7 @@ export default function ATSPage() {
             ) : analysisResult ? (
               <div className="space-y-6">
                 {/* Match Percentage Card */}
-                <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+                <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
                   <div className="flex items-center gap-3 mb-4">
                     <TrendingUp className="w-6 h-6 text-[#017A8C]" />
                     <h3 className="text-lg font-bold text-[#017A8C]">Match Score</h3>
@@ -524,7 +526,7 @@ export default function ATSPage() {
                 </Card>
 
                 {/* Keyword Analysis Chart */}
-                <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+                <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
                   <h3 className="text-lg font-bold text-[#017A8C] mb-4">Keyword Analysis</h3>
                   <div className="h-64">
                     <Bar data={keywordChartData} options={chartOptions} />
@@ -533,7 +535,7 @@ export default function ATSPage() {
 
                 {/* Strengths */}
                 {analysisResult.strengths.length > 0 && (
-                  <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+                  <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
                     <h3 className="text-lg font-bold text-green-600 mb-3">Strengths</h3>
                     <ul className="space-y-2">
                       {analysisResult.strengths.map((strength, index) => (
@@ -548,7 +550,7 @@ export default function ATSPage() {
 
                 {/* Weaknesses */}
                 {analysisResult.weaknesses.length > 0 && (
-                  <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+                  <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
                     <h3 className="text-lg font-bold text-orange-600 mb-3">Areas for Improvement</h3>
                     <ul className="space-y-2">
                       {analysisResult.weaknesses.map((weakness, index) => (
@@ -563,7 +565,7 @@ export default function ATSPage() {
 
                 {/* Recommendations */}
                 {analysisResult.recommendations.length > 0 && (
-                  <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+                  <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
                     <h3 className="text-lg font-bold text-[#017A8C] mb-3">Recommendations</h3>
                     <ul className="space-y-2">
                       {analysisResult.recommendations.map((recommendation, index) => (
@@ -578,7 +580,7 @@ export default function ATSPage() {
 
                 {/* Matched Keywords */}
                 {analysisResult.keywordMatches.matched.length > 0 && (
-                  <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+                  <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
                     <h3 className="text-lg font-bold text-green-600 mb-3">Matched Keywords</h3>
                     <div className="flex flex-wrap gap-2">
                       {analysisResult.keywordMatches.matched.map((keyword, index) => (
@@ -595,7 +597,7 @@ export default function ATSPage() {
 
                 {/* Missing Keywords */}
                 {analysisResult.keywordMatches.missing.length > 0 && (
-                  <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+                  <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
                     <h3 className="text-lg font-bold text-orange-600 mb-3">Missing Keywords</h3>
                     <div className="flex flex-wrap gap-2">
                       {analysisResult.keywordMatches.missing.map((keyword, index) => (
@@ -611,11 +613,11 @@ export default function ATSPage() {
                 )}
               </div>
             ) : (
-              <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 h-full flex items-center justify-center">
+              <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 h-full flex items-center justify-center">
                 <div className="text-center py-12">
-                  <FileSearch className="w-16 h-16 text-[#88B7C4] mx-auto mb-4" />
+                  <FileSearch className="w-16 h-16 text-[var(--color-text-light)] mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-[#017A8C] mb-2">No Analysis Yet</h3>
-                  <p className="text-[#88B7C4]">
+                  <p className="text-[var(--color-text-light)]">
                     {mode === 'job-description'
                       ? 'Paste a job description and click "Analyze CV" to see results'
                       : 'Enter a Professional Background and click "Analyze CV" to see results'}

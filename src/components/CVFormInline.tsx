@@ -323,10 +323,10 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Upload CV Document</h3>
-                <p className="text-sm text-[#88B7C4] mb-4">
+                <p className="text-sm text-[var(--color-text-light)] mb-4">
                     Upload your existing CV in PDF or DOC format (Max 10MB)
                 </p>
 
@@ -360,7 +360,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                             initial={{opacity: 0, scale: 0.95}}
                             animate={{opacity: 1, scale: 1}}
                             transition={{duration: 0.3}}
-                            className="flex items-center justify-between p-4 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]"
+                            className="flex items-center justify-between p-4 bg-[var(--color-bg)] rounded-lg border border-[var(--color-border)]"
                         >
                             <div className="flex items-center gap-3 flex-1">
                                 <div
@@ -371,7 +371,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                                     <p className="text-sm font-semibold text-[#017A8C] truncate">
                                         {uploadedFile.name}
                                     </p>
-                                    <p className="text-xs text-[#88B7C4]">
+                                    <p className="text-xs text-[var(--color-text-light)]">
                                         {formatFileSize(uploadedFile.size)}
                                         {isExtracting && <span className="ml-2">• Extracting text...</span>}
                                         {!isExtracting && extractedText && <span
@@ -424,7 +424,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                                     <Sparkles className="w-5 h-5"/>
                                     {isParsing ? 'Parsing CV with AI...' : 'Auto-Fill Form from CV'}
                                 </motion.button>
-                                <p className="text-xs text-[#88B7C4] text-center">
+                                <p className="text-xs text-[var(--color-text-light)] text-center">
                                     Click to automatically parse and fill the form with data from your CV
                                 </p>
                             </motion.div>
@@ -472,7 +472,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                     </div>
                     <div className="flex-1">
                         <h3 className="text-base font-bold text-[#017A8C] mb-1">ATS Optimization</h3>
-                        <p className="text-sm text-[#88B7C4] mb-3">
+                        <p className="text-sm text-[var(--color-text-light)] mb-3">
                             Let AI optimize your entire CV for Applicant Tracking Systems to increase your chances of
                             getting interviews.
                         </p>
@@ -491,7 +491,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                             {isATSLoading ? 'Optimizing...' : 'Optimize My CV for ATS'}
                         </motion.button>
                         {(!watch('header.fullName') || !watch('abstract')?.trim()) && (
-                            <p className="text-xs text-[#88B7C4] mt-2 italic">
+                            <p className="text-xs text-[var(--color-text-light)] mt-2 italic">
                                 * Fill in your name and abstract first to enable ATS optimization
                             </p>
                         )}
@@ -504,7 +504,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Personal Information</h3>
 
@@ -545,7 +545,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 {/* Links */}
                 <div className="mt-6">
                     <div className="flex justify-between items-center mb-3">
-                        <label className="text-sm font-medium text-[#5A6A6F]">Links</label>
+                        <label className="text-sm font-medium text-[var(--color-muted)]">Links</label>
                         <motion.button
                             whileHover={{scale: 1.05}}
                             whileTap={{scale: 0.95}}
@@ -562,7 +562,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                     <div className="space-y-3">
                         {linkFields.map((field, index) => (
                             <div key={field.id}
-                                 className="flex gap-2 p-3 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]/30">
+                                 className="flex gap-2 p-3 bg-[var(--color-bg)] rounded-lg border border-[var(--color-border)]/30">
                                 <div className="flex-1 space-y-3">
                                     <TextInput
                                         label="Link Name"
@@ -599,7 +599,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.1}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Theme Color</h3>
                 <div className="flex items-center gap-4">
@@ -614,7 +614,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                                     format="hex"
                                 />
                                 <div
-                                    className="flex-1 h-12 rounded-lg border-2 border-[#C6DEE4] transition-all duration-300 flex items-center justify-center"
+                                    className="flex-1 h-12 rounded-lg border-2 border-[var(--color-border)] transition-all duration-300 flex items-center justify-center"
                                     style={{backgroundColor: `#${field.value || '017A8C'}`}}
                                 >
                   <span className="text-white font-semibold text-sm">
@@ -632,7 +632,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.2}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Abstract</h3>
@@ -642,7 +642,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                         type="button"
                         onClick={handleImproveAbstract}
                         disabled={!watch('abstract')?.trim() || isLoading}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 px-3 py-1.5 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <Sparkles className="w-4 h-4"/>
                         {isLoading ? 'Improving...' : 'Improve with AI'}
@@ -662,7 +662,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.3}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Skills</h3>
                 <ChipsInput
@@ -671,7 +671,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                     dataCy="skills-input"
                     placeholder="Type a skill and press Enter"
                 />
-                <p className="text-xs text-[#88B7C4] mt-2">
+                <p className="text-xs text-[var(--color-text-light)] mt-2">
                     Type a skill and press Enter. Examples: React, TypeScript, Node.js
                 </p>
             </motion.div>
@@ -681,7 +681,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.4}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Career</h3>
@@ -743,7 +743,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.5}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Personal Projects</h3>
@@ -800,7 +800,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.6}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Education</h3>
@@ -810,7 +810,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                         type="button"
                         onClick={handleImproveEducation}
                         disabled={!watch('education')?.trim() || isEducationLoading}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 px-3 py-1.5 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <Sparkles className="w-4 h-4"/>
                         {isEducationLoading ? 'Improving...' : 'Improve with AI'}
@@ -837,7 +837,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 className="cv-text-dialog"
             >
                 <div className="max-h-[70vh] overflow-y-auto">
-                    <pre className="whitespace-pre-wrap text-sm text-[#5A6A6F] font-mono leading-relaxed p-4 bg-[#FAF7F0] rounded-lg">
+                    <pre className="whitespace-pre-wrap text-sm text-[var(--color-muted)] font-mono leading-relaxed p-4 bg-[var(--color-bg)] rounded-lg">
                         {extractedText}
                     </pre>
                 </div>
@@ -925,14 +925,14 @@ function CareerFields({control, careerIndex, watch, setValue}: {
 
             <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className="text-sm font-medium text-[#5A6A6F]">Work Summary</label>
+                    <label className="text-sm font-medium text-[var(--color-muted)]">Work Summary</label>
                     <motion.button
                         whileHover={{scale: 1.05}}
                         whileTap={{scale: 0.95}}
                         type="button"
                         onClick={handleImproveCareerSummary}
                         disabled={!watch(`career.${careerIndex}.summarization`)?.trim() || isCareerLoading}
-                        className="flex items-center gap-1 px-2 py-1 bg-white border border-[#017A8C]/30 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-1 px-2 py-1 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <Sparkles className="w-3 h-3"/>
                         AI
@@ -948,9 +948,9 @@ function CareerFields({control, careerIndex, watch, setValue}: {
             </div>
 
             {/* Projects within Career */}
-            <div className="mt-4 pt-4 border-t border-[#C6DEE4]/30">
+            <div className="mt-4 pt-4 border-t border-[var(--color-border)]/30">
                 <div className="flex justify-between items-center mb-3">
-                    <label className="text-sm font-semibold text-[#5A6A6F]">Projects</label>
+                    <label className="text-sm font-semibold text-[var(--color-muted)]">Projects</label>
                     <motion.button
                         whileHover={{scale: 1.05}}
                         whileTap={{scale: 0.95}}
@@ -969,7 +969,7 @@ function CareerFields({control, careerIndex, watch, setValue}: {
                 </div>
 
                 {projectFields.map((field, projectIndex) => (
-                    <div key={field.id} className="mb-3 p-3 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]/30">
+                    <div key={field.id} className="mb-3 p-3 bg-[var(--color-bg)] rounded-lg border border-[var(--color-border)]/30">
                         <div className="flex justify-between items-center mb-2">
                             <span className="text-sm font-semibold text-[#017A8C]">Project {projectIndex + 1}</span>
                             <motion.button
@@ -1066,14 +1066,14 @@ function PersonalProjectFields({control, projectIndex, watch, setValue}: {
 
             <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className="text-sm font-medium text-[#5A6A6F]">Description</label>
+                    <label className="text-sm font-medium text-[var(--color-muted)]">Description</label>
                     <motion.button
                         whileHover={{scale: 1.05}}
                         whileTap={{scale: 0.95}}
                         type="button"
                         onClick={handleImproveProjectDescription}
                         disabled={!watch(`personalProjects.${projectIndex}.description`)?.trim() || isProjectLoading}
-                        className="flex items-center gap-1 px-2 py-1 bg-white border border-[#017A8C]/30 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-1 px-2 py-1 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <Sparkles className="w-3 h-3"/>
                         AI

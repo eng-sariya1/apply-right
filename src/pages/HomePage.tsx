@@ -91,7 +91,7 @@ export default function HomePage() {
   const recentCvs = savedCvs.slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--color-bg)] relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
@@ -146,21 +146,21 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <h2 className="text-lg font-bold text-[#02343F] mb-4">Quick Actions</h2>
+          <h2 className="text-lg font-bold text-[var(--color-text-dark)] mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Create New CV */}
             <motion.button
               whileHover={{ y: -5, scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => navigate('/templates')}
-              className="flex flex-col items-center gap-3 p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-[#C6DEE4]/40 shadow-md hover:shadow-lg hover:border-[#017A8C]/40 transition-all duration-200 text-center"
+              className="flex flex-col items-center gap-3 p-6 bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border border-[var(--color-border)]/40 shadow-md hover:shadow-lg hover:border-[#017A8C]/40 transition-all duration-200 text-center"
             >
               <div className="w-12 h-12 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <FilePlus className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="font-bold text-[#02343F]">Create New CV</p>
-                <p className="text-xs text-[#88B7C4] mt-0.5">Choose a template and start fresh</p>
+                <p className="font-bold text-[var(--color-text-dark)]">Create New CV</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-0.5">Choose a template and start fresh</p>
               </div>
             </motion.button>
 
@@ -172,16 +172,16 @@ export default function HomePage() {
               disabled={savedCvs.length === 0}
               className={`flex flex-col items-center gap-3 p-6 rounded-2xl border shadow-md text-center transition-all duration-200 ${
                 savedCvs.length > 0
-                  ? 'bg-white/80 backdrop-blur-sm border-[#C6DEE4]/40 hover:shadow-lg hover:border-[#017A8C]/40 cursor-pointer'
-                  : 'bg-white/40 border-[#C6DEE4]/20 opacity-50 cursor-not-allowed'
+                  ? 'bg-[var(--color-surface-80)] backdrop-blur-sm border-[var(--color-border)]/40 hover:shadow-lg hover:border-[#017A8C]/40 cursor-pointer'
+                  : 'bg-white/40 border-[var(--color-border)]/20 opacity-50 cursor-not-allowed'
               }`}
             >
               <div className="w-12 h-12 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <PlayCircle className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="font-bold text-[#02343F]">Continue Last CV</p>
-                <p className="text-xs text-[#88B7C4] mt-0.5">
+                <p className="font-bold text-[var(--color-text-dark)]">Continue Last CV</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-0.5">
                   {savedCvs.length > 0
                     ? `Resume "${savedCvs[0].header.fullName || 'Untitled'}"`
                     : 'No CVs saved yet'}
@@ -194,14 +194,14 @@ export default function HomePage() {
               whileHover={{ y: -5, scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => navigate('/ats')}
-              className="flex flex-col items-center gap-3 p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-[#C6DEE4]/40 shadow-md hover:shadow-lg hover:border-[#017A8C]/40 transition-all duration-200 text-center"
+              className="flex flex-col items-center gap-3 p-6 bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border border-[var(--color-border)]/40 shadow-md hover:shadow-lg hover:border-[#017A8C]/40 transition-all duration-200 text-center"
             >
               <div className="w-12 h-12 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <FileSearch className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="font-bold text-[#02343F]">Analyze CV</p>
-                <p className="text-xs text-[#88B7C4] mt-0.5">Check your ATS match score</p>
+                <p className="font-bold text-[var(--color-text-dark)]">Analyze CV</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-0.5">Check your ATS match score</p>
               </div>
             </motion.button>
           </div>
@@ -213,18 +213,18 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.35 }}
         >
-          <h2 className="text-lg font-bold text-[#02343F] mb-4">Recent CVs</h2>
+          <h2 className="text-lg font-bold text-[var(--color-text-dark)] mb-4">Recent CVs</h2>
 
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-[#C6DEE4]/40 shadow-md overflow-hidden">
+          <div className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border border-[var(--color-border)]/40 shadow-md overflow-hidden">
             {loading ? (
               <div className="flex items-center justify-center py-12">
                 <div className="w-6 h-6 border-2 border-[#017A8C] border-t-transparent rounded-full animate-spin" />
               </div>
             ) : recentCvs.length === 0 ? (
               <div className="text-center py-12 px-6">
-                <FileText className="w-12 h-12 text-[#C6DEE4] mx-auto mb-3" />
-                <p className="font-semibold text-[#02343F]">No CVs yet</p>
-                <p className="text-sm text-[#88B7C4] mt-1">Create your first CV to get started</p>
+                <FileText className="w-12 h-12 text-[var(--color-border)] mx-auto mb-3" />
+                <p className="font-semibold text-[var(--color-text-dark)]">No CVs yet</p>
+                <p className="text-sm text-[var(--color-text-light)] mt-1">Create your first CV to get started</p>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -235,7 +235,7 @@ export default function HomePage() {
                 </motion.button>
               </div>
             ) : (
-              <ul className="divide-y divide-[#C6DEE4]/30">
+              <ul className="divide-y divide-[var(--color-border)]/30">
                 {recentCvs.map((cv, i) => {
                   const meta = TEMPLATE_META[cv.templateId || 'template1'] ?? TEMPLATE_META.template1;
                   return (
@@ -244,7 +244,7 @@ export default function HomePage() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 * i }}
-                      className="flex items-center gap-4 px-5 py-4 hover:bg-[#FAF7F0]/60 transition-colors"
+                      className="flex items-center gap-4 px-5 py-4 hover:bg-[var(--color-bg)]/60 transition-colors"
                     >
                       {/* Icon */}
                       <div className="w-9 h-9 rounded-lg bg-[#017A8C]/10 flex items-center justify-center flex-shrink-0">
@@ -253,14 +253,14 @@ export default function HomePage() {
 
                       {/* Name + meta */}
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-[#02343F] truncate">
+                        <p className="font-semibold text-[var(--color-text-dark)] truncate">
                           {cv.header.fullName || 'Untitled CV'}
                         </p>
                         <div className="flex items-center gap-2 mt-0.5">
                           <span className={`px-2 py-0.5 rounded-full text-white text-xs font-medium ${meta.color}`}>
                             {meta.label}
                           </span>
-                          <span className="flex items-center gap-1 text-xs text-[#88B7C4]">
+                          <span className="flex items-center gap-1 text-xs text-[var(--color-text-light)]">
                             <Clock className="w-3 h-3" />
                             {formatDate(cv.savedAt)}
                           </span>
@@ -301,7 +301,7 @@ export default function HomePage() {
           </div>
 
           {savedCvs.length > 5 && (
-            <p className="text-xs text-[#88B7C4] mt-2 text-center">
+            <p className="text-xs text-[var(--color-text-light)] mt-2 text-center">
               Showing 5 of {savedCvs.length} CVs — open the CV Builder to see all
             </p>
           )}

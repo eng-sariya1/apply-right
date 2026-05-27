@@ -18,7 +18,7 @@ export default function SuggestionJobsPage() {
   const unlocked = cvReady && atsReady;
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--color-bg)] relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
@@ -92,7 +92,7 @@ export default function SuggestionJobsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Card className="bg-white/70 backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
+              <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
                 <div className="flex items-start gap-3 mb-5">
                   <div className="w-10 h-10 rounded-xl bg-[#017A8C]/10 flex items-center justify-center shrink-0">
                     <Briefcase className="w-5 h-5 text-[#017A8C]" />
@@ -101,7 +101,7 @@ export default function SuggestionJobsPage() {
                     <h3 className="text-lg font-bold text-[#017A8C] mb-1">
                       Let's find your next role
                     </h3>
-                    <p className="text-sm text-[#88B7C4]">
+                    <p className="text-sm text-[var(--color-text-light)]">
                       Start by completing your CV, then run an ATS analysis to see how it
                       scores. Once your CV is at least {REQUIRED_COMPLETION}% complete and
                       analyzed, we'll surface job openings matched to your profile.
@@ -111,17 +111,17 @@ export default function SuggestionJobsPage() {
 
                 {/* Progress checklist */}
                 <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-[#FAF7F0] border border-[#C6DEE4]/40">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)]/40">
                     {cvReady ? (
                       <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
                     ) : (
-                      <Circle className="w-5 h-5 text-[#88B7C4] shrink-0" />
+                      <Circle className="w-5 h-5 text-[var(--color-text-light)] shrink-0" />
                     )}
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-[#02343F]">
+                      <p className="text-sm font-semibold text-[var(--color-text-dark)]">
                         CV completion: {progress}%
                       </p>
-                      <p className="text-xs text-[#88B7C4]">
+                      <p className="text-xs text-[var(--color-text-light)]">
                         {cvReady
                           ? 'Your CV is ready.'
                           : `Reach ${REQUIRED_COMPLETION}% to continue.`}
@@ -129,17 +129,17 @@ export default function SuggestionJobsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-[#FAF7F0] border border-[#C6DEE4]/40">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)]/40">
                     {atsReady ? (
                       <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
                     ) : (
-                      <Circle className="w-5 h-5 text-[#88B7C4] shrink-0" />
+                      <Circle className="w-5 h-5 text-[var(--color-text-light)] shrink-0" />
                     )}
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-[#02343F]">
+                      <p className="text-sm font-semibold text-[var(--color-text-dark)]">
                         ATS analysis: {atsReady ? 'Done' : 'Not yet run'}
                       </p>
-                      <p className="text-xs text-[#88B7C4]">
+                      <p className="text-xs text-[var(--color-text-light)]">
                         {atsReady
                           ? 'Analysis complete.'
                           : 'Run an ATS analysis on your CV.'}
@@ -163,7 +163,7 @@ export default function SuggestionJobsPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => navigate('/ats')}
-                    className="flex-1 flex items-center justify-center gap-2 bg-white hover:bg-[#FAF7F0] text-[#017A8C] font-semibold py-2.5 px-6 rounded-lg border border-[#017A8C]/20 transition-all duration-300"
+                    className="flex-1 flex items-center justify-center gap-2 bg-[var(--color-surface-solid)] hover:bg-[var(--color-bg)] text-[#017A8C] font-semibold py-2.5 px-6 rounded-lg border border-[#017A8C]/20 transition-all duration-300"
                   >
                     <FileSearch className="w-4 h-4" />
                     Run ATS Analysis

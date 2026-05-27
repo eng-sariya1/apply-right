@@ -85,7 +85,7 @@ function Signup() {
     }
 
     return (
-        <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden flex items-center justify-center px-4">
+        <div className="min-h-screen bg-[var(--color-bg)] relative overflow-hidden flex items-center justify-center px-4">
             {/* Background Gradients */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
@@ -98,7 +98,7 @@ function Signup() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 w-full max-w-md border border-[#C6DEE4]/30"
+                className="relative bg-[var(--color-surface-90)] backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 w-full max-w-md border border-[var(--color-border)]/30"
             >
                 {/* Logo */}
                 <div className="text-center mb-8">
@@ -111,8 +111,8 @@ function Signup() {
                             Nuivo
                         </motion.h1>
                     </Link>
-                    <h2 className="text-2xl font-bold text-[#02343F] mb-2">Create Account</h2>
-                    <p className="text-sm text-[#88B7C4]">Join thousands building professional resumes</p>
+                    <h2 className="text-2xl font-bold text-[var(--color-text-dark)] mb-2">Create Account</h2>
+                    <p className="text-sm text-[var(--color-text-light)]">Join thousands building professional resumes</p>
                 </div>
 
                 <div className="mb-6">
@@ -123,7 +123,7 @@ function Signup() {
                         disabled={loading}
                         whileHover={{scale: 1.02}}
                         whileTap={{scale: 0.98}}
-                        className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 hover:border-[#4285F4] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                        className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--color-surface-solid)] border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 hover:border-[#4285F4] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                     >
                         {/* Google Icon SVG */}
                         <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -153,7 +153,7 @@ function Signup() {
                             <div className="w-full border-t border-gray-300"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-4 bg-white text-gray-500">or continue with email</span>
+                            <span className="px-4 bg-[var(--color-surface-solid)] text-gray-500">or continue with email</span>
                         </div>
                     </div>
                 </div>
@@ -174,7 +174,7 @@ function Signup() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Full Name Input */}
                     <div>
-                        <label htmlFor="fullName" className="block text-sm font-semibold text-[#02343F] mb-2">
+                        <label htmlFor="fullName" className="block text-sm font-semibold text-[var(--color-text-dark)] mb-2">
                             Full Name
                         </label>
                         <input
@@ -184,14 +184,14 @@ function Signup() {
                             onChange={(e) => setFullName(e.target.value)}
                             required
                             autoComplete="name"
-                            className="w-full px-4 py-3 border border-[#C6DEE4] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-white/50"
+                            className="w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)]"
                             placeholder="Your full name, e.g"
                         />
                     </div>
 
                     {/* Email Input */}
                     <div>
-                        <label htmlFor="email" className="block text-sm font-semibold text-[#02343F] mb-2">
+                        <label htmlFor="email" className="block text-sm font-semibold text-[var(--color-text-dark)] mb-2">
                             Email Address
                         </label>
                         <input
@@ -200,14 +200,14 @@ function Signup() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full px-4 py-3 border border-[#C6DEE4] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-white/50"
+                            className="w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)]"
                             placeholder="you@example.com"
                         />
                     </div>
 
                     {/* Password Input */}
                     <div>
-                        <label htmlFor="password" className="block text-sm font-semibold text-[#02343F] mb-2">
+                        <label htmlFor="password" className="block text-sm font-semibold text-[var(--color-text-dark)] mb-2">
                             Password
                         </label>
                         <PasswordInput
@@ -240,7 +240,7 @@ function Signup() {
                 </form>
 
                 {/* Login Link */}
-                <p className="mt-6 text-center text-sm text-[#88B7C4]">
+                <p className="mt-6 text-center text-sm text-[var(--color-text-light)]">
                     Already have an account?{' '}
                     <Link to="/login" className="text-[#017A8C] hover:text-[#015C6A] font-semibold transition-colors">
                         Log In

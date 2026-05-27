@@ -12,6 +12,7 @@ import {useGeminiEducation} from '../hooks/useGeminiEducation';
 import {useGeminiATS} from '../hooks/useGeminiATS';
 import {useGeminiCVParser} from '../hooks/useGeminiCVParser';
 import {useNavigate} from "react-router-dom";
+import {useToast} from '../context/ToastContext';
 import {FileUpload, type FileUploadSelectEvent} from "primereact/fileupload";
 import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
@@ -58,6 +59,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
     };
 
     const navigate = useNavigate();
+    const {showToast} = useToast();
     // RHF's Control/UseForm* generics are invariant; the shared field wrappers
     // are typed against the generic FieldValues. Erase the type once here —
     // runtime is unchanged (same function references).
@@ -135,7 +137,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
         if (!file) return;
 
         if (file.size > 2 * 1024 * 1024) {
-            alert('Photo must be less than 2MB');
+            showToast('warn', 'File Too Large', 'Photo must be less than 2MB');
             return;
         }
 
@@ -269,10 +271,10 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Upload CV Document</h3>
-                <p className="text-sm text-[#88B7C4] mb-4">Upload your existing CV in PDF or DOC format (Max 10MB)</p>
+                <p className="text-sm text-[var(--color-text-light)] mb-4">Upload your existing CV in PDF or DOC format (Max 10MB)</p>
 
                 {!uploadedFile ? (
                     <div className="relative">
@@ -303,7 +305,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                         <motion.div
                             initial={{opacity: 0, scale: 0.95}}
                             animate={{opacity: 1, scale: 1}}
-                            className="flex items-center justify-between p-4 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]"
+                            className="flex items-center justify-between p-4 bg-[var(--color-bg)] rounded-lg border border-[var(--color-border)]"
                         >
                             <div className="flex items-center gap-3 flex-1">
                                 <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-lg flex items-center justify-center">
@@ -311,7 +313,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm font-semibold text-[#017A8C] truncate">{uploadedFile.name}</p>
-                                    <p className="text-xs text-[#88B7C4]">
+                                    <p className="text-xs text-[var(--color-text-light)]">
                                         {formatFileSize(uploadedFile.size)}
                                         {isExtracting && <span className="ml-2">• Extracting text...</span>}
                                         {!isExtracting && extractedText && <span className="ml-2">• Text extracted ({extractedText.length} characters)</span>}
@@ -342,7 +344,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                                     <Sparkles className="w-5 h-5"/>
                                     {isParsing ? 'Parsing CV with AI...' : 'Auto-Fill Form from CV'}
                                 </motion.button>
-                                <p className="text-xs text-[#88B7C4] text-center">Click to automatically parse and fill the form with data from your CV</p>
+                                <p className="text-xs text-[var(--color-text-light)] text-center">Click to automatically parse and fill the form with data from your CV</p>
                             </motion.div>
                         )}
 
@@ -378,7 +380,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                     </div>
                     <div className="flex-1">
                         <h3 className="text-base font-bold text-[#017A8C] mb-1">ATS Optimization</h3>
-                        <p className="text-sm text-[#88B7C4] mb-3">Let AI optimize your entire CV for Applicant Tracking Systems to increase your chances of getting interviews.</p>
+                        <p className="text-sm text-[var(--color-text-light)] mb-3">Let AI optimize your entire CV for Applicant Tracking Systems to increase your chances of getting interviews.</p>
                         <motion.button whileHover={{scale: 1.02}} whileTap={{scale: 0.98}} type="button"
                             onClick={() => navigate("/ats")}
                             disabled={!watch('header.fullName') || !watch('abstract')?.trim() || isATSLoading}
@@ -387,7 +389,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                             {isATSLoading ? 'Optimizing...' : 'Optimize My CV for ATS'}
                         </motion.button>
                         {(!watch('header.fullName') || !watch('abstract')?.trim()) && (
-                            <p className="text-xs text-[#88B7C4] mt-2 italic">* Fill in your name and summary first to enable ATS optimization</p>
+                            <p className="text-xs text-[var(--color-text-light)] mt-2 italic">* Fill in your name and summary first to enable ATS optimization</p>
                         )}
                     </div>
                 </div>
@@ -398,7 +400,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Personal Information</h3>
 
@@ -414,7 +416,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
 
                 {/* Profile Photo Upload */}
                 <div className="mt-5">
-                    <label className="text-sm font-medium text-[#5A6A6F] block mb-2">Profile Photo (optional)</label>
+                    <label className="text-sm font-medium text-[var(--color-muted)] block mb-2">Profile Photo (optional)</label>
                     <div className="flex items-center gap-4">
                         {photoPreview ? (
                             <div className="relative w-20 h-20 flex-shrink-0">
@@ -426,17 +428,17 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                                 </motion.button>
                             </div>
                         ) : (
-                            <div className="w-20 h-20 rounded-lg border-2 border-dashed border-[#C6DEE4] flex items-center justify-center bg-[#FAF7F0] flex-shrink-0">
-                                <Camera className="w-8 h-8 text-[#C6DEE4]"/>
+                            <div className="w-20 h-20 rounded-lg border-2 border-dashed border-[var(--color-border)] flex items-center justify-center bg-[var(--color-bg)] flex-shrink-0">
+                                <Camera className="w-8 h-8 text-[var(--color-border)]"/>
                             </div>
                         )}
                         <div>
-                            <label className="flex items-center gap-2 px-4 py-2 bg-white border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all cursor-pointer">
+                            <label className="flex items-center gap-2 px-4 py-2 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all cursor-pointer">
                                 <Camera className="w-4 h-4"/>
                                 {photoPreview ? 'Change Photo' : 'Upload Photo'}
                                 <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload}/>
                             </label>
-                            <p className="text-xs text-[#88B7C4] mt-1.5">Max 2MB. JPG, PNG supported.</p>
+                            <p className="text-xs text-[var(--color-text-light)] mt-1.5">Max 2MB. JPG, PNG supported.</p>
                         </div>
                     </div>
                 </div>
@@ -444,7 +446,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 {/* Links */}
                 <div className="mt-6">
                     <div className="flex justify-between items-center mb-3">
-                        <label className="text-sm font-medium text-[#5A6A6F]">Links</label>
+                        <label className="text-sm font-medium text-[var(--color-muted)]">Links</label>
                         <motion.button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} type="button"
                             onClick={() => appendLink({name: '', url: ''})}
                             className="flex items-center gap-2 px-3 py-1.5 bg-[#017A8C] text-white text-sm font-semibold rounded-lg hover:bg-[#015C6A] transition-all">
@@ -453,7 +455,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                     </div>
                     <div className="space-y-3">
                         {linkFields.map((field, index) => (
-                            <div key={field.id} className="flex gap-2 p-3 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]/30">
+                            <div key={field.id} className="flex gap-2 p-3 bg-[var(--color-bg)] rounded-lg border border-[var(--color-border)]/30">
                                 <div className="flex-1 space-y-3">
                                     <TextInput label="Link Name" name={`header.links.${index}.name`} control={control} placeholder="LinkedIn" dataCy={`link-name-input-${index}`}/>
                                     <TextInput label="URL" name={`header.links.${index}.url`} control={control} placeholder="https://..." dataCy={`link-url-input-${index}`}/>
@@ -474,14 +476,14 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.1}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Theme Color</h3>
                 <div className="flex items-center gap-4">
                     <Controller name="sectionTitleColor" control={control} render={({field}) => (
                         <>
                             <ColorPicker value={field.value || '017A8C'} onChange={(e) => field.onChange(e.value)} format="hex"/>
-                            <div className="flex-1 h-12 rounded-lg border-2 border-[#C6DEE4] transition-all duration-300 flex items-center justify-center"
+                            <div className="flex-1 h-12 rounded-lg border-2 border-[var(--color-border)] transition-all duration-300 flex items-center justify-center"
                                 style={{backgroundColor: `#${field.value || '017A8C'}`}}>
                                 <span className="text-white font-semibold text-sm">#{field.value || '017A8C'}</span>
                             </div>
@@ -495,14 +497,14 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.2}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Summary</h3>
                     <motion.button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} type="button"
                         onClick={handleImproveAbstract}
                         disabled={!watch('abstract')?.trim() || isLoading}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        className="flex items-center gap-2 px-3 py-1.5 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                         <Sparkles className="w-4 h-4"/>
                         {isLoading ? 'Improving...' : 'Improve with AI'}
                     </motion.button>
@@ -515,7 +517,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.3}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Professional Experience</h3>
@@ -557,14 +559,14 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.4}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Education</h3>
                     <motion.button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} type="button"
                         onClick={handleImproveEducation}
                         disabled={!watch('education')?.trim() || isEducationLoading}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        className="flex items-center gap-2 px-3 py-1.5 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                         <Sparkles className="w-4 h-4"/>
                         {isEducationLoading ? 'Improving...' : 'Improve with AI'}
                     </motion.button>
@@ -577,11 +579,11 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.5}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Technical Skills</h3>
                 <ChipsInput name="skills" control={control} dataCy="skills-input" placeholder="Type a skill and press Enter"/>
-                <p className="text-xs text-[#88B7C4] mt-2">Type a skill and press Enter. Examples: React, TypeScript, Node.js</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-2">Type a skill and press Enter. Examples: React, TypeScript, Node.js</p>
             </motion.div>
 
             {/* Additional Information */}
@@ -589,20 +591,20 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.6}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Additional Information</h3>
                 <TextAreaInput name="additionalInfo" control={control}
                     placeholder={"Languages: English, French\nCertificates: Financial Analyst License\nAwards/Activities: Best Employee 2023"}
                     dataCy="additionalInfo-input" rows={4}/>
-                <p className="text-xs text-[#88B7C4] mt-2">Each line will appear as a bullet point in your CV.</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-2">Each line will appear as a bullet point in your CV.</p>
             </motion.div>
 
             {/* Extracted Text Dialog */}
             <Dialog header="Extracted CV Text" visible={showTextDialog} onHide={() => setShowTextDialog(false)}
                 style={{width: '90vw', maxWidth: '900px'}} modal dismissableMask draggable={false}>
                 <div className="max-h-[70vh] overflow-y-auto">
-                    <pre className="whitespace-pre-wrap text-sm text-[#5A6A6F] font-mono leading-relaxed p-4 bg-[#FAF7F0] rounded-lg">
+                    <pre className="whitespace-pre-wrap text-sm text-[var(--color-muted)] font-mono leading-relaxed p-4 bg-[var(--color-bg)] rounded-lg">
                         {extractedText}
                     </pre>
                 </div>
@@ -657,24 +659,24 @@ function CareerFieldsT2({control, careerIndex, watch, setValue}: {
 
             <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className="text-sm font-medium text-[#5A6A6F]">Work Summary</label>
+                    <label className="text-sm font-medium text-[var(--color-muted)]">Work Summary</label>
                     <motion.button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} type="button"
                         onClick={handleImproveCareerSummary}
                         disabled={!watch(`career.${careerIndex}.summarization`)?.trim() || isCareerLoading}
-                        className="flex items-center gap-1 px-2 py-1 bg-white border border-[#017A8C]/30 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        className="flex items-center gap-1 px-2 py-1 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                         <Sparkles className="w-3 h-3"/>AI
                     </motion.button>
                 </div>
                 <TextAreaInput name={`career.${careerIndex}.summarization`} control={control}
                     placeholder="Describe your responsibilities and achievements (one per line)..."
                     dataCy={`career-summarization-input-${careerIndex}`} rows={4}/>
-                <p className="text-xs text-[#88B7C4] mt-1">Each line will appear as a bullet point in your CV.</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-1">Each line will appear as a bullet point in your CV.</p>
             </div>
 
             {/* Projects within Career */}
-            <div className="mt-4 pt-4 border-t border-[#C6DEE4]/30">
+            <div className="mt-4 pt-4 border-t border-[var(--color-border)]/30">
                 <div className="flex justify-between items-center mb-3">
-                    <label className="text-sm font-semibold text-[#5A6A6F]">Projects</label>
+                    <label className="text-sm font-semibold text-[var(--color-muted)]">Projects</label>
                     <motion.button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} type="button"
                         onClick={() => appendProject({name: '', description: '', technologies: '', keyContributions: []})}
                         className="flex items-center gap-1 px-2 py-1 bg-[#017A8C]/10 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all">
@@ -683,9 +685,9 @@ function CareerFieldsT2({control, careerIndex, watch, setValue}: {
                 </div>
                 <div className="space-y-3">
                     {projectFields.map((projField, projIndex) => (
-                        <div key={projField.id} className="p-3 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]/30 space-y-3">
+                        <div key={projField.id} className="p-3 bg-[var(--color-bg)] rounded-lg border border-[var(--color-border)]/30 space-y-3">
                             <div className="flex justify-between items-center">
-                                <span className="text-xs font-semibold text-[#5A6A6F]">Project {projIndex + 1}</span>
+                                <span className="text-xs font-semibold text-[var(--color-muted)]">Project {projIndex + 1}</span>
                                 <motion.button whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} type="button"
                                     onClick={() => removeProject(projIndex)}
                                     className="p-1 text-red-500 hover:bg-red-50 rounded transition-all">

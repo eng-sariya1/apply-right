@@ -14,9 +14,9 @@ interface PasswordInputProps {
 // Mirrors the Tailwind class string used at every password-input site today;
 // `pr-12` leaves room for the eye toggle on the right.
 const defaultInputClass =
-    'w-full px-4 py-3 pr-12 border border-[#C6DEE4] rounded-xl '
+    'w-full px-4 py-3 pr-12 border border-[var(--color-border)] rounded-xl '
     + 'focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 '
-    + 'transition-all outline-none bg-white/50';
+    + 'transition-all outline-none bg-[var(--color-surface-50)]';
 
 export default function PasswordInput({
     id,
@@ -45,7 +45,7 @@ export default function PasswordInput({
                 onClick={() => setShow((s) => !s)}
                 aria-label={show ? 'Hide password' : 'Show password'}
                 aria-pressed={show}
-                className="absolute top-1/2 right-3 -translate-y-1/2 p-1 text-[#88B7C4] hover:text-[#017A8C] transition-colors"
+                className="absolute top-1/2 right-3 -translate-y-1/2 p-1 text-[var(--color-text-light)] hover:text-[#017A8C] transition-colors"
             >
                 {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>

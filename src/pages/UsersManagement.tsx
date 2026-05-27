@@ -92,7 +92,7 @@ export default function UsersManagement() {
         : users;
 
     const nameBodyTemplate = (rowData: UserData) => (
-        <span className="font-medium text-[#02343F]">
+        <span className="font-medium text-[var(--color-text-dark)]">
             {rowData.displayName || 'No Name'}
         </span>
     );
@@ -118,7 +118,7 @@ export default function UsersManagement() {
     );
 
     const cvCountBodyTemplate = (rowData: UserData) => (
-        <span className="font-medium text-[#02343F]">{rowData.cvCount}</span>
+        <span className="font-medium text-[var(--color-text-dark)]">{rowData.cvCount}</span>
     );
 
     const actionsBodyTemplate = (rowData: UserData) => {
@@ -157,12 +157,12 @@ export default function UsersManagement() {
     const header = (
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#88B7C4]" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-light)]" />
                 <InputText
                     value={globalFilter}
                     onChange={(e) => setGlobalFilter(e.target.value)}
                     placeholder="Search users..."
-                    className="pl-9 pr-4 py-2 border border-[#C6DEE4]/50 rounded-xl bg-white/80 text-sm focus:outline-none focus:ring-2 focus:ring-[#017A8C]/30 focus:border-[#017A8C] transition-all"
+                    className="pl-9 pr-4 py-2 border border-[var(--color-border)]/50 rounded-xl bg-[var(--color-surface-80)] text-sm focus:outline-none focus:ring-2 focus:ring-[#017A8C]/30 focus:border-[#017A8C] transition-all"
                 />
             </div>
             <Dropdown
@@ -170,13 +170,13 @@ export default function UsersManagement() {
                 options={roleOptions}
                 onChange={(e) => setRoleFilter(e.value)}
                 placeholder="Filter by role"
-                className="border border-[#C6DEE4]/50 rounded-xl text-sm"
+                className="border border-[var(--color-border)]/50 rounded-xl text-sm"
             />
         </div>
     );
 
     return (
-        <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden">
+        <div className="min-h-screen bg-[var(--color-bg)] relative overflow-hidden">
             {/* Background Gradients */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
@@ -188,7 +188,7 @@ export default function UsersManagement() {
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, ease: 'easeOut' }}
-                className="sticky top-0 z-50 backdrop-blur-lg bg-[#FAF7F0]/90 border-b border-[#017A8C]/20 shadow-sm"
+                className="sticky top-0 z-50 backdrop-blur-lg bg-[var(--color-bg)]/90 border-b border-[#017A8C]/20 shadow-sm"
             >
                 <nav className="container mx-auto px-6 py-4">
                     <div className="flex items-center justify-between">
@@ -222,10 +222,10 @@ export default function UsersManagement() {
                     transition={{ duration: 0.6 }}
                     className="mb-8"
                 >
-                    <h1 className="text-3xl md:text-4xl font-bold text-[#02343F] mb-2">
+                    <h1 className="text-3xl md:text-4xl font-bold text-[var(--color-text-dark)] mb-2">
                         User Management
                     </h1>
-                    <p className="text-[#88B7C4]">
+                    <p className="text-[var(--color-text-light)]">
                         Manage user accounts and permissions
                     </p>
                 </motion.div>
@@ -234,7 +234,7 @@ export default function UsersManagement() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="bg-white/80 backdrop-blur-sm rounded-2xl border border-[#C6DEE4]/30 shadow-lg p-6 overflow-hidden"
+                    className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border border-[var(--color-border)]/30 shadow-lg p-6 overflow-hidden"
                 >
                     <DataTable
                         value={filteredUsers}

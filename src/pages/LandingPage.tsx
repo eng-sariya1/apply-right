@@ -43,7 +43,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--color-bg)] relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
@@ -56,7 +56,7 @@ export default function LandingPage() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="sticky top-0 z-50 backdrop-blur-lg bg-[#FAF7F0]/90 border-b border-[#017A8C]/20 shadow-sm"
+        className="sticky top-0 z-50 backdrop-blur-lg bg-[var(--color-bg)]/90 border-b border-[#017A8C]/20 shadow-sm"
       >
         <nav className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -113,7 +113,7 @@ export default function LandingPage() {
                 <div className="flex items-center gap-3">
                   <Link
                     to="/login"
-                    className="text-sm font-medium text-[#02343F] hover:text-[#017A8C] transition-colors duration-200"
+                    className="text-sm font-medium text-[var(--color-text-dark)] hover:text-[#017A8C] transition-colors duration-200"
                   >
                     Log in
                   </Link>
@@ -121,7 +121,7 @@ export default function LandingPage() {
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.97 }}
-                      className="px-5 py-2 border border-[#02343F] text-[#02343F] font-semibold rounded-xl hover:bg-[#02343F] hover:text-white transition-all duration-200 text-sm"
+                      className="px-5 py-2 border border-[var(--color-text-dark)] text-[var(--color-text-dark)] font-semibold rounded-xl hover:bg-[var(--color-text-dark)] hover:text-white transition-all duration-200 text-sm"
                     >
                       Sign up
                     </motion.button>
@@ -157,7 +157,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="bg-[#F3F3F3] rounded-3xl shadow-md shadow-[#017A8C]/10 py-20 px-10 md:px-16 relative before:absolute before:inset-0 before:bg-gradient-to-br before:from-[#017A8C]/5 before:to-transparent before:rounded-3xl before:-z-10"
+            className="bg-[var(--color-card)] rounded-3xl shadow-md shadow-[#017A8C]/10 py-20 px-10 md:px-16 relative before:absolute before:inset-0 before:bg-gradient-to-br before:from-[#017A8C]/5 before:to-transparent before:rounded-3xl before:-z-10"
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Left Column - Text Content */}
@@ -169,12 +169,12 @@ export default function LandingPage() {
               >
                 {/* Title */}
                 <h1 className="text-6xl md:text-7xl font-extrabold leading-tight">
-                  <span className="text-[#02343F]">This resume builder gets you </span>
+                  <span className="text-[var(--color-text-dark)]">This resume builder gets you </span>
                   <span className="text-[#017A8C]">promoted.</span>
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-lg md:text-xl text-[#88B7C4] leading-relaxed max-w-xl">
+                <p className="text-lg md:text-xl text-[var(--color-text-light)] leading-relaxed max-w-xl">
                   Create your professional CV with ease — optimized for ATS and designed to impress.
                 </p>
 
@@ -198,7 +198,7 @@ export default function LandingPage() {
 
                   <div className="flex items-center gap-3">
                     <div className="h-px w-16 bg-[#88B7C4]/30"></div>
-                    <span className="text-sm text-[#88B7C4] font-medium">or</span>
+                    <span className="text-sm text-[var(--color-text-light)] font-medium">or</span>
                     <div className="h-px w-16 bg-[#88B7C4]/30"></div>
                   </div>
 
@@ -227,7 +227,7 @@ export default function LandingPage() {
                 <motion.div
                   whileHover={{ scale: 1.02, rotate: 1 }}
                   transition={{ duration: 0.2, ease: 'easeOut' }}
-                  className="bg-white p-4 md:p-6 rounded-2xl shadow-lg shadow-[#017A8C]/10 max-w-md lg:max-w-lg w-full lg:translate-x-8 relative z-10"
+                  className="bg-[var(--color-surface-solid)] p-4 md:p-6 rounded-2xl shadow-lg shadow-[#017A8C]/10 max-w-md lg:max-w-lg w-full lg:translate-x-8 relative z-10"
                 >
                   <img
                     src="/images/typing-hero.png"
@@ -251,15 +251,15 @@ export default function LandingPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 <div className="space-y-2">
                   <h3 className="text-3xl font-bold text-[#017A8C]">ATS-Friendly</h3>
-                  <p className="text-sm text-[#88B7C4]">Pass applicant tracking systems with ease</p>
+                  <p className="text-sm text-[var(--color-text-light)]">Pass applicant tracking systems with ease</p>
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-3xl font-bold text-[#017A8C]">Professional</h3>
-                  <p className="text-sm text-[#88B7C4]">Stand out with polished design</p>
+                  <p className="text-sm text-[var(--color-text-light)]">Stand out with polished design</p>
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-3xl font-bold text-[#017A8C]">Easy to Use</h3>
-                  <p className="text-sm text-[#88B7C4]">Build your resume in minutes</p>
+                  <p className="text-sm text-[var(--color-text-light)]">Build your resume in minutes</p>
                 </div>
               </div>
             </motion.div>
@@ -277,10 +277,10 @@ export default function LandingPage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#02343F] mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-dark)] mb-4">
               Why Choose Nuivo?
             </h2>
-            <p className="text-lg text-[#88B7C4] max-w-2xl mx-auto">
+            <p className="text-lg text-[var(--color-text-light)] max-w-2xl mx-auto">
               Professional tools to build the perfect resume that gets you hired
             </p>
           </motion.div>
@@ -293,15 +293,15 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
               whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
+              className="bg-[var(--color-surface-80)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--color-border)]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
             >
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <CheckCircle2 className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-[#02343F] mb-3">
+              <h3 className="text-xl font-bold text-[var(--color-text-dark)] mb-3">
                 ATS Compatibility
               </h3>
-              <p className="text-[#88B7C4] leading-relaxed">
+              <p className="text-[var(--color-text-light)] leading-relaxed">
                 Optimized formats that pass Applicant Tracking Systems with ease,
                 ensuring your resume reaches human eyes
               </p>
@@ -314,15 +314,15 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
               whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
+              className="bg-[var(--color-surface-80)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--color-border)]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
             >
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <Sparkles className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-[#02343F] mb-3">
+              <h3 className="text-xl font-bold text-[var(--color-text-dark)] mb-3">
                 AI-Powered Optimization
               </h3>
-              <p className="text-[#88B7C4] leading-relaxed">
+              <p className="text-[var(--color-text-light)] leading-relaxed">
                 Smart grammar fixes and layout optimization powered by AI to make
                 your resume stand out professionally
               </p>
@@ -335,15 +335,15 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
               whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
+              className="bg-[var(--color-surface-80)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--color-border)]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
             >
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <Download className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-[#02343F] mb-3">
+              <h3 className="text-xl font-bold text-[var(--color-text-dark)] mb-3">
                 Custom Themes & PDF Export
               </h3>
-              <p className="text-[#88B7C4] leading-relaxed">
+              <p className="text-[var(--color-text-light)] leading-relaxed">
                 Choose from professional themes and export as high-quality PDF
                 ready to send to employers instantly
               </p>
@@ -356,15 +356,15 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
               whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
-              className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl border border-[#C6DEE4]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
+              className="bg-[var(--color-surface-80)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--color-border)]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200"
             >
               <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
                 <Eye className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-[#02343F] mb-3">
+              <h3 className="text-xl font-bold text-[var(--color-text-dark)] mb-3">
                 Real-time Preview
               </h3>
-              <p className="text-[#88B7C4] leading-relaxed">
+              <p className="text-[var(--color-text-light)] leading-relaxed">
                 See your changes instantly with live preview mode while editing
                 your resume for perfect results
               </p>
@@ -382,10 +382,10 @@ export default function LandingPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#02343F] mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-dark)] mb-6">
               Ready to Get Hired?
             </h2>
-            <p className="text-lg text-[#88B7C4] mb-10">
+            <p className="text-lg text-[var(--color-text-light)] mb-10">
               Join thousands of professionals who landed their dream jobs with Nuivo
             </p>
             <motion.button
@@ -402,13 +402,13 @@ export default function LandingPage() {
       </section>
 
       {/* Modern Footer */}
-      <footer className="relative border-t border-[#C6DEE4]/30 bg-[#F3F3F3]/70 backdrop-blur-sm py-12 px-6 mt-12">
+      <footer className="relative border-t border-[var(--color-border)]/30 bg-[var(--color-card)]/70 backdrop-blur-sm py-12 px-6 mt-12">
         <div className="container mx-auto max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Brand Column */}
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold text-[#017A8C] mb-4">Nuivo</h3>
-              <p className="text-[#88B7C4] mb-4 max-w-md">
+              <p className="text-[var(--color-text-light)] mb-4 max-w-md">
                 Build professional resumes that get you hired. Trusted by thousands of job seekers worldwide.
               </p>
               <div className="flex gap-4">
@@ -434,9 +434,9 @@ export default function LandingPage() {
             <div>
               <h4 className="text-lg font-semibold text-[#017A8C] mb-4">Quick Links</h4>
               <ul className="space-y-2">
-                <li><a href="#home" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Home</a></li>
-                <li><a href="#features" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Features</a></li>
-                <li><a href="#contact" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Contact</a></li>
+                <li><a href="#home" className="text-[var(--color-text-light)] hover:text-[#017A8C] transition-colors">Home</a></li>
+                <li><a href="#features" className="text-[var(--color-text-light)] hover:text-[#017A8C] transition-colors">Features</a></li>
+                <li><a href="#contact" className="text-[var(--color-text-light)] hover:text-[#017A8C] transition-colors">Contact</a></li>
               </ul>
             </div>
 
@@ -444,17 +444,17 @@ export default function LandingPage() {
             <div>
               <h4 className="text-lg font-semibold text-[#017A8C] mb-4">Resources</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Resume Tips</a></li>
-                <li><a href="#" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Career Advice</a></li>
-                <li><a href="#" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">FAQs</a></li>
-                <li><a href="#" className="text-[#88B7C4] hover:text-[#017A8C] transition-colors">Support</a></li>
+                <li><a href="#" className="text-[var(--color-text-light)] hover:text-[#017A8C] transition-colors">Resume Tips</a></li>
+                <li><a href="#" className="text-[var(--color-text-light)] hover:text-[#017A8C] transition-colors">Career Advice</a></li>
+                <li><a href="#" className="text-[var(--color-text-light)] hover:text-[#017A8C] transition-colors">FAQs</a></li>
+                <li><a href="#" className="text-[var(--color-text-light)] hover:text-[#017A8C] transition-colors">Support</a></li>
               </ul>
             </div>
           </div>
 
           {/* Copyright Bar */}
-          <div className="pt-8 border-t border-[#C6DEE4]/30 text-center">
-            <p className="text-[#88B7C4] text-sm">
+          <div className="pt-8 border-t border-[var(--color-border)]/30 text-center">
+            <p className="text-[var(--color-text-light)] text-sm">
               © 2025 Nuivo. All rights reserved. | <a href="#" className="hover:text-[#017A8C] transition-colors">Privacy Policy</a> | <a href="#" className="hover:text-[#017A8C] transition-colors">Terms of Service</a>
             </p>
           </div>
