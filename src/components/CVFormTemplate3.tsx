@@ -1,4 +1,4 @@
-import {useForm, useFieldArray, Controller} from 'react-hook-form';
+import {useForm, useFieldArray, Controller, type Control, type FieldValues, type UseFormWatch, type UseFormSetValue} from 'react-hook-form';
 import {useEffect, useState, useRef} from 'react';
 import {motion} from 'framer-motion';
 import {Accordion, AccordionTab} from 'primereact/accordion';
@@ -11,7 +11,7 @@ import {useGeminiCareer} from '../hooks/useGeminiCareer';
 import {useGeminiATS} from '../hooks/useGeminiATS';
 import {useGeminiCVParser} from '../hooks/useGeminiCVParser';
 import {useNavigate} from 'react-router-dom';
-import {FileUpload} from 'primereact/fileupload';
+import {FileUpload, type FileUploadSelectEvent} from 'primereact/fileupload';
 import * as pdfjsLib from 'pdfjs-dist';
 import mammoth from 'mammoth';
 import TextInput from './form/TextInput.tsx';
@@ -57,7 +57,13 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
     };
 
     const navigate = useNavigate();
-    const {control, watch, setValue} = useForm<CVData>({defaultValues});
+    // RHF's Control/UseForm* generics are invariant; the shared field wrappers
+    // are typed against the generic FieldValues. Erase the type once here —
+    // runtime is unchanged (same function references).
+    const form = useForm<CVData>({defaultValues});
+    const control = form.control as unknown as Control<FieldValues>;
+    const watch = form.watch as unknown as UseFormWatch<FieldValues>;
+    const setValue = form.setValue as unknown as UseFormSetValue<FieldValues>;
 
     const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
     const [extractedText, setExtractedText] = useState<string>('');
@@ -111,7 +117,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
             const textContent = await page.getTextContent();
-            fullText += textContent.items.map((item: any) => item.str).join(' ') + '\n';
+            fullText += textContent.items.map((item) => (item as { str: string }).str).join(' ') + '\n';
         }
         return fullText.trim();
     };
@@ -122,7 +128,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
         return result.value.trim();
     };
 
-    const handleFileSelect = async (event: any) => {
+    const handleFileSelect = async (event: FileUploadSelectEvent) => {
         setUploadError('');
         setExtractedText('');
         const file = event.files[0];
@@ -212,10 +218,10 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Upload CV Document</h3>
-                <p className="text-sm text-[#88B7C4] mb-4">Upload your existing CV in PDF or DOC format (Max 10MB)</p>
+                <p className="text-sm text-[var(--color-text-light)] mb-4">Upload your existing CV in PDF or DOC format (Max 10MB)</p>
 
                 {!uploadedFile ? (
                     <div className="relative">
@@ -246,7 +252,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                         <motion.div
                             initial={{opacity: 0, scale: 0.95}}
                             animate={{opacity: 1, scale: 1}}
-                            className="flex items-center justify-between p-4 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]"
+                            className="flex items-center justify-between p-4 bg-[var(--color-bg)] rounded-lg border border-[var(--color-border)]"
                         >
                             <div className="flex items-center gap-3 flex-1">
                                 <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-lg flex items-center justify-center">
@@ -254,7 +260,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm font-semibold text-[#017A8C] truncate">{uploadedFile.name}</p>
-                                    <p className="text-xs text-[#88B7C4]">
+                                    <p className="text-xs text-[var(--color-text-light)]">
                                         {formatFileSize(uploadedFile.size)}
                                         {isExtracting && <span className="ml-2">• Extracting text...</span>}
                                         {!isExtracting && extractedText && <span className="ml-2">• Text extracted ({extractedText.length} characters)</span>}
@@ -285,7 +291,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                                     <Sparkles className="w-5 h-5"/>
                                     {isParsing ? 'Parsing CV with AI...' : 'Auto-Fill Form from CV'}
                                 </motion.button>
-                                <p className="text-xs text-[#88B7C4] text-center">Click to automatically parse and fill the form with data from your CV</p>
+                                <p className="text-xs text-[var(--color-text-light)] text-center">Click to automatically parse and fill the form with data from your CV</p>
                             </motion.div>
                         )}
 
@@ -321,7 +327,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                     </div>
                     <div className="flex-1">
                         <h3 className="text-base font-bold text-[#017A8C] mb-1">ATS Optimization</h3>
-                        <p className="text-sm text-[#88B7C4] mb-3">Let AI optimize your entire CV for Applicant Tracking Systems to increase your chances of getting interviews.</p>
+                        <p className="text-sm text-[var(--color-text-light)] mb-3">Let AI optimize your entire CV for Applicant Tracking Systems to increase your chances of getting interviews.</p>
                         <motion.button whileHover={{scale: 1.02}} whileTap={{scale: 0.98}} type="button"
                             onClick={() => navigate('/ats')}
                             disabled={!watch('header.fullName') || !watch('abstract')?.trim() || isATSLoading}
@@ -330,7 +336,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                             {isATSLoading ? 'Optimizing...' : 'Optimize My CV for ATS'}
                         </motion.button>
                         {(!watch('header.fullName') || !watch('abstract')?.trim()) && (
-                            <p className="text-xs text-[#88B7C4] mt-2 italic">* Fill in your name and summary first to enable ATS optimization</p>
+                            <p className="text-xs text-[var(--color-text-light)] mt-2 italic">* Fill in your name and summary first to enable ATS optimization</p>
                         )}
                     </div>
                 </div>
@@ -341,7 +347,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Personal Information</h3>
 
@@ -358,7 +364,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 {/* Links */}
                 <div className="mt-6">
                     <div className="flex justify-between items-center mb-3">
-                        <label className="text-sm font-medium text-[#5A6A6F]">Links</label>
+                        <label className="text-sm font-medium text-[var(--color-muted)]">Links</label>
                         <motion.button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} type="button"
                             onClick={() => appendLink({name: '', url: ''})}
                             className="flex items-center gap-2 px-3 py-1.5 bg-[#017A8C] text-white text-sm font-semibold rounded-lg hover:bg-[#015C6A] transition-all">
@@ -367,7 +373,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                     </div>
                     <div className="space-y-3">
                         {linkFields.map((field, index) => (
-                            <div key={field.id} className="flex gap-2 p-3 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]/30">
+                            <div key={field.id} className="flex gap-2 p-3 bg-[var(--color-bg)] rounded-lg border border-[var(--color-border)]/30">
                                 <div className="flex-1 space-y-3">
                                     <TextInput label="Link Name" name={`header.links.${index}.name`} control={control} placeholder="LinkedIn" dataCy={`link-name-input-${index}`}/>
                                     <TextInput label="URL" name={`header.links.${index}.url`} control={control} placeholder="https://..." dataCy={`link-url-input-${index}`}/>
@@ -388,21 +394,21 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.1}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Accent Color</h3>
                 <div className="flex items-center gap-4">
                     <Controller name="sectionTitleColor" control={control} render={({field}) => (
                         <>
                             <ColorPicker value={field.value || '111111'} onChange={(e) => field.onChange(e.value)} format="hex"/>
-                            <div className="flex-1 h-12 rounded-lg border-2 border-[#C6DEE4] transition-all duration-300 flex items-center justify-center"
+                            <div className="flex-1 h-12 rounded-lg border-2 border-[var(--color-border)] transition-all duration-300 flex items-center justify-center"
                                 style={{backgroundColor: `#${field.value || '111111'}`}}>
                                 <span className="text-white font-semibold text-sm">#{field.value || '111111'}</span>
                             </div>
                         </>
                     )}/>
                 </div>
-                <p className="text-xs text-[#88B7C4] mt-2">Used for section headings. Default is black for a classic look.</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-2">Used for section headings. Default is black for a classic look.</p>
             </motion.div>
 
             {/* Professional Summary */}
@@ -410,14 +416,14 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.2}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Professional Summary</h3>
                     <motion.button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} type="button"
                         onClick={handleImproveSummary}
                         disabled={!watch('abstract')?.trim() || isLoading}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        className="flex items-center gap-2 px-3 py-1.5 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                         <Sparkles className="w-4 h-4"/>
                         {isLoading ? 'Improving...' : 'Improve with AI'}
                     </motion.button>
@@ -430,7 +436,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.3}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Work Experience</h3>
@@ -472,7 +478,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.4}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Education</h3>
@@ -484,7 +490,7 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 </div>
 
                 {eduFields.length === 0 && (
-                    <p className="text-sm text-[#88B7C4] text-center py-4">No education entries yet. Click "Add Education" to add one.</p>
+                    <p className="text-sm text-[var(--color-text-light)] text-center py-4">No education entries yet. Click "Add Education" to add one.</p>
                 )}
 
                 <Accordion multiple className="career-accordion">
@@ -518,11 +524,11 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.5}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Skills</h3>
                 <ChipsInput name="skills" control={control} dataCy="skills-input" placeholder="Type a skill and press Enter"/>
-                <p className="text-xs text-[#88B7C4] mt-2">Type a skill and press Enter. Skills are grouped in sets of 3 on the CV.</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-2">Type a skill and press Enter. Skills are grouped in sets of 3 on the CV.</p>
             </motion.div>
 
             {/* Certifications */}
@@ -530,20 +536,20 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.6}}
-                className="bg-white/50 backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Certifications</h3>
                 <TextAreaInput name="certifications" control={control}
                     placeholder={"Google Analytics Certified\nFacebook Blueprint Certification\nHubSpot Inbound Marketing Certification"}
                     dataCy="certifications-input" rows={4}/>
-                <p className="text-xs text-[#88B7C4] mt-2">Each line will appear as a bullet point in your CV.</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-2">Each line will appear as a bullet point in your CV.</p>
             </motion.div>
 
             {/* Extracted Text Dialog */}
             <Dialog header="Extracted CV Text" visible={showTextDialog} onHide={() => setShowTextDialog(false)}
                 style={{width: '90vw', maxWidth: '900px'}} modal dismissableMask draggable={false}>
                 <div className="max-h-[70vh] overflow-y-auto">
-                    <pre className="whitespace-pre-wrap text-sm text-[#5A6A6F] font-mono leading-relaxed p-4 bg-[#FAF7F0] rounded-lg">
+                    <pre className="whitespace-pre-wrap text-sm text-[var(--color-muted)] font-mono leading-relaxed p-4 bg-[var(--color-bg)] rounded-lg">
                         {extractedText}
                     </pre>
                 </div>
@@ -553,7 +559,12 @@ export default function CVFormTemplate3({onSubmit, initialData}: CVFormTemplate3
 }
 
 // Career Fields subcomponent for Template 3
-function CareerFieldsT3({control, careerIndex, watch, setValue}: any) {
+function CareerFieldsT3({control, careerIndex, watch, setValue}: {
+    control: Control<FieldValues>;
+    careerIndex: number;
+    watch: UseFormWatch<FieldValues>;
+    setValue: UseFormSetValue<FieldValues>;
+}) {
     const {fields: projectFields, append: appendProject, remove: removeProject} = useFieldArray({
         control,
         name: `career.${careerIndex}.projects`
@@ -593,24 +604,24 @@ function CareerFieldsT3({control, careerIndex, watch, setValue}: any) {
 
             <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className="text-sm font-medium text-[#5A6A6F]">Responsibilities & Achievements</label>
+                    <label className="text-sm font-medium text-[var(--color-muted)]">Responsibilities & Achievements</label>
                     <motion.button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} type="button"
                         onClick={handleImproveCareerSummary}
                         disabled={!watch(`career.${careerIndex}.summarization`)?.trim() || isCareerLoading}
-                        className="flex items-center gap-1 px-2 py-1 bg-white border border-[#017A8C]/30 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        className="flex items-center gap-1 px-2 py-1 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                         <Sparkles className="w-3 h-3"/>AI
                     </motion.button>
                 </div>
                 <TextAreaInput name={`career.${careerIndex}.summarization`} control={control}
                     placeholder="Lead a team of 5 in creating digital marketing strategies...&#10;Achieved a 35% increase in website traffic..."
                     dataCy={`career-summarization-input-${careerIndex}`} rows={4}/>
-                <p className="text-xs text-[#88B7C4] mt-1">Each line will appear as a bullet point in your CV.</p>
+                <p className="text-xs text-[var(--color-text-light)] mt-1">Each line will appear as a bullet point in your CV.</p>
             </div>
 
             {/* Projects within Career */}
-            <div className="mt-4 pt-4 border-t border-[#C6DEE4]/30">
+            <div className="mt-4 pt-4 border-t border-[var(--color-border)]/30">
                 <div className="flex justify-between items-center mb-3">
-                    <label className="text-sm font-semibold text-[#5A6A6F]">Projects (optional)</label>
+                    <label className="text-sm font-semibold text-[var(--color-muted)]">Projects (optional)</label>
                     <motion.button whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} type="button"
                         onClick={() => appendProject({name: '', description: '', technologies: '', keyContributions: []})}
                         className="flex items-center gap-1 px-2 py-1 bg-[#017A8C]/10 text-[#017A8C] text-xs font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all">
@@ -619,9 +630,9 @@ function CareerFieldsT3({control, careerIndex, watch, setValue}: any) {
                 </div>
                 <div className="space-y-3">
                     {projectFields.map((projField, projIndex) => (
-                        <div key={projField.id} className="p-3 bg-[#FAF7F0] rounded-lg border border-[#C6DEE4]/30 space-y-3">
+                        <div key={projField.id} className="p-3 bg-[var(--color-bg)] rounded-lg border border-[var(--color-border)]/30 space-y-3">
                             <div className="flex justify-between items-center">
-                                <span className="text-xs font-semibold text-[#5A6A6F]">Project {projIndex + 1}</span>
+                                <span className="text-xs font-semibold text-[var(--color-muted)]">Project {projIndex + 1}</span>
                                 <motion.button whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} type="button"
                                     onClick={() => removeProject(projIndex)}
                                     className="p-1 text-red-500 hover:bg-red-50 rounded transition-all">

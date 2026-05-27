@@ -1,48 +1,26 @@
+Add username-based login to the existing Email/Password authentication. Do NOT change any existing functionality.
+1. Signup — add username field:
 
-src/components/CVFormTemplate2.tsx:31:7 - error TS6133: 'jobTypeOptions' is declared but its value is never read.
+In Signup.tsx, add a "Username" text input above the email field.
+After Firebase createUserWithEmailAndPassword succeeds, save the username to the user's Firestore document at /users/{uid} with field username (lowercase, trimmed).
+Validate: username must be 3-20 characters, alphanumeric and underscores only (/^[a-zA-Z0-9_]{3,20}$/).
+Before creating the account, check Firestore to make sure the username is not already taken (query /users where username == inputUsername). Show an error if taken.
 
-31 const jobTypeOptions = [
-~~~~~~~~~~~~~~
+2. Firestore — add username index:
 
-src/components/CVFormTemplate2.tsx:691:30 - error TS2741: Property 'dataCy' is missing in type '{ label: string; name: string; control: any; placeholder: string; }' but required in type '{ label: string; name: string; control: any; dataCy: string; placeholder: string; }'.
+In firestore.rules, allow the username uniqueness query by ensuring users can read the username field for validation:
 
-691                             <TextInput label="Project Name" name={`career.${careerIndex}.projects.${projIndex}.name`} control={control} placeholder="Project Name"/>
-~~~~~~~~~
+allow read: if request.auth != null;
+(This may already exist via the existing read rule — just make sure the query works.)
+3. Login — accept username OR email:
 
-src/components/form/TextInput.tsx:8:5
-8     dataCy: string,
-~~~~~~
-'dataCy' is declared here.
+In Login.tsx, change the email input label to "Email or Username".
+On submit: if the input contains @, treat it as email and sign in directly with signInWithEmailAndPassword.
+If it does NOT contain @, query Firestore /users where username == input to get the matching user's email, then use that email with signInWithEmailAndPassword.
+If no user found with that username, show error "Username not found".
 
-src/components/CVFormTemplate2.tsx:692:30 - error TS2741: Property 'dataCy' is missing in type '{ name: string; control: any; placeholder: string; rows: number; }' but required in type '{ label?: string | undefined; name: string; control: any; dataCy: string; placeholder: string; rows?: number | undefined; }'.
+4. Username display:
 
-692                             <TextAreaInput name={`career.${careerIndex}.projects.${projIndex}.description`} control={control} placeholder="Project description..." rows={2}/>   
-~~~~~~~~~~~~~
+Wherever the app shows the user's email or display name, also show the username if available (e.g. profile, navbar).
 
-src/components/form/TextAreaInput.tsx:8:5
-8     dataCy: string,
-~~~~~~
-'dataCy' is declared here.
-
-src/components/CVFormTemplate3.tsx:631:30 - error TS2741: Property 'dataCy' is missing in type '{ label: string; name: string; control: any; placeholder: string; }' but required in type '{ label: string; name: string; control: any; dataCy: string; placeholder: string; }'.
-
-631                             <TextInput label="Project Name" name={`career.${careerIndex}.projects.${projIndex}.name`} control={control} placeholder="Project Name"/>
-~~~~~~~~~
-
-src/components/form/TextInput.tsx:8:5
-8     dataCy: string,
-~~~~~~
-'dataCy' is declared here.
-
-src/components/CVFormTemplate3.tsx:632:30 - error TS2741: Property 'dataCy' is missing in type '{ name: string; control: any; placeholder: string; rows: number; }' but required in type '{ label?: string | undefined; name: string; control: any; dataCy: string; placeholder: string; rows?: number | undefined; }'.
-
-632                             <TextAreaInput name={`career.${careerIndex}.projects.${projIndex}.description`} control={control} placeholder="Project description..." rows={2}/>   
-~~~~~~~~~~~~~
-
-src/components/form/TextAreaInput.tsx:8:5
-8     dataCy: string,
-~~~~~~
-'dataCy' is declared here.
-
-
-Found 5 errors.
+Do not change any existing authentication flow, Firestore rules logic, or other functionality. The Google sign-in flow should remain unchanged. Users who signed up before this change (without a username) should still be able to log in with their email as before

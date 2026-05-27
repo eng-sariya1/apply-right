@@ -9,7 +9,7 @@
     "cypress-open": "npx cypress open",
     "cypress-run": "npx cypress run",
     "build": "tsc -b && vite build",
-    "lint": "eslint my-app",
+    "lint": "eslint src/",
     "preview": "vite preview"
   },
   "dependencies": {

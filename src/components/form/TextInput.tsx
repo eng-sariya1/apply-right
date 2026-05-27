@@ -1,10 +1,10 @@
-import {Controller} from "react-hook-form";
+import {Controller, type Control, type FieldValues} from "react-hook-form";
 import {InputText} from "primereact/inputtext";
 
 const TextInput = ({label, name, control, dataCy, placeholder}: {
     label: string,
     name: string,
-    control: any,
+    control: Control<FieldValues>,
     dataCy: string,
     placeholder: string
 }) => {
@@ -17,7 +17,7 @@ const TextInput = ({label, name, control, dataCy, placeholder}: {
                 render={({field}) => (
                     <InputText
                         {...field}
-                        className="w-full p-2 border border-[#C6DEE4] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
+                        className="w-full p-2 border border-[var(--color-border)] rounded-lg focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all"
                         placeholder={placeholder}
                         data-cy={dataCy}
                     />

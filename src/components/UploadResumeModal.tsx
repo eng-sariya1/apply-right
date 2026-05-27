@@ -77,7 +77,7 @@ export default function UploadResumeModal({ isOpen, onClose, onSuccess }: Upload
       const page = await pdf.getPage(i);
       const textContent = await page.getTextContent();
       const pageText = textContent.items
-        .map((item: any) => item.str)
+        .map((item) => (item as { str: string }).str)
         .join(' ');
       fullText += pageText + '\n';
     }
@@ -159,7 +159,7 @@ export default function UploadResumeModal({ isOpen, onClose, onSuccess }: Upload
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden"
+          className="relative bg-[var(--color-surface-solid)] rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden"
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-[#017A8C] to-[#019baf] px-6 py-5 text-white">
@@ -261,7 +261,7 @@ export default function UploadResumeModal({ isOpen, onClose, onSuccess }: Upload
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="absolute inset-0 bg-white/90 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center"
+                  className="absolute inset-0 bg-[var(--color-surface-90)] backdrop-blur-sm rounded-xl flex flex-col items-center justify-center"
                 >
                   <Loader2 className="w-10 h-10 text-[#017A8C] animate-spin mb-3" />
                   <p className="text-sm font-medium text-gray-700">{progress}</p>

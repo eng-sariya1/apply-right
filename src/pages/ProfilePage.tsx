@@ -12,6 +12,7 @@ import {
     Loader2,
 } from 'lucide-react';
 import { useAuth } from '../AuthContext';
+import PasswordInput from '../components/PasswordInput';
 
 export default function ProfilePage() {
     const navigate = useNavigate();
@@ -48,8 +49,15 @@ export default function ProfilePage() {
             setSavingName(true);
             await updateDisplayName(trimmed);
             setNameNotice('Your name has been updated.');
-        } catch {
-            setNameError('Could not update your name. Please try again.');
+        } catch (err: unknown) {
+            const msg = (err as Error)?.message;
+            if (msg === 'name-taken') {
+                setNameError('That name is already in use, please choose a different one.');
+            } else if (msg === 'Invalid name') {
+                setNameError('Please enter a valid name.');
+            } else {
+                setNameError('Could not update your name. Please try again.');
+            }
         } finally {
             setSavingName(false);
         }
@@ -89,11 +97,11 @@ export default function ProfilePage() {
     }
 
     const inputClass =
-        'w-full px-4 py-3 border border-[#C6DEE4] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-white/50';
-    const labelClass = 'block text-sm font-semibold text-[#02343F] mb-2';
+        'w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)]';
+    const labelClass = 'block text-sm font-semibold text-[var(--color-text-dark)] mb-2';
 
     return (
-        <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden">
+        <div className="min-h-screen bg-[var(--color-bg)] relative overflow-hidden">
             {/* Background Gradients */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
@@ -163,15 +171,15 @@ export default function ProfilePage() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-[#C6DEE4]/50 shadow-lg p-6 md:p-8"
+                    className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border-2 border-[var(--color-border)]/50 shadow-lg p-6 md:p-8"
                 >
                     <div className="flex items-center gap-4 mb-6">
                         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#017A8C] to-[#019baf] flex items-center justify-center text-white font-bold text-lg shadow-md select-none">
                             {initials}
                         </div>
                         <div className="min-w-0">
-                            <h2 className="text-xl font-bold text-[#02343F] leading-tight">Personal Information</h2>
-                            <p className="text-sm text-[#88B7C4] truncate">{currentUser?.email}</p>
+                            <h2 className="text-xl font-bold text-[var(--color-text-dark)] leading-tight">Personal Information</h2>
+                            <p className="text-sm text-[var(--color-text-light)] truncate">{currentUser?.email}</p>
                         </div>
                     </div>
 
@@ -208,7 +216,7 @@ export default function ProfilePage() {
                                 disabled
                                 className={`${inputClass} opacity-60 cursor-not-allowed`}
                             />
-                            <p className="text-xs text-[#88B7C4] mt-1.5">Email can't be changed here.</p>
+                            <p className="text-xs text-[var(--color-text-light)] mt-1.5">Email can't be changed here.</p>
                         </div>
                         <motion.button
                             whileHover={{ scale: savingName ? 1 : 1.02 }}
@@ -234,22 +242,22 @@ export default function ProfilePage() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-[#C6DEE4]/50 shadow-lg p-6 md:p-8"
+                    className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border-2 border-[var(--color-border)]/50 shadow-lg p-6 md:p-8"
                 >
                     <div className="flex items-center gap-4 mb-6">
                         <div className="w-14 h-14 rounded-2xl bg-[#017A8C]/10 flex items-center justify-center">
                             <Lock className="w-6 h-6 text-[#017A8C]" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-[#02343F] leading-tight">Change Password</h2>
-                            <p className="text-sm text-[#88B7C4]">Update the password you use to log in</p>
+                            <h2 className="text-xl font-bold text-[var(--color-text-dark)] leading-tight">Change Password</h2>
+                            <p className="text-sm text-[var(--color-text-light)]">Update the password you use to log in</p>
                         </div>
                     </div>
 
                     {!isPasswordUser ? (
-                        <div className="p-4 bg-[#017A8C]/5 border border-[#C6DEE4]/60 rounded-lg flex items-start gap-3">
+                        <div className="p-4 bg-[#017A8C]/5 border border-[var(--color-border)]/60 rounded-lg flex items-start gap-3">
                             <AlertCircle className="w-5 h-5 text-[#017A8C] flex-shrink-0 mt-0.5" />
-                            <p className="text-sm text-[#02343F]">
+                            <p className="text-sm text-[var(--color-text-dark)]">
                                 You sign in with Google, so there's no password to change here.
                                 Manage your password in your Google Account.
                             </p>
@@ -272,38 +280,38 @@ export default function ProfilePage() {
                             <form onSubmit={handleChangePassword} className="space-y-5">
                                 <div>
                                     <label htmlFor="current-password" className={labelClass}>Current password</label>
-                                    <input
+                                    <PasswordInput
                                         id="current-password"
-                                        type="password"
                                         value={currentPassword}
                                         onChange={(e) => setCurrentPassword(e.target.value)}
                                         required
-                                        className={inputClass}
+                                        autoComplete="current-password"
                                         placeholder="Enter your current password"
+                                        className={inputClass + ' pr-12'}
                                     />
                                 </div>
                                 <div>
                                     <label htmlFor="new-password" className={labelClass}>New password</label>
-                                    <input
+                                    <PasswordInput
                                         id="new-password"
-                                        type="password"
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
                                         required
-                                        className={inputClass}
+                                        autoComplete="new-password"
                                         placeholder="Minimum 6 characters"
+                                        className={inputClass + ' pr-12'}
                                     />
                                 </div>
                                 <div>
                                     <label htmlFor="confirm-password" className={labelClass}>Confirm new password</label>
-                                    <input
+                                    <PasswordInput
                                         id="confirm-password"
-                                        type="password"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         required
-                                        className={inputClass}
+                                        autoComplete="new-password"
                                         placeholder="Re-enter the new password"
+                                        className={inputClass + ' pr-12'}
                                     />
                                 </div>
                                 <motion.button

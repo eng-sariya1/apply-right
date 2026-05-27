@@ -10,7 +10,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0]">
+    <div className="min-h-screen bg-[var(--color-bg)]">
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
       <motion.div
         animate={{ marginLeft: collapsed ? 72 : 260 }}

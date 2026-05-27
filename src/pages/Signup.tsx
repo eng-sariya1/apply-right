@@ -3,13 +3,15 @@ import { useAuth } from '../AuthContext';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { AlertCircle, Loader2 } from 'lucide-react';
+import PasswordInput from '../components/PasswordInput';
 
 function Signup() {
+    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { signup, loginWithGoogle, currentUser, userRole } = useAuth();
+    const { signup, loginWithGoogle, lookupUsername, currentUser, userRole } = useAuth();
     const navigate = useNavigate();
 
     // Redirect if already logged in AND verified (unverified users go to the
@@ -24,10 +26,11 @@ function Signup() {
             setLoading(true);
             const role = await loginWithGoogle();
             navigate(role === 'admin' ? '/dashboard' : '/home');
-        } catch (err: any) {
-            if (err.code === 'auth/popup-closed-by-user') {
+        } catch (err: unknown) {
+            const code = (err as { code?: string }).code;
+            if (code === 'auth/popup-closed-by-user') {
                 setError('Sign-in cancelled');
-            } else if (err.code === 'auth/cancelled-popup-request') {
+            } else if (code === 'auth/cancelled-popup-request') {
                 // User closed popup, ignore
             } else {
                 setError('Failed to sign in with Google');
@@ -40,6 +43,21 @@ function Signup() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
+        // Permissive validation: this value becomes both the displayed Full
+        // Name and the login handle, so it has to accept real names with
+        // spaces / accents / apostrophes. Reject only the things that would
+        // break: too short/long, no alphanumerics at all, or '/' (Firestore
+        // doc-ID limit).
+        const cleanedName = fullName.trim().replace(/\s+/g, ' ');
+        if (
+            cleanedName.length < 2
+            || cleanedName.length > 50
+            || !/[\p{L}\p{N}]/u.test(cleanedName)
+            || cleanedName.includes('/')
+        ) {
+            return setError('Please enter a valid name (2–50 characters).');
+        }
+
         if (password.length < 6) {
             return setError('Password must be at least 6 characters long');
         }
@@ -47,18 +65,27 @@ function Signup() {
         try {
             setError('');
             setLoading(true);
-            await signup(email, password);
+            // Friendly pre-check before creating the account. The rules layer
+            // is the real uniqueness guard (only the current owner can update
+            // an existing /usernames doc), which the catch below surfaces if
+            // a race slips past this.
+            if (await lookupUsername(cleanedName)) {
+                setError('That name is already taken. Please choose another.');
+                setLoading(false);
+                return;
+            }
+            await signup(email, password, cleanedName);
             // Account created; a verification email was sent. The user stays
             // signed in but unverified — the Login page shows the verify panel.
             navigate('/login');
-        } catch (error: any) {
-            setError('Failed to create account: ' + error.message);
+        } catch (error: unknown) {
+            setError('Failed to create account: ' + (error instanceof Error ? error.message : String(error)));
         }
         setLoading(false);
     }
 
     return (
-        <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden flex items-center justify-center px-4">
+        <div className="min-h-screen bg-[var(--color-bg)] relative overflow-hidden flex items-center justify-center px-4">
             {/* Background Gradients */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
@@ -71,7 +98,7 @@ function Signup() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 w-full max-w-md border border-[#C6DEE4]/30"
+                className="relative bg-[var(--color-surface-90)] backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 w-full max-w-md border border-[var(--color-border)]/30"
             >
                 {/* Logo */}
                 <div className="text-center mb-8">
@@ -84,8 +111,8 @@ function Signup() {
                             Nuivo
                         </motion.h1>
                     </Link>
-                    <h2 className="text-2xl font-bold text-[#02343F] mb-2">Create Account</h2>
-                    <p className="text-sm text-[#88B7C4]">Join thousands building professional resumes</p>
+                    <h2 className="text-2xl font-bold text-[var(--color-text-dark)] mb-2">Create Account</h2>
+                    <p className="text-sm text-[var(--color-text-light)]">Join thousands building professional resumes</p>
                 </div>
 
                 <div className="mb-6">
@@ -96,7 +123,7 @@ function Signup() {
                         disabled={loading}
                         whileHover={{scale: 1.02}}
                         whileTap={{scale: 0.98}}
-                        className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 hover:border-[#4285F4] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                        className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--color-surface-solid)] border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 hover:border-[#4285F4] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                     >
                         {/* Google Icon SVG */}
                         <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -126,7 +153,7 @@ function Signup() {
                             <div className="w-full border-t border-gray-300"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-4 bg-white text-gray-500">or continue with email</span>
+                            <span className="px-4 bg-[var(--color-surface-solid)] text-gray-500">or continue with email</span>
                         </div>
                     </div>
                 </div>
@@ -145,9 +172,26 @@ function Signup() {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Full Name Input */}
+                    <div>
+                        <label htmlFor="fullName" className="block text-sm font-semibold text-[var(--color-text-dark)] mb-2">
+                            Full Name
+                        </label>
+                        <input
+                            id="fullName"
+                            type="text"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            required
+                            autoComplete="name"
+                            className="w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)]"
+                            placeholder="Your full name, e.g"
+                        />
+                    </div>
+
                     {/* Email Input */}
                     <div>
-                        <label htmlFor="email" className="block text-sm font-semibold text-[#02343F] mb-2">
+                        <label htmlFor="email" className="block text-sm font-semibold text-[var(--color-text-dark)] mb-2">
                             Email Address
                         </label>
                         <input
@@ -156,23 +200,22 @@ function Signup() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full px-4 py-3 border border-[#C6DEE4] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-white/50"
+                            className="w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)]"
                             placeholder="you@example.com"
                         />
                     </div>
 
                     {/* Password Input */}
                     <div>
-                        <label htmlFor="password" className="block text-sm font-semibold text-[#02343F] mb-2">
+                        <label htmlFor="password" className="block text-sm font-semibold text-[var(--color-text-dark)] mb-2">
                             Password
                         </label>
-                        <input
+                        <PasswordInput
                             id="password"
-                            type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full px-4 py-3 border border-[#C6DEE4] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-white/50"
+                            autoComplete="new-password"
                             placeholder="Minimum 6 characters"
                         />
                     </div>
@@ -197,7 +240,7 @@ function Signup() {
                 </form>
 
                 {/* Login Link */}
-                <p className="mt-6 text-center text-sm text-[#88B7C4]">
+                <p className="mt-6 text-center text-sm text-[var(--color-text-light)]">
                     Already have an account?{' '}
                     <Link to="/login" className="text-[#017A8C] hover:text-[#015C6A] font-semibold transition-colors">
                         Log In

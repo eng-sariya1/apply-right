@@ -1,13 +1,13 @@
-import {Controller} from "react-hook-form";
+import {Controller, type Control, type FieldValues} from "react-hook-form";
 import {Dropdown} from "primereact/dropdown";
 
 const DropdownInput = ({label, name, control, dataCy, placeholder, options}: {
     label: string,
     name: string,
-    control: any,
+    control: Control<FieldValues>,
     dataCy: string,
     placeholder: string,
-    options: any[]
+    options: { label: string; value: string }[]
 }) => {
     return (
         <div>

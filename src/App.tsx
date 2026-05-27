@@ -6,6 +6,8 @@ import ATSPage from "./pages/ATSPage.tsx";
 import SuggestionJobsPage from "./pages/SuggestionJobsPage.tsx";
 import TemplatePage from "./pages/TemplatePage.tsx";
 import { CVProvider } from "./context/CVContext.tsx";
+import { ToastProvider } from "./context/ToastContext.tsx";
+import { ThemeProvider } from "./context/ThemeContext.tsx";
 import Signup from './pages/Signup.tsx';
 import Login from './pages/Login.tsx';
 import Dashboard from './pages/Dashboard.tsx';
@@ -26,7 +28,9 @@ function LandingPageGate() {
 
 function App() {
     return (
+        <ThemeProvider>
         <AuthProvider>
+            <ToastProvider>
             <CVProvider>
                 <Routes>
                     {/* Public */}
@@ -47,7 +51,9 @@ function App() {
                     <Route path="/dashboard/users" element={<AdminRoute><UsersManagement /></AdminRoute>} />
                 </Routes>
             </CVProvider>
+            </ToastProvider>
         </AuthProvider>
+        </ThemeProvider>
     );
 }
 

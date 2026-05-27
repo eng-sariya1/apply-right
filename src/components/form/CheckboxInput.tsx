@@ -1,10 +1,10 @@
-import {Controller} from "react-hook-form";
+import {Controller, type Control, type FieldValues} from "react-hook-form";
 import {Checkbox} from "primereact/checkbox";
 
 const CheckboxInput = ({label, name, control, inputId}: {
     label: string,
     name: string,
-    control: any,
+    control: Control<FieldValues>,
     inputId: string
 }) => {
     return (

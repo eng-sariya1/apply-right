@@ -5,7 +5,8 @@ import { useCVContext } from '../context/CVContext';
 import type { TemplateId } from '../types/cv.types';
 import tem2Preview from '../../images/templates/TEM1.png';
 import classicPreview from '../../images/templates/classic.png';
-import tem3Preview from '../../images/templates/TEM2.jpg';
+import tem3Preview from '../../images/templates/TEM2.JPG';
+
 const templates: {
   id: TemplateId;
   name: string;
@@ -45,7 +46,7 @@ export default function TemplatePage() {
   const currentTemplateId = cvData.templateId || 'template1';
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--color-bg)] relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-r from-[#017A8C]/10 via-transparent to-transparent blur-3xl rounded-full" />
@@ -119,10 +120,10 @@ export default function TemplatePage() {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
-                className={`relative rounded-2xl border-2 transition-all duration-300 overflow-hidden shadow-lg hover:shadow-xl cursor-pointer group ${
+                className={`relative rounded-2xl border-2 transition-all duration-300 overflow-hidden shadow-lg hover:shadow-xl cursor-pointer group flex flex-col ${
                   isSelected
                     ? 'border-[#017A8C] shadow-[#017A8C]/20'
-                    : 'border-[#C6DEE4]/50 hover:border-[#017A8C]/50 bg-white/80 backdrop-blur-sm'
+                    : 'border-[var(--color-border)]/50 hover:border-[#017A8C]/50 bg-[var(--color-surface-80)] backdrop-blur-sm'
                 }`}
                 onClick={() => handleSelectTemplate(template.id)}
               >
@@ -135,11 +136,11 @@ export default function TemplatePage() {
                 )}
 
                 {/* Top accent line */}
-                <div className={`h-1 ${isSelected ? 'bg-gradient-to-r from-[#017A8C] via-[#019baf] to-[#88B7C4]' : 'bg-gradient-to-r from-[#C6DEE4] to-[#88B7C4] group-hover:from-[#017A8C] group-hover:to-[#019baf]'} transition-all duration-300`} />
+                <div className={`h-1 ${isSelected ? 'bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-text-light)]' : 'bg-gradient-to-r from-[var(--color-border)] to-[var(--color-text-light)] group-hover:from-[var(--color-primary)] group-hover:to-[var(--color-primary-light)]'} transition-all duration-300`} />
 
                 {/* Template Preview Thumbnail */}
-                <div className="mx-4 mt-4 rounded-xl overflow-hidden border border-[#C6DEE4]/40 shadow-inner"
-                  style={{ aspectRatio: '1 / 1.414', background: '#f8f8f8' }}>
+                <div className="mx-4 mt-4 rounded-xl overflow-hidden border border-[var(--color-border)]/40 shadow-inner"
+                  style={{ aspectRatio: '1 / 1.414', background: 'var(--color-card)' }}>
                   <img
                     src={template.id === 'template3' ? tem3Preview : template.id === 'template2' ? tem2Preview : classicPreview}
                     alt={`${template.name} Template Preview`}
@@ -148,18 +149,18 @@ export default function TemplatePage() {
                 </div>
 
                 {/* Card Body */}
-                <div className="p-5">
-                  <h2 className="text-xl font-bold text-[#02343F] mb-2">
+                <div className="p-5 flex flex-col flex-1">
+                  <h2 className="text-xl font-bold text-[var(--color-text-dark)] mb-2">
                     {template.name}
                   </h2>
-                  <p className="text-sm text-[#88B7C4] leading-relaxed mb-4">
+                  <p className="text-sm text-[var(--color-text-light)] leading-relaxed mb-4">
                     {template.description}
                   </p>
 
                   {/* Features list */}
                   <ul className="space-y-1 mb-5">
                     {template.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-[#5A6A6F]">
+                      <li key={i} className="flex items-center gap-2 text-sm text-[var(--color-muted)]">
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#017A8C] flex-shrink-0" />
                         {feature}
                       </li>
@@ -174,7 +175,7 @@ export default function TemplatePage() {
                       e.stopPropagation();
                       handleSelectTemplate(template.id);
                     }}
-                    className={`w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-lg ${
+                    className={`w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-lg mt-auto ${
                       isSelected
                         ? 'bg-[#017A8C] text-white'
                         : 'bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white'
@@ -193,7 +194,7 @@ export default function TemplatePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="text-center text-sm text-[#88B7C4] mt-8"
+          className="text-center text-sm text-[var(--color-text-light)] mt-8"
         >
           You can switch templates at any time from the Resume Builder page.
         </motion.p>
