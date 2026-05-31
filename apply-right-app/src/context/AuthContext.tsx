@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, useRef, type ReactNode 
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithCredential,
   signOut,
   onAuthStateChanged,
   sendEmailVerification,
@@ -10,6 +11,7 @@ import {
   updatePassword,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  GoogleAuthProvider,
   getIdToken,
   type User,
 } from 'firebase/auth';
@@ -26,6 +28,7 @@ interface AuthContextType {
   token: string | null;
   signup: (email: string, password: string, name: string) => Promise<UserRole>;
   login: (email: string, password: string) => Promise<UserRole>;
+  loginWithGoogle: (idToken: string) => Promise<UserRole>;
   logout: () => Promise<void>;
   refreshToken: () => Promise<void>;
   sendVerificationEmail: () => Promise<void>;
@@ -82,6 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [, setProfileVersion] = useState(0);
   const refreshIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const googleSigningInRef = useRef(false);
 
   async function handleTokenRefresh(user: User) {
     const freshToken = await getIdToken(user, true);
@@ -116,6 +120,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUserRole(role);
     setUserStatus(status);
     return role;
+  }
+
+  async function loginWithGoogle(idToken: string): Promise<UserRole> {
+    googleSigningInRef.current = true;
+    try {
+      const credential = GoogleAuthProvider.credential(idToken);
+      const result = await signInWithCredential(auth, credential);
+      if (auth.currentUser) {
+        const freshToken = await getIdToken(auth.currentUser, true);
+        setToken(freshToken);
+      }
+      const { role, status } = await fetchUserData(result.user);
+      setUserRole(role);
+      setUserStatus(status);
+      return role;
+    } finally {
+      googleSigningInRef.current = false;
+    }
   }
 
   async function logout() {
@@ -199,14 +221,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } catch {
           setToken(null);
         }
-        try {
-          const { role, status } = await fetchUserData(user);
-          setUserRole(role);
-          setUserStatus(status);
-        } catch (err) {
-          console.error('Failed to fetch user data:', err);
-          setUserRole(null);
-          setUserStatus(null);
+        if (!googleSigningInRef.current) {
+          try {
+            const { role, status } = await fetchUserData(user);
+            setUserRole(role);
+            setUserStatus(status);
+          } catch (err) {
+            console.error('Failed to fetch user data:', err);
+            setUserRole(null);
+            setUserStatus(null);
+          }
         }
       } else {
         setUserRole(null);
@@ -239,6 +263,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     token,
     signup,
     login,
+    loginWithGoogle,
     logout,
     refreshToken,
     sendVerificationEmail,

@@ -1,22 +1,72 @@
-import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, StatusBar, ActivityIndicator } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Alert, StatusBar, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { AuthStackParamList } from '../../navigation/AuthStack';
 import { useAuth } from '../../context/AuthContext';
-import { useTheme } from '../../context/ThemeContext';
 import { Eye, EyeOff, ArrowLeft, FileText } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+import {
+  Box,
+  Button,
+  ButtonText,
+  HStack,
+  Heading,
+  Input,
+  InputField,
+  Pressable,
+  ScrollView,
+  Text,
+  VStack,
+} from '../../components/ui';
+import { GradientHeader } from '../../components/ui/GradientHeader';
+import { GoogleIcon } from '../../components/ui/GoogleIcon';
+
+WebBrowser.maybeCompleteAuthSession();
 
 type Nav = StackNavigationProp<AuthStackParamList, 'Login'>;
 
 export default function LoginScreen() {
   const navigation = useNavigation<Nav>();
-  const { login, resetPassword } = useAuth();
-  const { colors } = useTheme();
+  const { login, loginWithGoogle, resetPassword } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  const ANDROID_CLIENT_ID = '281924958406-oe7v1j9vnfn83bim78v2tis7k39k60rg.apps.googleusercontent.com';
+
+  const WEB_CLIENT_ID = '281924958406-c4mc8hdc1ps4jopk7sl8ccn7aftd9fqj.apps.googleusercontent.com';
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: ANDROID_CLIENT_ID,
+    webClientId: WEB_CLIENT_ID,
+    scopes: ['profile', 'email'],
+  });
+
+  useEffect(() => {
+    if (response?.type === 'success' && response.params?.code && request?.codeVerifier && request?.redirectUri) {
+      setGoogleLoading(true);
+      fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          code: response.params.code,
+          client_id: WEB_CLIENT_ID,
+          redirect_uri: request.redirectUri,
+          grant_type: 'authorization_code',
+          code_verifier: request.codeVerifier,
+        }).toString(),
+      })
+        .then((r) => r.json())
+        .then((tokens) => loginWithGoogle(tokens.id_token))
+        .catch((err: any) => Alert.alert('Google Sign-In failed', err.message || 'Please try again'))
+        .finally(() => setGoogleLoading(false));
+    }
+  }, [response]);
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -47,73 +97,102 @@ export default function LoginScreen() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ flexGrow: 1 }}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.primaryDark} />
+    <ScrollView
+      className="flex-1 bg-background-light dark:bg-background-dark"
+      contentContainerClassName="grow"
+    >
+      <StatusBar barStyle="light-content" backgroundColor="#015C6A" />
 
-      {/* Header */}
-      <View style={{ backgroundColor: colors.primaryDark, paddingTop: 60, paddingBottom: 40, paddingHorizontal: 24 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 20 }}>
+      <GradientHeader style={{ paddingHorizontal: 24, paddingTop: 56, paddingBottom: 40 }}>
+        <Pressable className="mb-6" onPress={() => navigation.goBack()}>
           <ArrowLeft size={24} color="#fff" />
-        </TouchableOpacity>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <View style={{ width: 44, height: 44, borderRadius: 11, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center' }}>
+        </Pressable>
+        <HStack space={12} className="items-center">
+          <LinearGradient
+            colors={['#015C6A', '#019baf']}
+            style={{ width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center' }}
+          >
             <FileText size={22} color="#fff" />
-          </View>
-          <Text style={{ fontSize: 26, fontWeight: '700', color: '#fff', fontFamily: 'Ubuntu_700Bold' }}>Welcome back</Text>
-        </View>
-        <Text style={{ color: '#a5d8e0', marginTop: 8, fontFamily: 'Ubuntu_300Light' }}>Sign in to continue building your career</Text>
-      </View>
+          </LinearGradient>
+          <Heading size="xl" className="text-white">
+            Welcome back
+          </Heading>
+        </HStack>
+        <Text className="mt-2 text-[#a5d8e0]">Sign in to continue building your career</Text>
+      </GradientHeader>
 
-      {/* Form */}
-      <View style={{ padding: 24, gap: 16 }}>
-        <View>
-          <Text style={{ fontSize: 13, fontWeight: '600', color: colors.textDark, fontFamily: 'Ubuntu_500Medium', marginBottom: 6 }}>Email Address</Text>
-          <TextInput
-            value={email}
-            onChangeText={setEmail}
-            placeholder="you@example.com"
-            placeholderTextColor={colors.textLight}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            style={{ backgroundColor: colors.surface, borderWidth: 1.5, borderColor: colors.border, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 12, fontSize: 15, color: colors.textDark, fontFamily: 'Ubuntu_300Light' }}
-          />
-        </View>
+      <VStack space={20} className="p-6">
+        <Pressable
+          disabled={!request || googleLoading}
+          onPress={() => promptAsync()}
+          style={{
+            flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+            gap: 10, borderRadius: 16, borderWidth: 1,
+            borderColor: '#D8EBF0', backgroundColor: '#fff',
+            paddingVertical: 14,
+            opacity: !request || googleLoading ? 0.6 : 1,
+          }}
+        >
+          <GoogleIcon size={20} />
+          <Text style={{ fontFamily: 'Inter_600SemiBold', fontSize: 15, color: '#02343F' }}>
+            {googleLoading ? 'Signing in…' : 'Continue with Google'}
+          </Text>
+        </Pressable>
 
-        <View>
-          <Text style={{ fontSize: 13, fontWeight: '600', color: colors.textDark, fontFamily: 'Ubuntu_500Medium', marginBottom: 6 }}>Password</Text>
-          <View style={{ position: 'relative' }}>
-            <TextInput
+        <HStack space={8} className="items-center">
+          <View style={{ flex: 1, height: 1, backgroundColor: '#D8EBF0' }} />
+          <Text className="font-[Inter_400Regular] text-[12px] text-text-light-light dark:text-text-light-dark">
+            or continue with email
+          </Text>
+          <View style={{ flex: 1, height: 1, backgroundColor: '#D8EBF0' }} />
+        </HStack>
+
+        <Box>
+          <Text className="mb-2 font-[Inter_600SemiBold] text-[11px] uppercase tracking-widest text-text-dark-light dark:text-text-dark-dark">
+            Email Address
+          </Text>
+          <Input>
+            <InputField
+              value={email}
+              onChangeText={setEmail}
+              placeholder="you@example.com"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </Input>
+        </Box>
+
+        <Box>
+          <Text className="mb-2 font-[Inter_600SemiBold] text-[11px] uppercase tracking-widest text-text-dark-light dark:text-text-dark-dark">
+            Password
+          </Text>
+          <Input>
+            <InputField
               value={password}
               onChangeText={setPassword}
               placeholder="Enter your password"
-              placeholderTextColor={colors.textLight}
               secureTextEntry={!showPassword}
-              style={{ backgroundColor: colors.surface, borderWidth: 1.5, borderColor: colors.border, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 12, paddingRight: 48, fontSize: 15, color: colors.textDark, fontFamily: 'Ubuntu_300Light' }}
             />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: 14, top: 14 }}>
-              {showPassword ? <EyeOff size={20} color={colors.textLight} /> : <Eye size={20} color={colors.textLight} />}
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity onPress={handleForgotPassword} style={{ alignSelf: 'flex-end', marginTop: 6 }}>
-            <Text style={{ color: colors.primary, fontSize: 13, fontFamily: 'Ubuntu_500Medium' }}>Forgot password?</Text>
-          </TouchableOpacity>
-        </View>
+            <Pressable className="px-3" onPress={() => setShowPassword(!showPassword)}>
+              {showPassword ? <EyeOff size={20} color="#6B9EA8" /> : <Eye size={20} color="#6B9EA8" />}
+            </Pressable>
+          </Input>
+          <Pressable className="mt-2 self-end" onPress={handleForgotPassword}>
+            <Text className="font-[Inter_500Medium] text-xs text-primary">Forgot password?</Text>
+          </Pressable>
+        </Box>
 
-        <TouchableOpacity
-          onPress={handleLogin}
-          disabled={loading}
-          style={{ backgroundColor: colors.primary, borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginTop: 8, opacity: loading ? 0.7 : 1 }}
-        >
-          {loading ? <ActivityIndicator color="#fff" /> : <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', fontFamily: 'Ubuntu_700Bold' }}>Sign In</Text>}
-        </TouchableOpacity>
+        <Button className="mt-2" isLoading={loading} onPress={handleLogin}>
+          <ButtonText>Sign In</ButtonText>
+        </Button>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 4, marginTop: 8 }}>
-          <Text style={{ color: colors.textLight, fontFamily: 'Ubuntu_300Light' }}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={{ color: colors.primary, fontFamily: 'Ubuntu_500Medium' }}>Sign up</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        <HStack space={4} className="mt-2 justify-center">
+          <Text className="text-text-light-light dark:text-text-light-dark">Don't have an account?</Text>
+          <Pressable onPress={() => navigation.navigate('Signup')}>
+            <Text className="font-[Inter_600SemiBold] text-primary">Sign up</Text>
+          </Pressable>
+        </HStack>
+      </VStack>
     </ScrollView>
   );
 }

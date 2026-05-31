@@ -1,17 +1,69 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator, StatusBar } from 'react-native';
+import { Alert, Platform, StatusBar, useColorScheme, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { User, Mail, Lock, Sun, Moon, LogOut } from 'lucide-react-native';
+import { User, Mail, Lock, Sun, Moon, LogOut, ArrowLeft } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import {
+  Box,
+  Button,
+  ButtonText,
+  Card,
+  Center,
+  HStack,
+  Heading,
+  Input,
+  InputField,
+  Pressable,
+  ScrollView,
+  Spinner,
+  Text,
+  VStack,
+} from '../../components/ui';
+import { GradientHeader } from '../../components/ui/GradientHeader';
+
+const LOGOUT_SHADOW = Platform.select({
+  ios: { shadowColor: '#dc2626', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 6 },
+  android: { elevation: 3 },
+  default: {},
+});
 
 export default function ProfileScreen() {
-  const { colors, theme, toggleTheme } = useTheme();
-  const { currentUser, logout, updateDisplayName, changePassword } = useAuth();
+  const navigation = useNavigation();
+  const { theme, toggleTheme } = useTheme();
+  const { currentUser, logout, updateDisplayName, changePassword, sendVerificationEmail, reloadAndRefresh } = useAuth();
+  const scheme = useColorScheme();
+  const isDark = scheme === 'dark';
+  const isGoogleUser = ((currentUser?.providerData as any[]) || []).some((p: any) => p?.providerId === 'google.com');
+  const [verifying, setVerifying] = useState(false);
   const [displayName, setDisplayName] = useState(currentUser?.displayName || '');
   const [currentPwd, setCurrentPwd] = useState('');
   const [newPwd, setNewPwd] = useState('');
   const [saving, setSaving] = useState(false);
   const [changingPwd, setChangingPwd] = useState(false);
+
+  const handleSendVerification = async () => {
+    try {
+      await sendVerificationEmail();
+      Alert.alert('Email sent', 'Check your inbox and click the verification link, then tap "I\'ve verified".');
+    } catch (err: any) {
+      Alert.alert('Error', err?.message || 'Could not send verification email');
+    }
+  };
+
+  const handleCheckVerified = async () => {
+    setVerifying(true);
+    try {
+      const ok = await reloadAndRefresh();
+      Alert.alert(
+        ok ? 'Verified' : 'Not yet',
+        ok ? 'Your email is now verified. You can save CVs.' : 'We could not confirm verification. Make sure you clicked the link in your email, then try again.',
+      );
+    } finally {
+      setVerifying(false);
+    }
+  };
 
   const handleSaveName = async () => {
     if (!displayName.trim()) { Alert.alert('Error', 'Name cannot be empty'); return; }
@@ -35,7 +87,7 @@ export default function ProfileScreen() {
       Alert.alert('Success', 'Password changed successfully');
       setCurrentPwd('');
       setNewPwd('');
-    } catch (err: any) {
+    } catch {
       Alert.alert('Error', 'Incorrect current password');
     } finally {
       setChangingPwd(false);
@@ -50,122 +102,149 @@ export default function ProfileScreen() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.background }}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.primaryDark} />
+    <ScrollView className="flex-1 bg-background-light dark:bg-background-dark">
+      <StatusBar barStyle="light-content" backgroundColor="#015C6A" />
 
-      {/* Header */}
-      <View style={{ backgroundColor: colors.primaryDark, paddingTop: 56, paddingBottom: 32, paddingHorizontal: 20, alignItems: 'center' }}>
-        <View style={{ width: 72, height: 72, borderRadius: 36, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', marginBottom: 12 }}>
-          <Text style={{ fontSize: 28, fontWeight: '700', color: '#fff', fontFamily: 'Ubuntu_700Bold' }}>
-            {(currentUser?.displayName || currentUser?.email || 'U')[0].toUpperCase()}
-          </Text>
-        </View>
-        <Text style={{ fontSize: 20, fontWeight: '700', color: '#fff', fontFamily: 'Ubuntu_700Bold' }}>
+      <GradientHeader style={{ paddingHorizontal: 20, paddingTop: 56, paddingBottom: 32 }}>
+        <Pressable onPress={() => navigation.goBack()} style={{ marginBottom: 12 }}>
+          <ArrowLeft size={22} color="#fff" />
+        </Pressable>
+        <View style={{ alignItems: 'center' }}>
+        <LinearGradient
+          colors={['#22d3ee', '#017A8C', '#015C6A']}
+          style={{ width: 80, height: 80, borderRadius: 40, padding: 3, alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}
+        >
+          <View style={{
+            width: 74,
+            height: 74,
+            borderRadius: 37,
+            backgroundColor: isDark ? '#1A2740' : '#FFFFFF',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <Text style={{ fontFamily: 'Inter_700Bold', fontSize: 28, fontWeight: 'bold', color: '#017A8C' }}>
+              {(currentUser?.displayName || currentUser?.email || 'U')[0].toUpperCase()}
+            </Text>
+          </View>
+        </LinearGradient>
+        <Heading size="lg" className="text-white tracking-tight">
           {currentUser?.displayName || 'User'}
-        </Text>
-        <Text style={{ fontSize: 14, color: '#a5d8e0', fontFamily: 'Ubuntu_300Light', marginTop: 4 }}>
-          {currentUser?.email}
-        </Text>
-      </View>
-
-      <View style={{ padding: 16, gap: 16 }}>
-        {/* Display Name */}
-        <View style={{ backgroundColor: colors.surface, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: colors.border }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-            <User size={18} color={colors.primary} />
-            <Text style={{ fontSize: 15, fontWeight: '600', color: colors.textDark, fontFamily: 'Ubuntu_500Medium' }}>Display Name</Text>
-          </View>
-          <TextInput
-            value={displayName}
-            onChangeText={setDisplayName}
-            placeholder="Your full name"
-            placeholderTextColor={colors.textLight}
-            style={{ backgroundColor: colors.background, borderWidth: 1.5, borderColor: colors.border, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10, fontSize: 14, color: colors.textDark, fontFamily: 'Ubuntu_300Light', marginBottom: 12 }}
-          />
-          <TouchableOpacity
-            onPress={handleSaveName}
-            disabled={saving}
-            style={{ backgroundColor: colors.primary, borderRadius: 8, paddingVertical: 11, alignItems: 'center', opacity: saving ? 0.7 : 1 }}
-          >
-            {saving ? <ActivityIndicator color="#fff" size="small" /> : <Text style={{ color: '#fff', fontFamily: 'Ubuntu_700Bold', fontSize: 14 }}>Update Name</Text>}
-          </TouchableOpacity>
+        </Heading>
+        <Text className="mt-1 text-sm text-[#a5d8e0]">{currentUser?.email}</Text>
         </View>
+      </GradientHeader>
 
-        {/* Change Password */}
-        <View style={{ backgroundColor: colors.surface, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: colors.border }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-            <Lock size={18} color={colors.primary} />
-            <Text style={{ fontSize: 15, fontWeight: '600', color: colors.textDark, fontFamily: 'Ubuntu_500Medium' }}>Change Password</Text>
-          </View>
-          <TextInput
-            value={currentPwd}
-            onChangeText={setCurrentPwd}
-            placeholder="Current password"
-            placeholderTextColor={colors.textLight}
-            secureTextEntry
-            style={{ backgroundColor: colors.background, borderWidth: 1.5, borderColor: colors.border, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10, fontSize: 14, color: colors.textDark, fontFamily: 'Ubuntu_300Light', marginBottom: 10 }}
-          />
-          <TextInput
-            value={newPwd}
-            onChangeText={setNewPwd}
-            placeholder="New password (min. 6 chars)"
-            placeholderTextColor={colors.textLight}
-            secureTextEntry
-            style={{ backgroundColor: colors.background, borderWidth: 1.5, borderColor: colors.border, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10, fontSize: 14, color: colors.textDark, fontFamily: 'Ubuntu_300Light', marginBottom: 12 }}
-          />
-          <TouchableOpacity
-            onPress={handleChangePassword}
-            disabled={changingPwd}
-            style={{ backgroundColor: colors.primary, borderRadius: 8, paddingVertical: 11, alignItems: 'center', opacity: changingPwd ? 0.7 : 1 }}
-          >
-            {changingPwd ? <ActivityIndicator color="#fff" size="small" /> : <Text style={{ color: '#fff', fontFamily: 'Ubuntu_700Bold', fontSize: 14 }}>Change Password</Text>}
-          </TouchableOpacity>
-        </View>
+      <VStack space={16} className="p-4">
+        <Card>
+          <HStack space={8} className="mb-3 items-center">
+            <User size={18} color="#017A8C" />
+            <Text className="font-[Inter_500Medium] text-base font-semibold text-text-dark-light dark:text-text-dark-dark">
+              Display Name
+            </Text>
+          </HStack>
+          <Input className="mb-3 bg-background-light dark:bg-background-dark">
+            <InputField value={displayName} onChangeText={setDisplayName} placeholder="Your full name" />
+          </Input>
+          <Button className="rounded-lg py-3" isLoading={saving} onPress={handleSaveName}>
+            <ButtonText className="text-sm">Update Name</ButtonText>
+          </Button>
+        </Card>
 
-        {/* Theme Toggle */}
-        <View style={{ backgroundColor: colors.surface, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: colors.border }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              {theme === 'dark' ? <Moon size={18} color={colors.primary} /> : <Sun size={18} color={colors.primary} />}
-              <View>
-                <Text style={{ fontSize: 15, fontWeight: '600', color: colors.textDark, fontFamily: 'Ubuntu_500Medium' }}>
+        {isGoogleUser ? (
+          <Card>
+            <HStack space={8} className="items-center">
+              <Lock size={18} color="#017A8C" />
+              <Text className="flex-1 font-[Inter_400Regular] text-sm text-text-light-light dark:text-text-light-dark">
+                Signed in with Google — password is managed by your Google account.
+              </Text>
+            </HStack>
+          </Card>
+        ) : (
+        <Card>
+          <HStack space={8} className="mb-3 items-center">
+            <Lock size={18} color="#017A8C" />
+            <Text className="font-[Inter_500Medium] text-base font-semibold text-text-dark-light dark:text-text-dark-dark">
+              Change Password
+            </Text>
+          </HStack>
+          <Input className="mb-2.5 bg-background-light dark:bg-background-dark">
+            <InputField value={currentPwd} onChangeText={setCurrentPwd} placeholder="Current password" secureTextEntry />
+          </Input>
+          <Input className="mb-3 bg-background-light dark:bg-background-dark">
+            <InputField value={newPwd} onChangeText={setNewPwd} placeholder="New password (min. 6 chars)" secureTextEntry />
+          </Input>
+          <Button className="rounded-lg py-3" isLoading={changingPwd} onPress={handleChangePassword}>
+            <ButtonText className="text-sm">Change Password</ButtonText>
+          </Button>
+        </Card>
+        )}
+
+        <Card>
+          <HStack className="items-center justify-between">
+            <HStack space={8} className="items-center">
+              {theme === 'dark' ? <Moon size={18} color="#017A8C" /> : <Sun size={18} color="#017A8C" />}
+              <Box>
+                <Text className="font-[Inter_500Medium] text-base font-semibold text-text-dark-light dark:text-text-dark-dark">
                   {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
                 </Text>
-                <Text style={{ fontSize: 12, color: colors.textLight, fontFamily: 'Ubuntu_300Light' }}>Tap to toggle theme</Text>
-              </View>
-            </View>
-            <TouchableOpacity
+                <Text className="text-xs text-text-light-light dark:text-text-light-dark">Tap to toggle theme</Text>
+              </Box>
+            </HStack>
+            <Pressable
               onPress={toggleTheme}
-              style={{ width: 50, height: 28, borderRadius: 14, backgroundColor: theme === 'dark' ? colors.primary : colors.border, justifyContent: 'center', paddingHorizontal: 3 }}
+              style={{ height: 28, width: 50, justifyContent: 'center', borderRadius: 14, paddingHorizontal: 3, overflow: 'hidden' }}
             >
-              <View style={{ width: 22, height: 22, borderRadius: 11, backgroundColor: '#fff', alignSelf: theme === 'dark' ? 'flex-end' : 'flex-start' }} />
-            </TouchableOpacity>
-          </View>
-        </View>
+              {theme === 'dark' ? (
+                <LinearGradient
+                  colors={['#015C6A', '#019baf']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
+                />
+              ) : (
+                <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: '#D8EBF0', borderRadius: 14 }} />
+              )}
+              <View style={{ height: 22, width: 22, borderRadius: 11, backgroundColor: '#fff', alignSelf: theme === 'dark' ? 'flex-end' : 'flex-start' }} />
+            </Pressable>
+          </HStack>
+        </Card>
 
-        {/* Account info */}
-        <View style={{ backgroundColor: colors.surface, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: colors.border }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-            <Mail size={18} color={colors.primary} />
-            <Text style={{ fontSize: 15, fontWeight: '600', color: colors.textDark, fontFamily: 'Ubuntu_500Medium' }}>Account Info</Text>
-          </View>
-          <Text style={{ fontSize: 13, color: colors.textLight, fontFamily: 'Ubuntu_300Light' }}>Email: {currentUser?.email}</Text>
-          <Text style={{ fontSize: 13, color: colors.textLight, fontFamily: 'Ubuntu_300Light', marginTop: 4 }}>
+        <Card>
+          <HStack space={8} className="mb-2.5 items-center">
+            <Mail size={18} color="#017A8C" />
+            <Text className="font-[Inter_500Medium] text-base font-semibold text-text-dark-light dark:text-text-dark-dark">
+              Account Info
+            </Text>
+          </HStack>
+          <Text className="text-sm text-text-light-light dark:text-text-light-dark">Email: {currentUser?.email}</Text>
+          <Text className="mt-1 text-sm text-text-light-light dark:text-text-light-dark">
             Email verified: {currentUser?.emailVerified ? 'Yes' : 'No'}
           </Text>
-        </View>
+          {!currentUser?.emailVerified && (
+            <HStack space={8} className="mt-3">
+              <Button className="flex-1 rounded-lg py-2.5" onPress={handleSendVerification}>
+                <ButtonText className="text-sm font-[Inter_500Medium] font-medium">Send verification</ButtonText>
+              </Button>
+              <Button variant="outline" className="flex-1 rounded-lg py-2.5" isLoading={verifying} onPress={handleCheckVerified}>
+                <ButtonText variant="outline" className="text-sm font-[Inter_500Medium] font-medium">
+                  I've verified
+                </ButtonText>
+              </Button>
+            </HStack>
+          )}
+        </Card>
 
-        {/* Logout */}
-        <TouchableOpacity
+        <Pressable
           onPress={handleLogout}
-          style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1.5, borderColor: '#ef4444', borderRadius: 12, paddingVertical: 14, marginTop: 4 }}
+          className="mt-1 flex-row items-center justify-center gap-2 rounded-xl border-2 border-danger-light py-3.5"
+          style={LOGOUT_SHADOW}
         >
-          <LogOut size={18} color="#ef4444" />
-          <Text style={{ color: '#ef4444', fontFamily: 'Ubuntu_700Bold', fontSize: 15 }}>Sign Out</Text>
-        </TouchableOpacity>
+          <LogOut size={18} color="#dc2626" />
+          <Text className="font-[Inter_700Bold] text-[15px] font-bold text-danger-light dark:text-danger-dark">Sign Out</Text>
+        </Pressable>
 
-        <View style={{ height: 24 }} />
-      </View>
+        <Box className="h-6" />
+      </VStack>
     </ScrollView>
   );
 }

@@ -10,34 +10,57 @@ module.exports = {
           dark: '#015C6A',
           light: '#019baf',
           bright: '#22d3ee',
+          muted: '#E6F4F7',
         },
         background: {
           light: '#FAF7F0',
-          dark: '#0f172a',
+          dark: '#0B1120',
         },
         card: {
-          light: '#F3F3F3',
-          dark: '#1e293b',
+          light: '#FFFFFF',
+          dark: '#172032',
         },
         surface: {
-          light: '#ffffff',
-          dark: '#1e293b',
+          light: '#FFFFFF',
+          dark: '#1A2740',
         },
         'text-dark': {
           light: '#02343F',
-          dark: '#e2e8f0',
+          dark: '#EDF2F7',
         },
         'text-light': {
-          light: '#88B7C4',
-          dark: '#94a3b8',
+          light: '#6B9EA8',
+          dark: '#8BAFC0',
         },
         border: {
-          light: '#C6DEE4',
-          dark: '#334155',
+          light: '#D8EBF0',
+          dark: '#263A52',
+        },
+        success: {
+          light: '#16a34a',
+          dark: '#4ade80',
+        },
+        warning: {
+          light: '#d97706',
+          dark: '#fbbf24',
+        },
+        danger: {
+          light: '#dc2626',
+          dark: '#f87171',
+        },
+        info: {
+          light: '#2563eb',
+          dark: '#60a5fa',
         },
       },
       fontFamily: {
-        ubuntu: ['Ubuntu_300Light', 'Ubuntu_500Medium', 'Ubuntu_700Bold'],
+        ubuntu: ['Inter_300Light', 'Inter_500Medium', 'Inter_700Bold'],
+      },
+      letterSpacing: {
+        tightest: '-0.05em',
+        tighter: '-0.03em',
+        tight: '-0.015em',
+        widest: '0.12em',
       },
     },
   },

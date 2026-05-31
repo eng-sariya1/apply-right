@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import TemplateSelectScreen from '../screens/cv/TemplateSelectScreen';
 import CVBuilderScreen from '../screens/cv/CVBuilderScreen';
 import CVPreviewScreen from '../screens/cv/CVPreviewScreen';
-import { useTheme } from '../context/ThemeContext';
 
 export type CVBuilderStackParamList = {
   TemplateSelect: undefined;
@@ -13,14 +12,10 @@ export type CVBuilderStackParamList = {
 const Stack = createStackNavigator<CVBuilderStackParamList>();
 
 export default function CVBuilderStack() {
-  const { colors } = useTheme();
-
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: colors.surface },
-        headerTintColor: colors.textDark,
-        headerTitleStyle: { fontFamily: 'Ubuntu_700Bold' },
+        headerShown: false,
       }}
     >
       <Stack.Screen name="TemplateSelect" component={TemplateSelectScreen} options={{ title: 'Choose Template' }} />

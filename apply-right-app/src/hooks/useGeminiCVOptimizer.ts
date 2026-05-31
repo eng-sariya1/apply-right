@@ -93,7 +93,16 @@ function parseSuggestionsResponse(responseText: string): CVOptimizationResult {
   const match = text.match(/\{[\s\S]*\}/);
   if (match) text = match[0];
   const parsed = JSON.parse(text);
-  const suggestions: OptimizationSuggestion[] = parsed.suggestions || [];
+  const toStr = (v: unknown): string =>
+    v == null ? '' : typeof v === 'string' ? v : JSON.stringify(v);
+  const suggestions: OptimizationSuggestion[] = (parsed.suggestions || []).map((s: any) => ({
+    ...s,
+    title: toStr(s.title),
+    original: toStr(s.original),
+    suggested: toStr(s.suggested),
+    reason: toStr(s.reason),
+    section: toStr(s.section),
+  }));
   return {
     suggestions,
     summary: {

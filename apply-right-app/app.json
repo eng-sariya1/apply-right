@@ -1,15 +1,17 @@
 {
   "expo": {
-    "name": "apply-right-app",
-    "slug": "apply-right-app",
+    "name": "Nuivo",
+    "slug": "Nuivo",
+    "scheme": "nuivo",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "package": "apply.right.android",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -25,7 +27,15 @@
       "expo-secure-store",
       "expo-font",
       "expo-splash-screen",
-      "expo-status-bar"
-    ]
+      "expo-status-bar",
+      "expo-web-browser",
+      "expo-sharing"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "57086b18-c867-42bd-a410-7f0e33136a9a"
+      }
+    },
+    "owner": "isariya"
   }
 }

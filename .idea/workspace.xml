@@ -4,111 +4,65 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2db1c0c-db03-4d8c-9324-e6f6b38ff584" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.firebaserc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/THESIS.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress.config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/downloads/localhost_5173____.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/e2e/comprehensive-cv-flow.cy.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/e2e/cv-form.cy.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/01-completed-cv-form (1).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/01-completed-cv-form.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/02-job-description-filled (1).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/02-job-description-filled.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/03-analysis-results.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/04-optimization-suggestions.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/05-all-suggestions-selected.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/06-final-optimized-results.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/07-ats-complete.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/08-optimized-cv-form.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/09-final-cv-view.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/support/commands.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/support/e2e.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/support/helpers.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/eslint.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firestore.rules" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/logo/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/templates/TEM1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/templates/TEM2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/templates/classic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/typing-hero.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/netlify.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/netlify/functions/gemini.mts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/postcss.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/_redirects" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/typing-hero.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/pdf.worker.min.mjs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/vite.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AuthContext.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AdminRoute.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppLayout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CVDisplay.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CVDisplayTemplate2.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CVDisplayTemplate3.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CVFormInline.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CVFormTemplate2.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CVFormTemplate3.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CVPaginatedPreview.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/LinkedInJobsCard.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/PasswordInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ProtectedRoute.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Sidebar.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/UploadResumeModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/CheckboxInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/ChipsInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/DropdownInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/TextAreaInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/form/TextInput.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/CVContext.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/ThemeContext.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/ToastContext.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/firebase.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useGemini.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiATS.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiATSAnalysis.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiCVOptimizer.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiCVParser.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiCareer.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiEducation.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiProfessionalBackground.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiProjects.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ATSPage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/CVBuilder.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Dashboard.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/HomePage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LandingPage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Login.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Signup.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/SuggestionJobsPage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/TemplatePage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/UsersManagement.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prompt.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prompt3.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/cv-builder.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/cv-paginated.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/cv.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/cv.types.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/cvCompletion.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/linkedinJobs.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.app.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.node.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vite.config.ts" beforeDir="false" />
+    <list default="true" id="b2db1c0c-db03-4d8c-9324-e6f6b38ff584" name="Changes" comment="1">
+      <change afterPath="$PROJECT_DIR$/apply-right-app/.netlify/functions/gemini.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/.netlify/functions/manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/.netlify/netlify.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/.netlify/state.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/assets/google-icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/assets/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/eas.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/components/cv/CVTemplate1.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/components/cv/CVTemplate2.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/components/cv/CVTemplate3.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/components/layout/TabBar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/components/ui/Badge.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/components/ui/GoogleIcon.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/components/ui/GradientHeader.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/components/ui/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/utils/exportCvPdf.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply-right-app/src/utils/linkedinJobs.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/babel.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/babel.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/components/layout/DrawerContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/components/layout/DrawerContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/context/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/context/ThemeContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/context/ThemeContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/firebase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/firebase.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/hooks/useGemini.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/hooks/useGemini.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/hooks/useGeminiCVOptimizer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/hooks/useGeminiCVOptimizer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/hooks/useGeminiCVParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/hooks/useGeminiCVParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/navigation/AppNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/navigation/AppNavigator.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/navigation/BottomTabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/navigation/BottomTabs.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/navigation/CVBuilderStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/navigation/CVBuilderStack.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/navigation/MainDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/navigation/MainDrawer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/admin/DashboardScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/admin/DashboardScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/admin/UsersScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/admin/UsersScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/ats/ATSScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/ats/ATSScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/auth/LandingScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/auth/LandingScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/auth/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/auth/LoginScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/auth/SignupScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/auth/SignupScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/cv/CVBuilderScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/cv/CVBuilderScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/cv/CVPreviewScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/cv/CVPreviewScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/cv/TemplateSelectScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/cv/TemplateSelectScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/home/HomeScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/home/HomeScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/jobs/JobsScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/jobs/JobsScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/profile/ProfileScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/profile/ProfileScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/theme/colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/theme/colors.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/utils/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/utils/constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-web" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-web/src/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/Sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-web/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/ATSPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/ATSPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/Dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/TemplatePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/TemplatePage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,21 +93,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.dev.executor": "Run",
-    "ts.external.directory.path": "C:\\Users\\Victus\\WebstormProjects\\apply-right\\apply-right-web\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Victus/WebstormProjects/apply-right/apply-right-app/assets&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.android.executor&quot;: &quot;Run&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Victus\\WebstormProjects\\apply-right\\apply-right-app\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Victus\WebstormProjects\apply-right\apply-right-app\assets" />
+      <recent name="C:\Users\Victus\WebstormProjects\apply-right\apply-right-app" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.dev">
+    <configuration name="android" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/apply-right-app/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="android" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/apply-right-web/package.json" />
       <command value="run" />
@@ -167,6 +139,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.dev" />
+        <item itemvalue="npm.android" />
       </list>
     </recent_temporary>
   </component>
@@ -186,11 +159,19 @@
       <option name="presentableId" value="Default" />
       <updated>1779846528451</updated>
       <workItem from="1779846530270" duration="9000" />
-      <workItem from="1779846568862" duration="3607000" />
+      <workItem from="1779846568862" duration="4617000" />
+      <workItem from="1779851341437" duration="11233000" />
+      <workItem from="1779879012331" duration="37981000" />
+      <workItem from="1780010942848" duration="2984000" />
+      <workItem from="1780256113189" duration="2089000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1" />
+    <option name="LAST_COMMIT_MESSAGE" value="1" />
   </component>
 </project>

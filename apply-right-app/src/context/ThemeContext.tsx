@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme } from 'react-native';
+import { useColorScheme as useRNColorScheme } from 'react-native';
+import { colorScheme } from 'nativewind';
 import { colors } from '../theme/colors';
 
 type Theme = 'light' | 'dark';
@@ -14,22 +15,21 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const systemScheme = useColorScheme();
+  const systemScheme = useRNColorScheme();
   const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
     AsyncStorage.getItem('apply-right-theme').then((stored) => {
-      if (stored === 'dark' || stored === 'light') {
-        setTheme(stored);
-      } else {
-        setTheme(systemScheme === 'dark' ? 'dark' : 'light');
-      }
+      const next: Theme = stored === 'dark' || stored === 'light' ? stored : systemScheme === 'dark' ? 'dark' : 'light';
+      setTheme(next);
+      colorScheme.set(next);
     });
   }, [systemScheme]);
 
   const toggleTheme = () => {
     const next: Theme = theme === 'light' ? 'dark' : 'light';
     setTheme(next);
+    colorScheme.set(next);
     AsyncStorage.setItem('apply-right-theme', next);
   };
 

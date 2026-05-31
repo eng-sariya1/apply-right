@@ -1,9 +1,11 @@
-import { View, Text, TouchableOpacity, Image, ScrollView, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { AuthStackParamList } from '../../navigation/AuthStack';
-import { useTheme } from '../../context/ThemeContext';
 import { CheckCircle2, FileText, BarChart2 } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Box, Button, ButtonText, Center, HStack, Heading, ScrollView, Text, VStack } from '../../components/ui';
+import { GradientHeader } from '../../components/ui/GradientHeader';
 
 type Nav = StackNavigationProp<AuthStackParamList, 'Landing'>;
 
@@ -15,60 +17,53 @@ const features = [
 
 export default function LandingScreen() {
   const navigation = useNavigation<Nav>();
-  const { colors } = useTheme();
 
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor: colors.background }}
-      contentContainerStyle={{ flexGrow: 1 }}
+      className="flex-1 bg-background-light dark:bg-background-dark"
+      contentContainerClassName="grow"
     >
-      <StatusBar barStyle="light-content" backgroundColor={colors.primaryDark} />
+      <StatusBar barStyle="light-content" backgroundColor="#015C6A" />
 
-      {/* Hero */}
-      <View style={{ backgroundColor: colors.primaryDark, paddingTop: 80, paddingBottom: 60, paddingHorizontal: 24, alignItems: 'center' }}>
-        <View style={{ width: 72, height: 72, borderRadius: 18, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
-          <FileText size={36} color="#fff" />
-        </View>
-        <Text style={{ fontSize: 32, fontWeight: '700', color: '#fff', fontFamily: 'Ubuntu_700Bold', textAlign: 'center', marginBottom: 12 }}>
-          Apply Right
-        </Text>
-        <Text style={{ fontSize: 16, color: '#a5d8e0', textAlign: 'center', fontFamily: 'Ubuntu_300Light', lineHeight: 24 }}>
+      <GradientHeader style={{ alignItems: 'center', paddingHorizontal: 24, paddingTop: 80, paddingBottom: 56 }}>
+        <LinearGradient
+          colors={['#015C6A', '#019baf']}
+          style={{ width: 80, height: 80, borderRadius: 24, alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}
+        >
+          <FileText size={40} color="#fff" />
+        </LinearGradient>
+        <Heading size="2xl" className="mb-3 text-center text-white">
+          Nuivo
+        </Heading>
+        <Text className="text-center text-base leading-6 text-[#a5d8e0]">
           Build a standout CV and land your dream job with AI-powered tools
         </Text>
-      </View>
+      </GradientHeader>
 
-      {/* Features */}
-      <View style={{ padding: 24 }}>
+      <VStack space={20} className="px-6 py-8">
         {features.map(({ icon: Icon, title, desc }) => (
-          <View key={title} style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 24 }}>
-            <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: `${colors.primary}20`, justifyContent: 'center', alignItems: 'center', marginRight: 16 }}>
-              <Icon size={22} color={colors.primary} />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 16, fontWeight: '600', color: colors.textDark, fontFamily: 'Ubuntu_500Medium', marginBottom: 4 }}>{title}</Text>
-              <Text style={{ fontSize: 14, color: colors.textLight, fontFamily: 'Ubuntu_300Light', lineHeight: 20 }}>{desc}</Text>
-            </View>
-          </View>
+          <HStack key={title} className="items-start">
+            <Center className="mr-4 h-11 w-11 rounded-xl border border-border-light bg-card-light dark:border-border-dark dark:bg-card-dark">
+              <Icon size={22} color="#017A8C" />
+            </Center>
+            <VStack className="flex-1">
+              <Text className="mb-1 font-[Inter_600SemiBold] text-base text-text-dark-light dark:text-text-dark-dark tracking-tight">
+                {title}
+              </Text>
+              <Text className="text-sm leading-5 text-text-light-light dark:text-text-light-dark">{desc}</Text>
+            </VStack>
+          </HStack>
         ))}
-      </View>
+      </VStack>
 
-      {/* CTA Buttons */}
-      <View style={{ padding: 24, paddingTop: 8, gap: 12 }}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Signup')}
-          style={{ backgroundColor: colors.primary, borderRadius: 12, paddingVertical: 16, alignItems: 'center' }}
-        >
-          <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700', fontFamily: 'Ubuntu_700Bold' }}>Get Started — It's Free</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Login')}
-          style={{ borderWidth: 2, borderColor: colors.primary, borderRadius: 12, paddingVertical: 14, alignItems: 'center' }}
-        >
-          <Text style={{ color: colors.primary, fontSize: 16, fontWeight: '700', fontFamily: 'Ubuntu_700Bold' }}>Sign In</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={{ height: 32 }} />
+      <VStack space={12} className="px-6 pb-10">
+        <Button onPress={() => navigation.navigate('Signup')}>
+          <ButtonText>Get Started — It's Free</ButtonText>
+        </Button>
+        <Button variant="outline" onPress={() => navigation.navigate('Login')}>
+          <ButtonText variant="outline">Sign In</ButtonText>
+        </Button>
+      </VStack>
     </ScrollView>
   );
 }

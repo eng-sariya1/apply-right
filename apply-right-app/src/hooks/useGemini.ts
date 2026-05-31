@@ -5,10 +5,17 @@ import { GEMINI_FUNCTION_URL } from '../utils/constants';
 const GEMINI_URL = GEMINI_FUNCTION_URL;
 
 export async function callGemini(contents: object[], generationConfig?: object): Promise<string> {
-  const response = await axios.post(GEMINI_URL, { contents, generationConfig });
-  const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-  if (!text) throw new Error('No response from Gemini');
-  return text;
+  try {
+    const response = await axios.post(GEMINI_URL, { contents, generationConfig });
+    const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (!text) throw new Error('No response from Gemini');
+    return text;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.status === 429) {
+      throw new Error('API rate limit reached. Please wait a moment and try again.');
+    }
+    throw err;
+  }
 }
 
 interface UseGeminiResult {

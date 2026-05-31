@@ -3,27 +3,39 @@ import { callGemini } from './useGemini';
 import type { CVData } from '../types/cv.types';
 
 interface UseGeminiCVParserResult {
-  parseCV: (extractedText: string) => Promise<CVData>;
+  parseCV: (input: string | { base64: string; mimeType: string }) => Promise<CVData>;
   isLoading: boolean;
   error: string | null;
 }
+
+const PROMPT = `You are an AI CV/Resume parser. Extract structured information from the CV (text or PDF) and return it in JSON format.
+
+Return ONLY a valid JSON object with this EXACT structure (no markdown, no code fences, no explanation):
+{"header":{"fullName":"","specialization":"","email":"","phone":"","links":[{"name":"","url":""}]},"abstract":"","skills":[],"career":[{"startDate":"","endDate":null,"isPresent":false,"location":"","companyName":"","workSpecialization":"","jobType":"Full time","summarization":"","projects":[]}],"personalProjects":[{"title":"","description":"","technologies":"","keyFeatures":[]}],"education":"","sectionTitleColor":"017A8C"}
+
+Rules:
+- Extract ALL information present in the CV. Do not fabricate.
+- jobType must be one of: "Full time" | "Part time" | "Contract" | "Freelance"
+- isPresent is true only if the CV indicates current employment.
+- Use empty string "" for missing string fields and [] for missing arrays.`;
 
 export const useGeminiCVParser = (): UseGeminiCVParserResult => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const parseCV = async (extractedText: string): Promise<CVData> => {
-    if (!extractedText.trim()) {
-      setError('No text provided to parse');
-      throw new Error('No text provided to parse');
-    }
+  const parseCV = async (input: string | { base64: string; mimeType: string }): Promise<CVData> => {
     setIsLoading(true);
     setError(null);
     try {
-      const responseText = await callGemini(
-        [{ parts: [{ text: `You are an AI CV/Resume parser. Extract structured information from CV text and return it in JSON format.\n\nCV TEXT:\n${extractedText}\n\nReturn ONLY a valid JSON object with this EXACT structure (no markdown):\n{"header":{"fullName":"","specialization":"","email":"","phone":"","links":[{"name":"","url":""}]},"abstract":"","skills":[],"career":[{"startDate":"","endDate":null,"isPresent":false,"location":"","companyName":"","workSpecialization":"","jobType":"Full time","summarization":"","projects":[]}],"personalProjects":[{"title":"","description":"","technologies":"","keyFeatures":[]}],"education":"","sectionTitleColor":"017A8C"}` }] }],
-        { temperature: 0.3, maxOutputTokens: 8000 },
-      );
+      const parts: any[] =
+        typeof input === 'string'
+          ? [{ text: `${PROMPT}\n\nCV TEXT:\n${input}` }]
+          : [
+              { inline_data: { mime_type: input.mimeType, data: input.base64 } },
+              { text: PROMPT },
+            ];
+
+      const responseText = await callGemini([{ parts }], { temperature: 0.3, maxOutputTokens: 8000 });
       return parseGeminiResponse(responseText);
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to parse CV';
