@@ -1,0 +1,27 @@
+import { useState } from 'react';
+import { callGemini } from './useGemini';
+
+export const useGeminiProjects = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const improveText = async (text: string): Promise<string> => {
+    if (!text.trim()) return text;
+    setIsLoading(true);
+    setError(null);
+    try {
+      return await callGemini(
+        [{ parts: [{ text: `Rewrite this project description as a professional, concise 2-3 line CV entry. Focus on what it does, technologies used, and key achievements. Return only the final text.\noriginal: ${text}` }] }],
+        { temperature: 0.7, maxOutputTokens: 500 },
+      );
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to improve text';
+      setError(msg);
+      throw new Error(msg);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { improveText, isLoading, error };
+};
