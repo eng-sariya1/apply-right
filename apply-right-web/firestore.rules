@@ -1,0 +1,75 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // A signed-in user whose own profile is not marked blocked.
+    function isNotBlocked() {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status != 'blocked';
+    }
+
+    // Profile docs. The owner may create/read their own profile WITHOUT email
+    // verification so signup can bootstrap it. Admins can read all profiles and
+    // update them (e.g. change status). No one may delete except an admin.
+    //
+    // Owners may update their own profile (e.g. displayName) but must NOT be
+    // able to change their own `role` or `status` — only an admin can. This
+    // prevents privilege escalation and self-unblocking.
+    match /users/{uid} {
+      allow read:   if request.auth.uid == uid || isAdmin();
+      allow create: if request.auth.uid == uid || isAdmin();
+      allow update: if isAdmin()
+        || (request.auth.uid == uid
+            && request.resource.data.role == resource.data.role
+            && request.resource.data.status == resource.data.status);
+      allow delete: if isAdmin();
+    }
+
+    // Application data. Requires a VERIFIED email and a non-blocked account.
+    // Admins keep full access for the dashboard / user management.
+    match /cvs/{uid} {
+      allow read, write: if (request.auth.uid == uid && isVerified() && isNotBlocked())
+        || isAdmin();
+    }
+
+    // Public name -> {uid, email} lookup. The user's "Full Name" on Profile
+    // IS the username and login handle — there's one identifier. Public read
+    // is required because both unauthenticated login resolution and the
+    // signup-time uniqueness check go through single getDoc calls on this
+    // collection. Holds NO profile data (no role, status, displayName) so
+    // disclosure is limited to the email needed for sign-in.
+    //
+    // Mutable but owner-scoped: a user can rename (delete-old + create-new in
+    // a batch), but a second user trying to claim a taken name hits the
+    // `update` rule and is denied because resource.data.uid != their uid.
+    // Uniqueness stays atomic at the rules layer even under a race.
+    match /usernames/{key} {
+      allow read:   if true;
+      allow create: if isSignedIn()
+        && request.auth.uid == request.resource.data.uid
+        && request.resource.data.keys().hasOnly(['uid', 'email']);
+      allow update: if isSignedIn()
+        && request.auth.uid == resource.data.uid
+        && request.auth.uid == request.resource.data.uid
+        && request.resource.data.keys().hasOnly(['uid', 'email']);
+      allow delete: if isSignedIn() && request.auth.uid == resource.data.uid;
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
