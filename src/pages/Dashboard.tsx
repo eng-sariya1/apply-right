@@ -101,36 +101,40 @@ function Dashboard() {
                     </Link>
 
                     {/* My Resumes Card */}
-                    <motion.div
-                        whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
-                        className="bg-[var(--color-surface-80)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--color-border)]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200 cursor-pointer"
-                    >
-                        <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
-                            <FolderOpen className="w-7 h-7 text-white" />
-                        </div>
-                        <h3 className="text-xl font-bold text-[var(--color-text-dark)] mb-3">
-                            My Resumes
-                        </h3>
-                        <p className="text-[var(--color-text-light)] leading-relaxed">
-                            View and manage all your saved resumes in one place
-                        </p>
-                    </motion.div>
+                    <Link to="/cv-builder">
+                        <motion.div
+                            whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
+                            className="bg-[var(--color-surface-80)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--color-border)]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200 cursor-pointer"
+                        >
+                            <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
+                                <FolderOpen className="w-7 h-7 text-white" />
+                            </div>
+                            <h3 className="text-xl font-bold text-[var(--color-text-dark)] mb-3">
+                                My Resumes
+                            </h3>
+                            <p className="text-[var(--color-text-light)] leading-relaxed">
+                                View and manage all your saved resumes in one place
+                            </p>
+                        </motion.div>
+                    </Link>
 
                     {/* Settings Card */}
-                    <motion.div
-                        whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
-                        className="bg-[var(--color-surface-80)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--color-border)]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200 cursor-pointer"
-                    >
-                        <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
-                            <Settings className="w-7 h-7 text-white" />
-                        </div>
-                        <h3 className="text-xl font-bold text-[var(--color-text-dark)] mb-3">
-                            Settings
-                        </h3>
-                        <p className="text-[var(--color-text-light)] leading-relaxed">
-                            Manage your account preferences and personal information
-                        </p>
-                    </motion.div>
+                    <Link to="/profile">
+                        <motion.div
+                            whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
+                            className="bg-[var(--color-surface-80)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--color-border)]/30 shadow-lg hover:shadow-xl hover:border-[#017A8C]/40 transition-all duration-200 cursor-pointer"
+                        >
+                            <div className="mb-6 w-14 h-14 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-xl flex items-center justify-center shadow-md">
+                                <Settings className="w-7 h-7 text-white" />
+                            </div>
+                            <h3 className="text-xl font-bold text-[var(--color-text-dark)] mb-3">
+                                Settings
+                            </h3>
+                            <p className="text-[var(--color-text-light)] leading-relaxed">
+                                Manage your account preferences and personal information
+                            </p>
+                        </motion.div>
+                    </Link>
 
                     {/* User Management Card */}
                     {userRole === 'admin' && (

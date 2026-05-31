@@ -49,6 +49,8 @@ export default function ATSPage() {
   const [activeJobDescription, setActiveJobDescription] = useState('');
   const [optimizationResult, setOptimizationResult] = useState<CVOptimizationResult | null>(null);
   const [suggestions, setSuggestions] = useState<OptimizationSuggestion[]>([]);
+  const [prevCvSnapshot, setPrevCvSnapshot] = useState<typeof cvData | null>(null);
+  const [prevScore, setPrevScore] = useState<number | null>(null);
 
   const handleModeSwitch = (newMode: 'job-description' | 'professional-background') => {
     setMode(newMode);
@@ -56,6 +58,8 @@ export default function ATSPage() {
     setOptimizationResult(null);
     setSuggestions([]);
     setActiveJobDescription('');
+    setPrevCvSnapshot(null);
+    setPrevScore(null);
   };
 
   const handleAnalyze = async () => {
@@ -74,9 +78,10 @@ export default function ATSPage() {
     try {
       const result = await analyzeCV(cvData, descriptionToUse);
       setAnalysisResult(result);
-      // Reset optimization state when doing a fresh analysis
       setOptimizationResult(null);
       setSuggestions([]);
+      setPrevCvSnapshot(null);
+      setPrevScore(null);
     } catch (err) {
       console.error('Analysis failed:', err);
     }
@@ -113,31 +118,40 @@ export default function ATSPage() {
 
   const handleApplyOptimization = async () => {
     try {
-      console.log('Applying optimizations...', suggestions.filter(s => s.approved).length, 'approved suggestions');
+      const snapshotBefore = JSON.parse(JSON.stringify(cvData));
+      const scoreBefore = analysisResult!.matchPercentage;
 
-      // Apply approved suggestions to CV
       const optimizedCV = applySuggestions(cvData, suggestions);
-      console.log('CV optimized, updating context...');
-
-      // Update CV data in context
       setCvData(optimizedCV);
 
-      // Re-analyze the optimized CV to show improvement
-      console.log('Re-analyzing optimized CV...');
       const newAnalysis = await analyzeCV(optimizedCV, activeJobDescription);
-      console.log('New analysis received:', newAnalysis);
-
-      // Update analysis result with new score
       setAnalysisResult(newAnalysis);
 
-      // Reset optimization state after successful application
       setOptimizationResult(null);
       setSuggestions([]);
 
-      console.log('Optimization applied successfully! New match score:', newAnalysis.matchPercentage);
+      if (newAnalysis.matchPercentage < scoreBefore) {
+        setPrevCvSnapshot(snapshotBefore);
+        setPrevScore(scoreBefore);
+        showToast('warn', 'Score Changed', `Score changed from ${scoreBefore}% to ${newAnalysis.matchPercentage}%. AI scoring can vary — your improvements are saved. You can undo below.`);
+      } else {
+        setPrevCvSnapshot(null);
+        setPrevScore(null);
+        showToast('success', 'CV Optimized', `Score improved from ${scoreBefore}% to ${newAnalysis.matchPercentage}%!`);
+      }
     } catch (err) {
       console.error('Failed to apply optimizations:', err);
       showToast('error', 'Optimization Failed', 'Failed to apply optimizations. Please try again.');
+    }
+  };
+
+  const handleUndoOptimization = () => {
+    if (prevCvSnapshot && prevScore !== null && analysisResult) {
+      setCvData(prevCvSnapshot);
+      setAnalysisResult({ ...analysisResult, matchPercentage: prevScore });
+      setPrevCvSnapshot(null);
+      setPrevScore(null);
+      showToast('info', 'Reverted', 'CV restored to pre-optimization state.');
     }
   };
 
@@ -524,6 +538,23 @@ export default function ATSPage() {
                     <Doughnut data={matchChartData} options={chartOptions} />
                   </div>
                 </Card>
+
+                {/* Undo optimization button */}
+                {prevCvSnapshot && prevScore !== null && (
+                  <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                    <div>
+                      <p className="text-sm font-semibold text-orange-700">Score changed after optimization</p>
+                      <p className="text-xs text-orange-600">Previous score: {prevScore}% → Current: {analysisResult?.matchPercentage}%</p>
+                    </div>
+                    <Button
+                      label="Undo"
+                      icon="pi pi-undo"
+                      size="small"
+                      onClick={handleUndoOptimization}
+                      className="bg-orange-500 hover:bg-orange-600 text-white border-orange-500"
+                    />
+                  </div>
+                )}
 
                 {/* Keyword Analysis Chart */}
                 <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">

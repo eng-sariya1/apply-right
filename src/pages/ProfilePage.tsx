@@ -97,7 +97,7 @@ export default function ProfilePage() {
     }
 
     const inputClass =
-        'w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)]';
+        'w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)] text-[var(--color-text-dark)]';
     const labelClass = 'block text-sm font-semibold text-[var(--color-text-dark)] mb-2';
 
     return (

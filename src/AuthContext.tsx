@@ -96,6 +96,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // re-read the in-place-mutated Firebase user object.
     const [, setProfileVersion] = useState(0);
     const refreshIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    // Prevents onAuthStateChanged from racing with loginWithGoogle to create
+    // the Firestore user doc — only the explicit call should do it.
+    const googleSigningInRef = useRef(false);
 
     async function handleTokenRefresh(user: User) {
         const freshToken = await getIdToken(user, true);
@@ -143,16 +146,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     async function loginWithGoogle(): Promise<UserRole> {
-        const result = await signInWithPopup(auth, googleProvider);
-        if (auth.currentUser){
-            const freshToken = await getIdToken(auth?.currentUser, true);
-            localStorage.setItem('authToken', freshToken);
-            setToken(freshToken);
+        googleSigningInRef.current = true;
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            if (auth.currentUser) {
+                const freshToken = await getIdToken(auth.currentUser, true);
+                localStorage.setItem('authToken', freshToken);
+                setToken(freshToken);
+            }
+            const { role, status } = await fetchUserData(result.user);
+            setUserRole(role);
+            setUserStatus(status);
+            return role;
+        } finally {
+            googleSigningInRef.current = false;
         }
-        const { role, status } = await fetchUserData(result.user);
-        setUserRole(role);
-        setUserStatus(status);
-        return role;
     }
 
     async function lookupUsername(name: string): Promise<{ uid: string; email: string } | null> {
@@ -301,14 +309,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     localStorage.removeItem('authToken');
                 }
 
-                try {
-                    const { role, status } = await fetchUserData(user);
-                    setUserRole(role);
-                    setUserStatus(status);
-                } catch (err) {
-                    console.error('Failed to fetch user data:', err);
-                    setUserRole(null);
-                    setUserStatus(null);
+                if (!googleSigningInRef.current) {
+                    try {
+                        const { role, status } = await fetchUserData(user);
+                        setUserRole(role);
+                        setUserStatus(status);
+                    } catch (err) {
+                        console.error('Failed to fetch user data:', err);
+                        setUserRole(null);
+                        setUserStatus(null);
+                    }
                 }
             } else {
                 setUserRole(null);

@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutDashboard, FileText, FileSearch, LayoutTemplate, Briefcase, LogOut, ChevronRight, Sun, Moon } from 'lucide-react';
+import { LayoutDashboard, FileText, FileSearch, LayoutTemplate, Briefcase, LogOut, ChevronRight, Sun, Moon, Shield } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -20,7 +20,7 @@ interface SidebarProps {
 export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, userRole } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   const initials = currentUser?.displayName
@@ -125,6 +125,42 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
             </button>
           );
         })}
+
+        {/* Admin-only Dashboard link */}
+        {userRole === 'admin' && (() => {
+          const isActive = location.pathname === '/dashboard';
+          return (
+            <button
+              onClick={() => navigate('/dashboard')}
+              title={collapsed ? 'Dashboard' : undefined}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group ${
+                isActive
+                  ? 'bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white shadow-md shadow-[#017A8C]/25'
+                  : 'text-[var(--color-text-dark)] hover:bg-[#017A8C]/10 hover:text-[#017A8C]'
+              }`}
+            >
+              <Shield
+                className={`w-5 h-5 flex-shrink-0 transition-colors ${
+                  isActive ? 'text-white' : 'text-[var(--color-text-light)] group-hover:text-[#017A8C]'
+                }`}
+              />
+              <AnimatePresence mode="wait">
+                {!collapsed && (
+                  <motion.span
+                    key="dashboard-label"
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -8 }}
+                    transition={{ duration: 0.15 }}
+                    className="text-sm font-medium truncate"
+                  >
+                    Dashboard
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+          );
+        })()}
       </nav>
 
       {/* Divider */}

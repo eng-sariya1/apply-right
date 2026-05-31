@@ -5,7 +5,7 @@ import { useCVContext } from '../context/CVContext';
 import type { TemplateId } from '../types/cv.types';
 import tem2Preview from '../../images/templates/TEM1.png';
 import classicPreview from '../../images/templates/classic.png';
-import tem3Preview from '../../images/templates/TEM2.JPG';
+import tem3Preview from '../../images/templates/TEM2.jpg';
 
 const templates: {
   id: TemplateId;
