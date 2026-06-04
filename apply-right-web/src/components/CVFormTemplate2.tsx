@@ -271,7 +271,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Upload CV Document</h3>
                 <p className="text-sm text-[var(--color-text-light)] mb-4">Upload your existing CV in PDF or DOC format (Max 10MB)</p>
@@ -374,7 +374,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 transition={{duration: 0.5}}
                 className="bg-gradient-to-r from-[#017A8C]/10 via-[#019baf]/5 to-transparent p-4 rounded-xl border border-[#017A8C]/30"
             >
-                <div className="flex items-start gap-4">
+                <div className="flex flex-col sm:flex-row items-start gap-4">
                     <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-lg flex items-center justify-center">
                         <Zap className="w-6 h-6 text-white"/>
                     </div>
@@ -400,11 +400,11 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Personal Information</h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <TextInput label="Full Name *" name="header.fullName" control={control} placeholder="John Doe" dataCy="fullName-input"/>
                     <TextInput label="Specialization *" name="header.specialization" control={control} placeholder="Financial Analyst" dataCy="specialization-input"/>
                     <TextInput label="Email *" name="header.email" control={control} placeholder="john.doe@example.com" dataCy="email-input"/>
@@ -417,7 +417,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 {/* Profile Photo Upload */}
                 <div className="mt-5">
                     <label className="text-sm font-medium text-[var(--color-muted)] block mb-2">Profile Photo (optional)</label>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                         {photoPreview ? (
                             <div className="relative w-20 h-20 flex-shrink-0">
                                 <img src={photoPreview} alt="Profile preview" className="w-20 h-20 rounded-lg object-cover border-2 border-[#017A8C]"/>
@@ -432,7 +432,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                                 <Camera className="w-8 h-8 text-[var(--color-border)]"/>
                             </div>
                         )}
-                        <div>
+                        <div className="flex-1 min-w-0">
                             <label className="flex items-center gap-2 px-4 py-2 bg-[var(--color-surface-solid)] border border-[#017A8C]/30 text-[#017A8C] text-sm font-semibold rounded-lg hover:bg-[#017A8C] hover:text-white transition-all cursor-pointer">
                                 <Camera className="w-4 h-4"/>
                                 {photoPreview ? 'Change Photo' : 'Upload Photo'}
@@ -476,10 +476,10 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.1}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Theme Color</h3>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                     <Controller name="sectionTitleColor" control={control} render={({field}) => (
                         <>
                             <ColorPicker value={field.value || '017A8C'} onChange={(e) => field.onChange(e.value)} format="hex"/>
@@ -497,7 +497,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.2}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Summary</h3>
@@ -517,7 +517,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.3}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Professional Experience</h3>
@@ -559,7 +559,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.4}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Education</h3>
@@ -579,7 +579,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.5}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Technical Skills</h3>
                 <ChipsInput name="skills" control={control} dataCy="skills-input" placeholder="Type a skill and press Enter"/>
@@ -591,7 +591,7 @@ export default function CVFormTemplate2({onSubmit, initialData}: CVFormTemplate2
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.6}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Additional Information</h3>
                 <TextAreaInput name="additionalInfo" control={control}
@@ -640,14 +640,14 @@ function CareerFieldsT2({control, careerIndex, watch, setValue}: {
 
     return (
         <div className="flex flex-col gap-4 mt-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <TextInput placeholder="Jan 2020" label="Start Date" control={control} name={`career.${careerIndex}.startDate`} dataCy={`career-startDate-input-${careerIndex}`}/>
                 <TextInput placeholder="Jan 2022" label="End Date" control={control} name={`career.${careerIndex}.endDate`} dataCy={`career-endDate-input-${careerIndex}`}/>
             </div>
 
             <CheckboxInput label="I currently work here" name={`career.${careerIndex}.isPresent`} control={control} inputId={`present-t2-${careerIndex}`}/>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <TextInput placeholder="Company Inc." label="Company Name" control={control} name={`career.${careerIndex}.companyName`} dataCy={`career-companyName-input-${careerIndex}`}/>
                 <TextInput placeholder="New York, USA" label="Location" control={control} name={`career.${careerIndex}.location`} dataCy={`career-location-input-${careerIndex}`}/>
                 <TextInput placeholder="Financial Analyst" label="Position" control={control} name={`career.${careerIndex}.workSpecialization`} dataCy={`career-workSpecialization-input-${careerIndex}`}/>

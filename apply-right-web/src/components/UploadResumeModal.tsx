@@ -159,10 +159,10 @@ export default function UploadResumeModal({ isOpen, onClose, onSuccess }: Upload
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative bg-[var(--color-surface-solid)] rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden"
+          className="relative bg-[var(--color-surface-solid)] rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden max-h-[90vh] flex flex-col"
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#017A8C] to-[#019baf] px-6 py-5 text-white">
+          <div className="bg-gradient-to-r from-[#017A8C] to-[#019baf] px-4 sm:px-6 py-4 sm:py-5 text-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold mb-1">Upload Your Resume</h2>
@@ -179,7 +179,7 @@ export default function UploadResumeModal({ isOpen, onClose, onSuccess }: Upload
           </div>
 
           {/* Content */}
-          <div className="p-6">
+          <div className="p-4 sm:p-6 overflow-y-auto flex-1">
             {/* Error Message */}
             {error && (
               <motion.div
@@ -198,7 +198,7 @@ export default function UploadResumeModal({ isOpen, onClose, onSuccess }: Upload
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               className={`
-                relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300
+                relative border-2 border-dashed rounded-xl p-6 sm:p-8 text-center transition-all duration-300
                 ${isDragging ? 'border-[#017A8C] bg-[#017A8C]/5 scale-[1.02]' : 'border-gray-300 hover:border-[#017A8C]/50'}
                 ${isProcessing ? 'opacity-50 pointer-events-none' : ''}
               `}
@@ -225,7 +225,7 @@ export default function UploadResumeModal({ isOpen, onClose, onSuccess }: Upload
                     <button
                       onClick={handleBrowseClick}
                       disabled={isProcessing}
-                      className="px-6 py-2.5 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                      className="px-6 py-2.5 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 min-h-[44px]"
                     >
                       Browse Files
                     </button>
@@ -270,18 +270,18 @@ export default function UploadResumeModal({ isOpen, onClose, onSuccess }: Upload
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-3 mt-6">
+            <div className="flex flex-col sm:flex-row gap-3 mt-6 flex-shrink-0">
               <button
                 onClick={handleClose}
                 disabled={isProcessing}
-                className="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition-all duration-300 disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition-all duration-300 disabled:opacity-50 min-h-[44px]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpload}
                 disabled={!selectedFile || isProcessing}
-                className="flex-1 px-4 py-2.5 bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2.5 bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               >
                 {isProcessing ? 'Processing...' : 'Upload & Continue'}
               </button>

@@ -103,7 +103,7 @@ export default function HomePage() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="sticky top-0 z-50"
+        className="relative lg:sticky lg:top-0 z-50"
       >
         <div className="bg-gradient-to-r from-[#015C6A] via-[#017A8C] to-[#019baf] rounded-b-[2rem] shadow-lg shadow-[#017A8C]/20 relative overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
@@ -111,8 +111,9 @@ export default function HomePage() {
             <div className="absolute bottom-0 left-1/4 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 blur-2xl" />
           </div>
 
-          <div className="container mx-auto px-6 pt-4 pb-6 relative z-10">
-            <div className="flex items-center justify-between mb-4">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 pt-4 pb-6 relative z-10">
+            {/* Brand wordmark — hidden on mobile (the top app bar already shows it) */}
+            <div className="hidden lg:flex items-center justify-between mb-4">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 className="text-2xl font-bold text-white tracking-tight cursor-pointer"
@@ -127,7 +128,7 @@ export default function HomePage() {
                 <LayoutGrid className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white leading-tight">
+                <h1 className="text-xl sm:text-2xl font-bold text-white leading-tight">
                   Welcome back, {userName}
                 </h1>
                 <p className="text-sm text-white/60">Here's your workspace</p>
@@ -138,7 +139,7 @@ export default function HomePage() {
       </motion.header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-8 space-y-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-10 py-8 space-y-8">
 
         {/* Quick Actions */}
         <motion.section
@@ -146,7 +147,7 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <h2 className="text-lg font-bold text-[var(--color-text-dark)] mb-4">Quick Actions</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[var(--color-text-dark)] mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Create New CV */}
             <motion.button
@@ -213,7 +214,7 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.35 }}
         >
-          <h2 className="text-lg font-bold text-[var(--color-text-dark)] mb-4">Recent CVs</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[var(--color-text-dark)] mb-4">Recent CVs</h2>
 
           <div className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border border-[var(--color-border)]/40 shadow-md overflow-hidden">
             {loading ? (
@@ -244,7 +245,7 @@ export default function HomePage() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 * i }}
-                      className="flex items-center gap-4 px-5 py-4 hover:bg-[var(--color-bg)]/60 transition-colors"
+                      className="flex flex-col sm:flex-row sm:items-center gap-4 px-4 sm:px-5 py-4 hover:bg-[var(--color-bg)]/60 transition-colors"
                     >
                       {/* Icon */}
                       <div className="w-9 h-9 rounded-lg bg-[#017A8C]/10 flex items-center justify-center flex-shrink-0">

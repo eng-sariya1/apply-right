@@ -1,1 +1,1 @@
-[CV Builder with Gemyouini model and ATS system .docx](..%2F..%2F..%2FDesktop%2Fiust%2F%D8%AA%D8%AE%D8%B1%D8%AC%2FCV%20Builder%20with%20Gemini%20model%20and%20ATS%20system%20.docx)
+[CV Builder with Gemini model and ATS system .docx](..%2F..%2F..%2F..%2FDesktop%2Fiust%2F%D8%AA%D8%AE%D8%B1%D8%AC%2FCV%20Builder%20with%20Gemini%20model%20and%20ATS%20system%20.docx)

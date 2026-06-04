@@ -272,17 +272,25 @@
   text-align: center;
 }
 
-/* Responsive Adjustments - Scale proportionally */
+/* Responsive Adjustments - Scale proportionally.
+   NOTE: every rule targets BOTH `.cv-page-card-wrapper` (the class actually
+   rendered by CVPaginatedPreview) and the legacy `.cv-page-card`. The wrapper
+   selectors were previously missing here, so on small screens the A4-sized
+   content kept its desktop font size, overflowed the narrow card and got
+   clipped — leaving the preview looking blank/white. */
 @media (max-width: 1400px) {
+  .cv-page-card-wrapper .cv-container,
   .cv-page-card .cv-container {
     font-size: 0.65rem !important;
     transform: scale(0.9);
   }
 
+  .cv-page-card-wrapper .cv-container h1,
   .cv-page-card .cv-container h1 {
     font-size: 1.15rem !important;
   }
 
+  .cv-page-card-wrapper .cv-container h2,
   .cv-page-card .cv-container h2 {
     font-size: 0.875rem !important;
   }
@@ -293,29 +301,35 @@
     padding: 0.75rem;
   }
 
+  .cv-page-card-wrapper,
   .cv-page-card {
     padding: 1.25rem;
   }
 
+  .cv-page-card-wrapper .cv-container,
   .cv-page-card .cv-container {
     font-size: 0.6rem !important;
     transform: scale(0.85);
   }
 
+  .cv-page-card-wrapper .cv-container h1,
   .cv-page-card .cv-container h1 {
     font-size: 1.0625rem !important;
   }
 
+  .cv-page-card-wrapper .cv-container h2,
   .cv-page-card .cv-container h2 {
     font-size: 0.8125rem !important;
   }
 }
 
 @media (max-width: 1024px) {
+  .cv-page-card-wrapper,
   .cv-page-card {
     padding: 1rem;
   }
 
+  .cv-page-card-wrapper .cv-container,
   .cv-page-card .cv-container {
     font-size: 0.55rem !important;
     transform: scale(0.8);
@@ -327,19 +341,23 @@
     padding: 0.5rem;
   }
 
+  .cv-page-card-wrapper,
   .cv-page-card {
     padding: 0.75rem;
   }
 
+  .cv-page-card-wrapper .cv-container,
   .cv-page-card .cv-container {
     font-size: 0.5rem !important;
     transform: scale(0.75);
   }
 
+  .cv-page-card-wrapper .cv-container h1,
   .cv-page-card .cv-container h1 {
     font-size: 0.9375rem !important;
   }
 
+  .cv-page-card-wrapper .cv-container h2,
   .cv-page-card .cv-container h2 {
     font-size: 0.75rem !important;
   }
@@ -356,6 +374,7 @@
 }
 
 @media (max-width: 640px) {
+  .cv-page-card-wrapper .cv-container,
   .cv-page-card .cv-container {
     font-size: 0.45rem !important;
     transform: scale(0.7);

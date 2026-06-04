@@ -98,10 +98,10 @@ function Signup() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="relative bg-[var(--color-surface-90)] backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 w-full max-w-md border border-[var(--color-border)]/30"
+                className="relative bg-[var(--color-surface-90)] backdrop-blur-md rounded-2xl shadow-2xl p-6 sm:p-8 md:p-10 w-full max-w-md border border-[var(--color-border)]/30"
             >
                 {/* Logo */}
-                <div className="text-center mb-8">
+                <div className="text-center mb-6 sm:mb-8">
                     <Link to="/">
                         <motion.h1
                             whileHover={{ scale: 1.05 }}
@@ -111,11 +111,11 @@ function Signup() {
                             Nuivo
                         </motion.h1>
                     </Link>
-                    <h2 className="text-2xl font-bold text-[var(--color-text-dark)] mb-2">Create Account</h2>
-                    <p className="text-sm text-[var(--color-text-light)]">Join thousands building professional resumes</p>
+                    <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-text-dark)] mb-2">Create Account</h2>
+                    <p className="text-xs sm:text-sm text-[var(--color-text-light)]">Join thousands building professional resumes</p>
                 </div>
 
-                <div className="mb-6">
+                <div className="mb-4 sm:mb-6">
                     {/* Google Sign-In Button */}
                     <motion.button
                         type="button"
@@ -123,7 +123,7 @@ function Signup() {
                         disabled={loading}
                         whileHover={{scale: 1.02}}
                         whileTap={{scale: 0.98}}
-                        className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--color-surface-solid)] border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 hover:border-[#4285F4] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                        className="w-full flex items-center justify-center gap-2 sm:gap-3 px-4 py-3 bg-[var(--color-surface-solid)] border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 hover:border-[#4285F4] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm min-h-[44px] text-sm sm:text-base"
                     >
                         {/* Google Icon SVG */}
                         <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -148,11 +148,11 @@ function Signup() {
                     </motion.button>
 
                     {/* Divider */}
-                    <div className="relative my-6">
+                    <div className="relative my-4 sm:my-6">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-300"></div>
                         </div>
-                        <div className="relative flex justify-center text-sm">
+                        <div className="relative flex justify-center text-xs sm:text-sm">
                             <span className="px-4 bg-[var(--color-surface-solid)] text-gray-500">or continue with email</span>
                         </div>
                     </div>
@@ -163,18 +163,18 @@ function Signup() {
                     <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3"
+                        className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3"
                     >
                         <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                        <p className="text-sm text-red-700">{error}</p>
+                        <p className="text-xs sm:text-sm text-red-700">{error}</p>
                     </motion.div>
                 )}
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                     {/* Full Name Input */}
                     <div>
-                        <label htmlFor="fullName" className="block text-sm font-semibold text-[var(--color-text-dark)] mb-2">
+                        <label htmlFor="fullName" className="block text-xs sm:text-sm font-semibold text-[var(--color-text-dark)] mb-2">
                             Full Name
                         </label>
                         <input
@@ -184,14 +184,14 @@ function Signup() {
                             onChange={(e) => setFullName(e.target.value)}
                             required
                             autoComplete="name"
-                            className="w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)]"
+                            className="w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)] text-sm"
                             placeholder="Your full name, e.g"
                         />
                     </div>
 
                     {/* Email Input */}
                     <div>
-                        <label htmlFor="email" className="block text-sm font-semibold text-[var(--color-text-dark)] mb-2">
+                        <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-[var(--color-text-dark)] mb-2">
                             Email Address
                         </label>
                         <input
@@ -200,14 +200,14 @@ function Signup() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)]"
+                            className="w-full px-4 py-3 border border-[var(--color-border)] rounded-xl focus:border-[#017A8C] focus:ring-2 focus:ring-[#017A8C]/30 transition-all outline-none bg-[var(--color-surface-50)] text-sm"
                             placeholder="you@example.com"
                         />
                     </div>
 
                     {/* Password Input */}
                     <div>
-                        <label htmlFor="password" className="block text-sm font-semibold text-[var(--color-text-dark)] mb-2">
+                        <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-[var(--color-text-dark)] mb-2">
                             Password
                         </label>
                         <PasswordInput
@@ -226,7 +226,7 @@ function Signup() {
                         whileTap={{ scale: loading ? 1 : 0.98 }}
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="w-full py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px] text-sm sm:text-base"
                     >
                         {loading ? (
                             <>
@@ -240,7 +240,7 @@ function Signup() {
                 </form>
 
                 {/* Login Link */}
-                <p className="mt-6 text-center text-sm text-[var(--color-text-light)]">
+                <p className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-[var(--color-text-light)]">
                     Already have an account?{' '}
                     <Link to="/login" className="text-[#017A8C] hover:text-[#015C6A] font-semibold transition-colors">
                         Log In

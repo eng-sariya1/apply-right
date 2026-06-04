@@ -155,23 +155,25 @@ export default function UsersManagement() {
     };
 
     const header = (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-light)]" />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="relative w-full sm:w-auto min-w-0 sm:min-w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-light)] flex-shrink-0" />
                 <InputText
                     value={globalFilter}
                     onChange={(e) => setGlobalFilter(e.target.value)}
                     placeholder="Search users..."
-                    className="pl-9 pr-4 py-2 border border-[var(--color-border)]/50 rounded-xl bg-[var(--color-surface-80)] text-sm focus:outline-none focus:ring-2 focus:ring-[#017A8C]/30 focus:border-[#017A8C] transition-all"
+                    className="w-full pl-9 pr-4 py-2 border border-[var(--color-border)]/50 rounded-xl bg-[var(--color-surface-80)] text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#017A8C]/30 focus:border-[#017A8C] transition-all"
                 />
             </div>
-            <Dropdown
-                value={roleFilter}
-                options={roleOptions}
-                onChange={(e) => setRoleFilter(e.value)}
-                placeholder="Filter by role"
-                className="border border-[var(--color-border)]/50 rounded-xl text-sm"
-            />
+            <div className="w-full sm:w-auto">
+                <Dropdown
+                    value={roleFilter}
+                    options={roleOptions}
+                    onChange={(e) => setRoleFilter(e.value)}
+                    placeholder="Filter by role"
+                    className="w-full sm:w-auto border border-[var(--color-border)]/50 rounded-xl text-xs sm:text-sm"
+                />
+            </div>
         </div>
     );
 
@@ -190,15 +192,16 @@ export default function UsersManagement() {
                 transition={{ duration: 0.6, ease: 'easeOut' }}
                 className="sticky top-0 z-50 backdrop-blur-lg bg-[var(--color-bg)]/90 border-b border-[#017A8C]/20 shadow-sm"
             >
-                <nav className="container mx-auto px-6 py-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
+                <nav className="container mx-auto px-4 sm:px-6 lg:px-10 py-4">
+                    <div className="flex items-center justify-between gap-2 sm:gap-4">
+                        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
                             <Link
                                 to="/dashboard"
-                                className="flex items-center gap-2 text-[#017A8C] hover:text-[#015C6A] font-medium transition-colors"
+                                className="flex items-center gap-2 text-[#017A8C] hover:text-[#015C6A] font-medium transition-colors text-sm sm:text-base whitespace-nowrap"
                             >
-                                <ArrowLeft className="w-4 h-4" />
-                                Back to Dashboard
+                                <ArrowLeft className="w-4 h-4 flex-shrink-0" />
+                                <span className="hidden sm:inline">Back to Dashboard</span>
+                                <span className="sm:hidden">Back</span>
                             </Link>
                         </div>
                         <Link to="/">
@@ -215,17 +218,17 @@ export default function UsersManagement() {
             </motion.header>
 
             {/* Main Content */}
-            <main className="container mx-auto px-6 py-12 relative z-10">
+            <main className="container mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-16 lg:py-20 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="mb-8"
+                    className="mb-6 sm:mb-8"
                 >
-                    <h1 className="text-3xl md:text-4xl font-bold text-[var(--color-text-dark)] mb-2">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-text-dark)] mb-2">
                         User Management
                     </h1>
-                    <p className="text-[var(--color-text-light)]">
+                    <p className="text-sm sm:text-base text-[var(--color-text-light)]">
                         Manage user accounts and permissions
                     </p>
                 </motion.div>
@@ -234,7 +237,8 @@ export default function UsersManagement() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border border-[var(--color-border)]/30 shadow-lg p-6 overflow-hidden"
+                    className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border border-[var(--color-border)]/30 shadow-lg p-4 sm:p-6 overflow-x-auto"
+                    style={{ WebkitOverflowScrolling: 'touch' }}
                 >
                     <DataTable
                         value={filteredUsers}

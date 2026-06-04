@@ -113,20 +113,20 @@ export default function ProfilePage() {
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, ease: 'easeOut' }}
-                className="sticky top-0 z-50"
+                className="relative lg:sticky lg:top-0 z-50"
             >
-                <div className="bg-gradient-to-r from-[#015C6A] via-[#017A8C] to-[#019baf] rounded-b-[2rem] shadow-lg shadow-[#017A8C]/20 relative overflow-hidden">
+                <div className="bg-gradient-to-r from-[#015C6A] via-[#017A8C] to-[#019baf] rounded-b-[1.5rem] sm:rounded-b-[2rem] shadow-lg shadow-[#017A8C]/20 relative overflow-hidden">
                     <div className="absolute inset-0 pointer-events-none">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl" />
                         <div className="absolute bottom-0 left-1/4 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 blur-2xl" />
                     </div>
 
                     {/* Top nav row */}
-                    <div className="container mx-auto px-6 pt-4 pb-2 relative z-10">
-                        <div className="flex items-center justify-between">
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-10 pt-3 sm:pt-4 pb-2 relative z-10">
+                        <div className="flex items-center justify-between gap-2 sm:gap-4">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
-                                className="text-2xl font-bold text-white tracking-tight cursor-pointer"
+                                className="hidden lg:block text-xl sm:text-2xl font-bold text-white tracking-tight cursor-pointer"
                                 onClick={() => navigate('/home')}
                             >
                                 Nuivo
@@ -135,29 +135,30 @@ export default function ProfilePage() {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => navigate('/home')}
-                                className="flex items-center gap-2 px-4 py-2 bg-white/15 hover:bg-white/25 text-white font-semibold rounded-xl backdrop-blur-sm border border-white/20 transition-all duration-300"
+                                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/15 hover:bg-white/25 text-white font-semibold rounded-xl backdrop-blur-sm border border-white/20 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap min-h-[40px]"
                             >
-                                <ArrowLeft className="w-4 h-4" />
-                                Back to Home
+                                <ArrowLeft className="w-4 h-4 flex-shrink-0" />
+                                <span className="hidden sm:inline">Back to Home</span>
+                                <span className="sm:hidden">Back</span>
                             </motion.button>
                         </div>
                     </div>
 
                     {/* Breadcrumb + Title */}
-                    <div className="container mx-auto px-6 pb-6 pt-1 relative z-10">
-                        <div className="flex items-center gap-1.5 text-white/60 text-sm mb-3">
-                            <Home className="w-3.5 h-3.5" />
-                            <button onClick={() => navigate('/home')} className="hover:text-white/90 transition-colors">Home</button>
-                            <ChevronRight className="w-3.5 h-3.5" />
-                            <span className="text-white font-medium">My Profile</span>
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-10 pb-4 sm:pb-6 pt-1 relative z-10">
+                        <div className="flex items-center gap-1 sm:gap-1.5 text-white/60 text-xs sm:text-sm mb-2 sm:mb-3 overflow-x-auto">
+                            <Home className="w-3.5 h-3.5 flex-shrink-0" />
+                            <button onClick={() => navigate('/home')} className="hover:text-white/90 transition-colors whitespace-nowrap">Home</button>
+                            <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span className="text-white font-medium whitespace-nowrap">My Profile</span>
                         </div>
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20">
-                                <User className="w-5 h-5 text-white" />
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
+                                <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                             </div>
-                            <div>
-                                <h1 className="text-2xl font-bold text-white leading-tight">My Profile</h1>
-                                <p className="text-sm text-white/60">Manage your account details</p>
+                            <div className="min-w-0">
+                                <h1 className="text-xl sm:text-2xl font-bold text-white leading-tight">My Profile</h1>
+                                <p className="text-xs sm:text-sm text-white/60">Manage your account details</p>
                             </div>
                         </div>
                     </div>
@@ -165,56 +166,56 @@ export default function ProfilePage() {
             </motion.header>
 
             {/* Main Content */}
-            <div className="container mx-auto max-w-3xl px-6 py-12 space-y-8">
+            <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-10 py-10 sm:py-16 lg:py-20 space-y-6 sm:space-y-8">
                 {/* Card A — Personal Information */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border-2 border-[var(--color-border)]/50 shadow-lg p-6 md:p-8"
+                    className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border-2 border-[var(--color-border)]/50 shadow-lg p-5 sm:p-6 md:p-8"
                 >
-                    <div className="flex items-center gap-4 mb-6">
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#017A8C] to-[#019baf] flex items-center justify-center text-white font-bold text-lg shadow-md select-none">
+                    <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-[#017A8C] to-[#019baf] flex items-center justify-center text-white font-bold text-sm sm:text-lg shadow-md select-none flex-shrink-0">
                             {initials}
                         </div>
                         <div className="min-w-0">
-                            <h2 className="text-xl font-bold text-[var(--color-text-dark)] leading-tight">Personal Information</h2>
-                            <p className="text-sm text-[var(--color-text-light)] truncate">{currentUser?.email}</p>
+                            <h2 className="text-lg sm:text-xl font-bold text-[var(--color-text-dark)] leading-tight">Personal Information</h2>
+                            <p className="text-xs sm:text-sm text-[var(--color-text-light)] truncate break-words">{currentUser?.email}</p>
                         </div>
                     </div>
 
                     {nameError && (
-                        <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                        <div className="mb-4 sm:mb-5 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
                             <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                            <p className="text-sm text-red-700">{nameError}</p>
+                            <p className="text-xs sm:text-sm text-red-700">{nameError}</p>
                         </div>
                     )}
                     {nameNotice && (
-                        <div className="mb-5 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
+                        <div className="mb-4 sm:mb-5 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
                             <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                            <p className="text-sm text-green-700">{nameNotice}</p>
+                            <p className="text-xs sm:text-sm text-green-700">{nameNotice}</p>
                         </div>
                     )}
 
-                    <form onSubmit={handleSaveName} className="space-y-5">
+                    <form onSubmit={handleSaveName} className="space-y-4 sm:space-y-5">
                         <div>
-                            <label htmlFor="full-name" className={labelClass}>Full name</label>
+                            <label htmlFor="full-name" className={`${labelClass} text-xs sm:text-sm`}>Full name</label>
                             <input
                                 id="full-name"
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                className={inputClass}
+                                className={`${inputClass} text-sm`}
                                 placeholder="Your name"
                             />
                         </div>
                         <div>
-                            <label className={labelClass}>Email address</label>
+                            <label className={`${labelClass} text-xs sm:text-sm`}>Email address</label>
                             <input
                                 type="email"
                                 value={currentUser?.email || ''}
                                 disabled
-                                className={`${inputClass} opacity-60 cursor-not-allowed`}
+                                className={`${inputClass} opacity-60 cursor-not-allowed text-sm`}
                             />
                             <p className="text-xs text-[var(--color-text-light)] mt-1.5">Email can't be changed here.</p>
                         </div>
@@ -223,11 +224,11 @@ export default function ProfilePage() {
                             whileTap={{ scale: savingName ? 1 : 0.98 }}
                             type="submit"
                             disabled={savingName}
-                            className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full sm:w-auto px-4 sm:px-6 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px] text-sm sm:text-base"
                         >
                             {savingName ? (
                                 <>
-                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                    <Loader2 className="w-5 h-5 animate-spin flex-shrink-0" />
                                     Saving...
                                 </>
                             ) : (
@@ -242,22 +243,22 @@ export default function ProfilePage() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border-2 border-[var(--color-border)]/50 shadow-lg p-6 md:p-8"
+                    className="bg-[var(--color-surface-80)] backdrop-blur-sm rounded-2xl border-2 border-[var(--color-border)]/50 shadow-lg p-5 sm:p-6 md:p-8"
                 >
-                    <div className="flex items-center gap-4 mb-6">
-                        <div className="w-14 h-14 rounded-2xl bg-[#017A8C]/10 flex items-center justify-center">
-                            <Lock className="w-6 h-6 text-[#017A8C]" />
+                    <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#017A8C]/10 flex items-center justify-center flex-shrink-0">
+                            <Lock className="w-5 h-5 sm:w-6 sm:h-6 text-[#017A8C]" />
                         </div>
-                        <div>
-                            <h2 className="text-xl font-bold text-[var(--color-text-dark)] leading-tight">Change Password</h2>
-                            <p className="text-sm text-[var(--color-text-light)]">Update the password you use to log in</p>
+                        <div className="min-w-0">
+                            <h2 className="text-lg sm:text-xl font-bold text-[var(--color-text-dark)] leading-tight">Change Password</h2>
+                            <p className="text-xs sm:text-sm text-[var(--color-text-light)]">Update the password you use to log in</p>
                         </div>
                     </div>
 
                     {!isPasswordUser ? (
-                        <div className="p-4 bg-[#017A8C]/5 border border-[var(--color-border)]/60 rounded-lg flex items-start gap-3">
+                        <div className="p-3 sm:p-4 bg-[#017A8C]/5 border border-[var(--color-border)]/60 rounded-lg flex items-start gap-3">
                             <AlertCircle className="w-5 h-5 text-[#017A8C] flex-shrink-0 mt-0.5" />
-                            <p className="text-sm text-[var(--color-text-dark)]">
+                            <p className="text-xs sm:text-sm text-[var(--color-text-dark)]">
                                 You sign in with Google, so there's no password to change here.
                                 Manage your password in your Google Account.
                             </p>
@@ -265,21 +266,21 @@ export default function ProfilePage() {
                     ) : (
                         <>
                             {pwdError && (
-                                <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                                <div className="mb-4 sm:mb-5 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
                                     <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                                    <p className="text-sm text-red-700">{pwdError}</p>
+                                    <p className="text-xs sm:text-sm text-red-700">{pwdError}</p>
                                 </div>
                             )}
                             {pwdNotice && (
-                                <div className="mb-5 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
+                                <div className="mb-4 sm:mb-5 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
                                     <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                                    <p className="text-sm text-green-700">{pwdNotice}</p>
+                                    <p className="text-xs sm:text-sm text-green-700">{pwdNotice}</p>
                                 </div>
                             )}
 
-                            <form onSubmit={handleChangePassword} className="space-y-5">
+                            <form onSubmit={handleChangePassword} className="space-y-4 sm:space-y-5">
                                 <div>
-                                    <label htmlFor="current-password" className={labelClass}>Current password</label>
+                                    <label htmlFor="current-password" className={`${labelClass} text-xs sm:text-sm`}>Current password</label>
                                     <PasswordInput
                                         id="current-password"
                                         value={currentPassword}
@@ -287,11 +288,11 @@ export default function ProfilePage() {
                                         required
                                         autoComplete="current-password"
                                         placeholder="Enter your current password"
-                                        className={inputClass + ' pr-12'}
+                                        className={`${inputClass} pr-12 text-sm`}
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="new-password" className={labelClass}>New password</label>
+                                    <label htmlFor="new-password" className={`${labelClass} text-xs sm:text-sm`}>New password</label>
                                     <PasswordInput
                                         id="new-password"
                                         value={newPassword}
@@ -299,11 +300,11 @@ export default function ProfilePage() {
                                         required
                                         autoComplete="new-password"
                                         placeholder="Minimum 6 characters"
-                                        className={inputClass + ' pr-12'}
+                                        className={`${inputClass} pr-12 text-sm`}
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="confirm-password" className={labelClass}>Confirm new password</label>
+                                    <label htmlFor="confirm-password" className={`${labelClass} text-xs sm:text-sm`}>Confirm new password</label>
                                     <PasswordInput
                                         id="confirm-password"
                                         value={confirmPassword}
@@ -311,7 +312,7 @@ export default function ProfilePage() {
                                         required
                                         autoComplete="new-password"
                                         placeholder="Re-enter the new password"
-                                        className={inputClass + ' pr-12'}
+                                        className={`${inputClass} pr-12 text-sm`}
                                     />
                                 </div>
                                 <motion.button
@@ -319,11 +320,11 @@ export default function ProfilePage() {
                                     whileTap={{ scale: savingPwd ? 1 : 0.98 }}
                                     type="submit"
                                     disabled={savingPwd}
-                                    className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="w-full sm:w-auto px-4 sm:px-6 py-3 bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px] text-sm sm:text-base"
                                 >
                                     {savingPwd ? (
                                         <>
-                                            <Loader2 className="w-5 h-5 animate-spin" />
+                                            <Loader2 className="w-5 h-5 animate-spin flex-shrink-0" />
                                             Updating...
                                         </>
                                     ) : (

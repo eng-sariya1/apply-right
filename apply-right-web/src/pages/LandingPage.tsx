@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
-import { CheckCircle2, Sparkles, Download, Eye, Upload } from 'lucide-react';
+import { CheckCircle2, Sparkles, Download, Eye, Upload, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import UploadResumeModal from '../components/UploadResumeModal';
 import { useCVContext } from '../context/CVContext';
@@ -12,6 +12,7 @@ export default function LandingPage() {
   const { setCvData } = useCVContext();
   const { currentUser, userRole, logout } = useAuth();
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleCreateResume = () => {
     if (currentUser) {
@@ -131,22 +132,91 @@ export default function LandingPage() {
             </div>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden text-[#017A8C] hover:text-[#015d6b] transition-colors">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+            <button
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileMenuOpen}
+              className="md:hidden w-11 h-11 -mr-2 flex items-center justify-center rounded-xl text-[#017A8C] hover:bg-[#017A8C]/10 transition-colors"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
+
+          {/* Mobile Menu Panel */}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                className="md:hidden overflow-hidden"
+              >
+                <div className="flex flex-col gap-1 pt-4 pb-2">
+                  <a
+                    href="#home"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center min-h-[44px] px-2 rounded-xl text-[#017A8C] hover:bg-[#017A8C]/10 transition-colors font-medium"
+                  >
+                    Home
+                  </a>
+                  <a
+                    href="#features"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center min-h-[44px] px-2 rounded-xl text-[#017A8C] hover:bg-[#017A8C]/10 transition-colors font-medium"
+                  >
+                    Features
+                  </a>
+                  <a
+                    href="#contact"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center min-h-[44px] px-2 rounded-xl text-[#017A8C] hover:bg-[#017A8C]/10 transition-colors font-medium"
+                  >
+                    Contact
+                  </a>
+
+                  <div className="h-px bg-[#017A8C]/10 my-2" />
+
+                  {currentUser ? (
+                    <>
+                      {userRole === 'admin' && (
+                        <Link
+                          to="/dashboard"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex items-center justify-center min-h-[44px] px-4 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md transition-all duration-200"
+                        >
+                          Dashboard
+                        </Link>
+                      )}
+                      <button
+                        onClick={() => { setMobileMenuOpen(false); handleLogout(); }}
+                        className="flex items-center justify-center min-h-[44px] px-5 border border-[#017A8C] text-[#017A8C] font-semibold rounded-xl hover:bg-[#017A8C] hover:text-white transition-all duration-200"
+                      >
+                        Log Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/login"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center justify-center min-h-[44px] px-4 font-medium text-[var(--color-text-dark)] hover:text-[#017A8C] transition-colors duration-200"
+                      >
+                        Log in
+                      </Link>
+                      <Link
+                        to="/signup"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center justify-center min-h-[44px] px-5 border border-[var(--color-text-dark)] text-[var(--color-text-dark)] font-semibold rounded-xl hover:bg-[var(--color-text-dark)] hover:text-white transition-all duration-200"
+                      >
+                        Sign up
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
       </motion.header>
 
@@ -157,7 +227,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="bg-[var(--color-card)] rounded-3xl shadow-md shadow-[#017A8C]/10 py-20 px-10 md:px-16 relative before:absolute before:inset-0 before:bg-gradient-to-br before:from-[#017A8C]/5 before:to-transparent before:rounded-3xl before:-z-10"
+            className="bg-[var(--color-card)] rounded-3xl shadow-md shadow-[#017A8C]/10 py-12 px-6 sm:py-16 sm:px-10 md:px-16 md:py-20 relative before:absolute before:inset-0 before:bg-gradient-to-br before:from-[#017A8C]/5 before:to-transparent before:rounded-3xl before:-z-10"
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Left Column - Text Content */}
@@ -168,7 +238,7 @@ export default function LandingPage() {
                 className="space-y-6 z-10"
               >
                 {/* Title */}
-                <h1 className="text-6xl md:text-7xl font-extrabold leading-tight">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight">
                   <span className="text-[var(--color-text-dark)]">This resume builder gets you </span>
                   <span className="text-[#017A8C]">promoted.</span>
                 </h1>

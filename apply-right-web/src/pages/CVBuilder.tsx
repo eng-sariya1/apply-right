@@ -13,6 +13,8 @@ import CVDisplay from '../components/CVDisplay';
 import CVDisplayTemplate2 from '../components/CVDisplayTemplate2';
 import CVDisplayTemplate3 from '../components/CVDisplayTemplate3';
 import CVPaginatedPreview from '../components/CVPaginatedPreview';
+import FitToWidth from '../components/FitToWidth';
+import CVPagedPreview from '../components/CVPagedPreview';
 import type { CVData } from '../types/cv.types';
 import { useCVContext } from '../context/CVContext';
 import { useToast } from '../context/ToastContext';
@@ -240,7 +242,7 @@ export default function CVBuilder() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="sticky top-0 z-50 no-print"
+        className="relative lg:sticky lg:top-0 z-50 no-print"
       >
         <div className="bg-gradient-to-r from-[#015C6A] via-[#017A8C] to-[#019baf] rounded-b-[2rem] shadow-lg shadow-[#017A8C]/20 relative overflow-hidden">
           {/* Decorative blurs */}
@@ -250,9 +252,9 @@ export default function CVBuilder() {
           </div>
 
           {/* Top nav row */}
-          <div className="container mx-auto px-6 pt-4 pb-2 relative z-10">
-            <div className="flex items-center justify-between">
-              <motion.div whileHover={{ scale: 1.05 }} className="text-2xl font-bold text-white tracking-tight cursor-pointer" onClick={() => navigate('/')}>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 pt-4 pb-2 relative z-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+              <motion.div whileHover={{ scale: 1.05 }} className="hidden lg:block text-2xl font-bold text-white tracking-tight cursor-pointer" onClick={() => navigate('/')}>
                 Nuivo
               </motion.div>
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigate('/')}
@@ -264,7 +266,7 @@ export default function CVBuilder() {
           </div>
 
           {/* Breadcrumb + Title + Progress */}
-          <div className="container mx-auto px-6 pb-6 pt-1 relative z-10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 pb-6 pt-1 relative z-10">
             <div className="flex items-center gap-1.5 text-white/60 text-sm mb-3">
               <Home className="w-3.5 h-3.5" />
               <button onClick={() => navigate('/')} className="hover:text-white/90 transition-colors">Home</button>
@@ -280,12 +282,12 @@ export default function CVBuilder() {
                   <Layers className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-white leading-tight">Resume Builder</h1>
-                  <p className="text-sm text-white/60">{activeCvId ? 'Editing saved resume' : 'Create a new professional resume'}</p>
+                  <h1 className="text-xl sm:text-2xl font-bold text-white leading-tight">Resume Builder</h1>
+                  <p className="text-xs sm:text-sm text-white/60">{activeCvId ? 'Editing saved resume' : 'Create a new professional resume'}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2.5 border border-white/15 min-w-[200px]">
+              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2.5 border border-white/15 w-full sm:w-auto sm:min-w-[200px]">
                 <span className="text-lg font-bold text-white">{completionProgress}%</span>
                 <div className="flex-1">
                   <div className="h-2 bg-white/20 rounded-full overflow-hidden">
@@ -305,7 +307,7 @@ export default function CVBuilder() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="px-10 pt-4 no-print"
+          className="px-4 sm:px-6 lg:px-10 pt-4 no-print"
         >
           <div className="bg-[var(--color-surface)] backdrop-blur-md rounded-2xl shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20 overflow-hidden">
             <div className="h-1 bg-gradient-to-r from-[#017A8C] via-[#019baf] to-[#88B7C4]" />
@@ -470,11 +472,11 @@ export default function CVBuilder() {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.15 }}
-        className="px-10 pt-3 pb-1 no-print"
+        className="px-4 sm:px-6 lg:px-10 pt-3 pb-1 no-print"
       >
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
           <span className="text-xs font-semibold text-[var(--color-text-light)] uppercase tracking-wider whitespace-nowrap">Template:</span>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {([
               { id: 'template1', label: 'Classic' },
               { id: 'template2', label: 'Professional' },
@@ -502,7 +504,7 @@ export default function CVBuilder() {
       </motion.div>
 
       {/* Main Content - Resume.io Style Layout */}
-      <div className="px-10 pt-4 pb-6 no-print">
+      <div className="px-4 sm:px-6 lg:px-10 pt-4 pb-6 no-print">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Column - Form Panel */}
           <motion.div
@@ -537,7 +539,7 @@ export default function CVBuilder() {
 
               {/* Action Buttons */}
               <div className="flex flex-col gap-3 px-6 pb-6 pt-6 border-t border-[#017A8C]/10 w-full">
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -584,8 +586,8 @@ export default function CVBuilder() {
               {/* Header with Title and Button */}
               <div className="w-full mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 no-print">
                 <div>
-                  <h2 className="text-xl font-bold text-[#017A8C] mb-1">Live Preview</h2>
-                  <p className="text-sm text-[var(--color-text-light)]">Your changes appear here in real-time</p>
+                  <h2 className="text-lg sm:text-xl font-bold text-[#017A8C] mb-1">Live Preview</h2>
+                  <p className="text-xs sm:text-sm text-[var(--color-text-light)]">Your changes appear here in real-time</p>
                 </div>
 
                 {/* View Full CV Button */}
@@ -593,7 +595,7 @@ export default function CVBuilder() {
                   whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(1, 122, 140, 0.3)' }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setShowModal(true)}
-                  className="flex items-center justify-center gap-2 px-4 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 whitespace-nowrap sm:self-start"
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-[#017A8C] hover:bg-[#015C6A] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 whitespace-nowrap w-full sm:w-auto sm:self-start"
                 >
                   <FileSearch className="w-4 h-4" />
                   View Full CV
@@ -630,27 +632,26 @@ export default function CVBuilder() {
         visible={showModal}
         onHide={() => setShowModal(false)}
         style={{ width: '80vw', height:'90vh' }}
+        breakpoints={{ '960px': '95vw' }}
         modal
         dismissableMask
         draggable={false}
         className="cv-preview-dialog"
         contentClassName="p-6"
       >
-        {/* A4 CV Preview Container */}
+        {/* Separate A4 pages, scaled to fit the dialog width (no squish) */}
         <div className="flex justify-center mb-6">
-          <div
-            className="bg-[var(--color-surface-solid)] rounded-lg shadow-xl border border-gray-200 p-8"
-            style={{
-              width: '80vw',
-              maxWidth: '100%',
-            }}
-          >
-            {isTemplate3 ? <CVDisplayTemplate3 data={cvData} /> : isTemplate2 ? <CVDisplayTemplate2 data={cvData} /> : <CVDisplay data={cvData} />}
+          <div className="w-full max-w-[800px]">
+            <FitToWidth className="rounded-lg overflow-hidden border border-gray-200">
+              <CVPagedPreview>
+                {isTemplate3 ? <CVDisplayTemplate3 data={cvData} /> : isTemplate2 ? <CVDisplayTemplate2 data={cvData} /> : <CVDisplay data={cvData} />}
+              </CVPagedPreview>
+            </FitToWidth>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}

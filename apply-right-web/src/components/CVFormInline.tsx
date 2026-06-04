@@ -323,7 +323,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Upload CV Document</h3>
                 <p className="text-sm text-[var(--color-text-light)] mb-4">
@@ -465,7 +465,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 transition={{duration: 0.5}}
                 className="bg-gradient-to-r from-[#017A8C]/10 via-[#019baf]/5 to-transparent p-4 rounded-xl border border-[#017A8C]/30"
             >
-                <div className="flex items-start gap-4">
+                <div className="flex flex-col sm:flex-row items-start gap-4">
                     <div
                         className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#017A8C] to-[#019baf] rounded-lg flex items-center justify-center">
                         <Zap className="w-6 h-6 text-white"/>
@@ -504,11 +504,11 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Personal Information</h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <TextInput
                         label="Full Name *"
                         name="header.fullName"
@@ -599,10 +599,10 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.1}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Theme Color</h3>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                     <Controller
                         name="sectionTitleColor"
                         control={control}
@@ -632,7 +632,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.2}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Abstract</h3>
@@ -662,7 +662,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.3}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <h3 className="text-lg font-bold text-[#017A8C] mb-4">Skills</h3>
                 <ChipsInput
@@ -681,7 +681,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.4}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Career</h3>
@@ -743,7 +743,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.5}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Personal Projects</h3>
@@ -800,7 +800,7 @@ export default function CVFormInline({onSubmit, initialData}: CVFormInlineProps)
                 initial={{opacity: 0, y: 20}}
                 animate={{opacity: 1, y: 0}}
                 transition={{duration: 0.4, delay: 0.6}}
-                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-6 border border-[#017A8C]/10"
+                className="bg-[var(--color-surface-50)] backdrop-blur-sm rounded-2xl shadow-md shadow-[#017A8C]/10 p-4 sm:p-6 border border-[#017A8C]/10"
             >
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-[#017A8C]">Education</h3>
@@ -874,7 +874,7 @@ function CareerFields({control, careerIndex, watch, setValue}: {
 
     return (
         <div className="flex flex-col gap-4 mt-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <TextInput placeholder={'Jan 2020'} label={'Start Date'} control={control}
                            name={`career.${careerIndex}.startDate`} dataCy={`career-startDate-input-${careerIndex}`}/>
                 <TextInput placeholder={'Jan 2022'} label={'End Date'} control={control}

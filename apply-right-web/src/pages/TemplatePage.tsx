@@ -58,7 +58,7 @@ export default function TemplatePage() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="sticky top-0 z-50"
+        className="relative lg:sticky lg:top-0 z-50"
       >
         <div className="bg-gradient-to-r from-[#015C6A] via-[#017A8C] to-[#019baf] rounded-b-[2rem] shadow-lg shadow-[#017A8C]/20 relative overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
@@ -67,11 +67,11 @@ export default function TemplatePage() {
           </div>
 
           {/* Top nav row */}
-          <div className="container mx-auto px-6 pt-4 pb-2 relative z-10">
-            <div className="flex items-center justify-between">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 pt-4 pb-2 relative z-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="text-2xl font-bold text-white tracking-tight cursor-pointer"
+                className="hidden lg:block text-2xl font-bold text-white tracking-tight cursor-pointer"
                 onClick={() => navigate('/')}
               >
                 Nuivo
@@ -89,20 +89,20 @@ export default function TemplatePage() {
           </div>
 
           {/* Breadcrumb + Title */}
-          <div className="container mx-auto px-6 pb-6 pt-1 relative z-10">
-            <div className="flex items-center gap-1.5 text-white/60 text-sm mb-3">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 pb-6 pt-1 relative z-10">
+            <div className="flex flex-wrap items-center gap-1.5 text-white/60 text-xs sm:text-sm mb-3">
               <Home className="w-3.5 h-3.5" />
               <button onClick={() => navigate('/')} className="hover:text-white/90 transition-colors">Home</button>
               <ChevronRight className="w-3.5 h-3.5" />
               <span className="text-white font-medium">Choose Template</span>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20">
+            <div className="flex items-start sm:items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
                 <LayoutTemplate className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white leading-tight">Choose Your Resume Template</h1>
-                <p className="text-sm text-white/60">Select the design that best represents you</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-white leading-tight">Choose Your Resume Template</h1>
+                <p className="text-xs sm:text-sm text-white/60">Select the design that best represents you</p>
               </div>
             </div>
           </div>
@@ -110,8 +110,8 @@ export default function TemplatePage() {
       </motion.header>
 
       {/* Main Content */}
-      <div className="container mx-auto max-w-7xl px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-8 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {templates.map((template, index) => {
             const isSelected = currentTemplateId === template.id;
             return (
@@ -149,19 +149,19 @@ export default function TemplatePage() {
                 </div>
 
                 {/* Card Body */}
-                <div className="p-5 flex flex-col flex-1">
-                  <h2 className="text-xl font-bold text-[var(--color-text-dark)] mb-2">
+                <div className="p-4 sm:p-5 flex flex-col flex-1">
+                  <h2 className="text-lg sm:text-xl font-bold text-[var(--color-text-dark)] mb-2">
                     {template.name}
                   </h2>
-                  <p className="text-sm text-[var(--color-text-light)] leading-relaxed mb-4">
+                  <p className="text-xs sm:text-sm text-[var(--color-text-light)] leading-relaxed mb-4">
                     {template.description}
                   </p>
 
                   {/* Features list */}
                   <ul className="space-y-1 mb-5">
                     {template.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-[var(--color-muted)]">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#017A8C] flex-shrink-0" />
+                      <li key={i} className="flex items-center gap-2 text-xs sm:text-sm text-[var(--color-muted)]">
+                        <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#017A8C] flex-shrink-0" />
                         {feature}
                       </li>
                     ))}
@@ -175,7 +175,7 @@ export default function TemplatePage() {
                       e.stopPropagation();
                       handleSelectTemplate(template.id);
                     }}
-                    className={`w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-lg mt-auto ${
+                    className={`w-full py-2 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-300 shadow-md hover:shadow-lg mt-auto ${
                       isSelected
                         ? 'bg-[#017A8C] text-white'
                         : 'bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white'
@@ -194,7 +194,7 @@ export default function TemplatePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="text-center text-sm text-[var(--color-text-light)] mt-8"
+          className="text-center text-xs sm:text-sm text-[var(--color-text-light)] mt-8"
         >
           You can switch templates at any time from the Resume Builder page.
         </motion.p>

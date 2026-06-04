@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutDashboard, FileText, FileSearch, LayoutTemplate, Briefcase, LogOut, ChevronRight, Sun, Moon, Shield } from 'lucide-react';
+import { LayoutDashboard, FileText, FileSearch, LayoutTemplate, Briefcase, LogOut, ChevronRight, Sun, Moon, Shield, X } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -13,15 +13,26 @@ const NAV_ITEMS = [
 ];
 
 interface SidebarProps {
+  /** Desktop-only collapsed (icon-rail) state. */
   collapsed: boolean;
+  /** Toggle the desktop collapsed state. */
   onToggle: () => void;
+  /** True when the viewport is desktop-width (>= lg). Drives drawer vs. rail behavior. */
+  isDesktop: boolean;
+  /** Whether the mobile off-canvas drawer is open. */
+  mobileOpen: boolean;
+  /** Close the mobile drawer (e.g. after navigation). */
+  onCloseMobile: () => void;
 }
 
-export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export default function Sidebar({ collapsed, onToggle, isDesktop, mobileOpen, onCloseMobile }: SidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser, logout, userRole } = useAuth();
   const { theme, toggleTheme } = useTheme();
+
+  // On mobile the drawer is always full-width with labels; collapsing only applies to desktop.
+  const showLabels = !isDesktop || !collapsed;
 
   const initials = currentUser?.displayName
     ? currentUser.displayName.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
@@ -29,32 +40,47 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
   const displayName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User';
 
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    if (!isDesktop) onCloseMobile();
+  };
+
   const handleLogout = async () => {
     await logout();
+    if (!isDesktop) onCloseMobile();
     navigate('/');
   };
 
   return (
     <motion.aside
-      animate={{ width: collapsed ? 72 : 260 }}
+      initial={false}
+      animate={{
+        width: isDesktop ? (collapsed ? 72 : 260) : 280,
+        x: isDesktop ? 0 : (mobileOpen ? 0 : -296),
+      }}
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-      className="fixed left-0 top-0 h-screen z-50 flex flex-col bg-[var(--color-surface-solid)] border-r border-[var(--color-border)]/40 shadow-xl shadow-black/5 overflow-hidden"
+      aria-hidden={!isDesktop && !mobileOpen}
+      // `max-w-[85vw]` keeps the mobile drawer inside the viewport (it never
+      // exceeds 85% of the screen); on desktop the animated width is always
+      // <= 260px so the cap is inert. The -296 closed offset still fully hides
+      // the drawer since its rendered width can never exceed 280px.
+      className="fixed left-0 top-0 h-[100dvh] max-w-[85vw] z-[60] flex flex-col bg-[var(--color-surface-solid)] border-r border-[var(--color-border)]/40 shadow-xl shadow-black/5 overflow-hidden"
     >
       {/* Profile section */}
       <div className="px-3 pt-5 pb-3 flex-shrink-0">
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => navigate('/profile')}
+            onClick={() => handleNavigate('/profile')}
             title="My Profile"
-            className={`flex items-center gap-3 min-w-0 rounded-xl p-1 -m-1 text-left hover:bg-[#017A8C]/5 transition-colors ${collapsed ? 'flex-none' : 'flex-1'}`}
+            className={`flex items-center gap-3 min-w-0 rounded-xl p-1 -m-1 text-left hover:bg-[#017A8C]/5 transition-colors ${showLabels ? 'flex-1' : 'flex-none'}`}
           >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#017A8C] to-[#019baf] flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-md select-none">
               {initials}
             </div>
 
             <AnimatePresence mode="wait">
-              {!collapsed && (
+              {showLabels && (
                 <motion.div
                   key="profile-text"
                   initial={{ opacity: 0, x: -8 }}
@@ -70,18 +96,30 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
             </AnimatePresence>
           </button>
 
-          <button
-            onClick={onToggle}
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className="w-7 h-7 rounded-lg bg-[#017A8C]/10 hover:bg-[#017A8C]/20 flex items-center justify-center transition-colors flex-shrink-0"
-          >
-            <motion.div
-              animate={{ rotate: collapsed ? 0 : 180 }}
-              transition={{ duration: 0.3 }}
+          {isDesktop ? (
+            <button
+              onClick={onToggle}
+              title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              className="w-9 h-9 rounded-lg bg-[#017A8C]/10 hover:bg-[#017A8C]/20 flex items-center justify-center transition-colors flex-shrink-0"
             >
-              <ChevronRight className="w-4 h-4 text-[var(--color-text-dark)]" />
-            </motion.div>
-          </button>
+              <motion.div
+                animate={{ rotate: collapsed ? 0 : 180 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ChevronRight className="w-4 h-4 text-[var(--color-text-dark)]" />
+              </motion.div>
+            </button>
+          ) : (
+            <button
+              onClick={onCloseMobile}
+              title="Close menu"
+              aria-label="Close menu"
+              className="w-11 h-11 rounded-lg bg-[#017A8C]/10 hover:bg-[#017A8C]/20 flex items-center justify-center transition-colors flex-shrink-0"
+            >
+              <X className="w-5 h-5 text-[var(--color-text-dark)]" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -95,9 +133,9 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
           return (
             <button
               key={item.path}
-              onClick={() => navigate(item.path)}
-              title={collapsed ? item.label : undefined}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group ${
+              onClick={() => handleNavigate(item.path)}
+              title={showLabels ? undefined : item.label}
+              className={`w-full flex items-center gap-3 px-3 min-h-[44px] py-2.5 rounded-xl transition-all duration-200 group ${
                 isActive
                   ? 'bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white shadow-md shadow-[#017A8C]/25'
                   : 'text-[var(--color-text-dark)] hover:bg-[#017A8C]/10 hover:text-[#017A8C]'
@@ -109,7 +147,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 }`}
               />
               <AnimatePresence mode="wait">
-                {!collapsed && (
+                {showLabels && (
                   <motion.span
                     key="label"
                     initial={{ opacity: 0, x: -8 }}
@@ -131,9 +169,9 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
           const isActive = location.pathname === '/dashboard';
           return (
             <button
-              onClick={() => navigate('/dashboard')}
-              title={collapsed ? 'Dashboard' : undefined}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group ${
+              onClick={() => handleNavigate('/dashboard')}
+              title={showLabels ? undefined : 'Dashboard'}
+              className={`w-full flex items-center gap-3 px-3 min-h-[44px] py-2.5 rounded-xl transition-all duration-200 group ${
                 isActive
                   ? 'bg-gradient-to-r from-[#017A8C] to-[#019baf] text-white shadow-md shadow-[#017A8C]/25'
                   : 'text-[var(--color-text-dark)] hover:bg-[#017A8C]/10 hover:text-[#017A8C]'
@@ -145,7 +183,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 }`}
               />
               <AnimatePresence mode="wait">
-                {!collapsed && (
+                {showLabels && (
                   <motion.span
                     key="dashboard-label"
                     initial={{ opacity: 0, x: -8 }}
@@ -170,8 +208,8 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       <div className="px-3 pt-3 flex-shrink-0">
         <button
           onClick={toggleTheme}
-          title={collapsed ? (theme === 'dark' ? 'Light mode' : 'Dark mode') : undefined}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[var(--color-text-dark)] hover:bg-[#017A8C]/10 hover:text-[#017A8C] transition-all duration-200 group"
+          title={showLabels ? undefined : (theme === 'dark' ? 'Light mode' : 'Dark mode')}
+          className="w-full flex items-center gap-3 px-3 min-h-[44px] py-2.5 rounded-xl text-[var(--color-text-dark)] hover:bg-[#017A8C]/10 hover:text-[#017A8C] transition-all duration-200 group"
         >
           {theme === 'dark' ? (
             <Sun className="w-5 h-5 flex-shrink-0 text-[var(--color-text-light)] group-hover:text-[#017A8C]" />
@@ -179,7 +217,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
             <Moon className="w-5 h-5 flex-shrink-0 text-[var(--color-text-light)] group-hover:text-[#017A8C]" />
           )}
           <AnimatePresence mode="wait">
-            {!collapsed && (
+            {showLabels && (
               <motion.span
                 key="theme-label"
                 initial={{ opacity: 0, x: -8 }}
@@ -199,12 +237,12 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       <div className="px-3 py-4 flex-shrink-0">
         <button
           onClick={handleLogout}
-          title={collapsed ? 'Logout' : undefined}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-500 transition-all duration-200 group"
+          title={showLabels ? undefined : 'Logout'}
+          className="w-full flex items-center gap-3 px-3 min-h-[44px] py-2.5 rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-500 transition-all duration-200 group"
         >
           <LogOut className="w-5 h-5 flex-shrink-0" />
           <AnimatePresence mode="wait">
-            {!collapsed && (
+            {showLabels && (
               <motion.span
                 key="logout-label"
                 initial={{ opacity: 0, x: -8 }}

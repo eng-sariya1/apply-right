@@ -211,7 +211,7 @@ export default function ATSPage() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="sticky top-0 z-50"
+        className="relative lg:sticky lg:top-0 z-50"
       >
         <div className="bg-gradient-to-r from-[#015C6A] via-[#017A8C] to-[#019baf] rounded-b-[2rem] shadow-lg shadow-[#017A8C]/20 relative overflow-hidden">
           {/* Decorative blurs */}
@@ -221,9 +221,9 @@ export default function ATSPage() {
           </div>
 
           {/* Top nav row */}
-          <div className="container mx-auto px-6 pt-4 pb-2 relative z-10">
-            <div className="flex items-center justify-between">
-              <motion.div whileHover={{ scale: 1.05 }} className="text-2xl font-bold text-white tracking-tight cursor-pointer" onClick={() => navigate('/')}>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 pt-4 pb-2 relative z-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+              <motion.div whileHover={{ scale: 1.05 }} className="hidden lg:block text-2xl font-bold text-white tracking-tight cursor-pointer" onClick={() => navigate('/')}>
                 Nuivo
               </motion.div>
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigate('/cv-builder')}
@@ -235,8 +235,8 @@ export default function ATSPage() {
           </div>
 
           {/* Breadcrumb + Title */}
-          <div className="container mx-auto px-6 pb-6 pt-1 relative z-10">
-            <div className="flex items-center gap-1.5 text-white/60 text-sm mb-3">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 pb-6 pt-1 relative z-10">
+            <div className="flex flex-wrap items-center gap-1.5 text-white/60 text-xs sm:text-sm mb-3">
               <Home className="w-3.5 h-3.5" />
               <button onClick={() => navigate('/')} className="hover:text-white/90 transition-colors">Home</button>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -245,13 +245,13 @@ export default function ATSPage() {
               <span className="text-white font-medium">ATS Analyzer</span>
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20">
+            <div className="flex items-start sm:items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
                 <FileSearch className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white leading-tight">ATS Analyzer</h1>
-                <p className="text-sm text-white/60">Analyze how well your resume matches a job description</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-white leading-tight">ATS Analyzer</h1>
+                <p className="text-xs sm:text-sm text-white/60">Analyze how well your resume matches a job description</p>
               </div>
             </div>
           </div>
@@ -259,8 +259,8 @@ export default function ATSPage() {
       </motion.header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-10 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Left Column - Job Description Input */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -277,24 +277,25 @@ export default function ATSPage() {
                   <button
                     key={id}
                     onClick={() => handleModeSwitch(id as 'job-description' | 'professional-background')}
-                    className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                    className={`flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 px-2 sm:px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
                       mode === id
                         ? 'bg-[#017A8C] text-white shadow-md'
                         : 'text-[var(--color-text-light)] hover:text-[#017A8C]'
                     }`}
                   >
-                    <Icon className="w-4 h-4" />
-                    {label}
+                    <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="hidden sm:inline">{label}</span>
+                    <span className="sm:hidden">{label.split(' ')[0]}</span>
                   </button>
                 ))}
               </div>
 
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
                 <div>
-                  <h2 className="text-xl font-bold text-[#017A8C] mb-1">
+                  <h2 className="text-lg sm:text-xl font-bold text-[#017A8C] mb-1">
                     {mode === 'job-description' ? 'Job Description' : 'Professional Background'}
                   </h2>
-                  <p className="text-sm text-[var(--color-text-light)]">
+                  <p className="text-xs sm:text-sm text-[var(--color-text-light)]">
                     {mode === 'job-description'
                       ? 'Paste the job description below to analyze how well your CV matches'
                       : 'Enter a professional background to generate keywords and analyze your CV alignment'}
@@ -310,7 +311,7 @@ export default function ATSPage() {
                       : (!professionalBackground.trim() || isLoading || isGenerating)
                   }
                   loading={isLoading || isGenerating}
-                  className="shrink-0 whitespace-nowrap bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                  className="w-full sm:w-auto shrink-0 whitespace-nowrap bg-gradient-to-r from-[#017A8C] to-[#019baf] hover:from-[#015C6A] hover:to-[#017A8C] text-white font-semibold py-2.5 px-4 sm:px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm"
                   data-cy="analyze-cv-button"
                 />
               </div>
@@ -379,7 +380,7 @@ export default function ATSPage() {
               <div className="space-y-6">
                 {/* Suggestions Header */}
                 <Card className="bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg">
-                  <div className="flex items-center justify-between flex-wrap gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <Sparkles className="w-6 h-6" />
@@ -405,19 +406,19 @@ export default function ATSPage() {
                         </span>
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-col sm:flex-row w-full sm:w-auto">
                       <Button
                         label="Select All"
                         size="small"
                         onClick={handleSelectAll}
-                        className="bg-white/20 hover:bg-white/30 text-white border-white/40"
+                        className="bg-white/20 hover:bg-white/30 text-white border-white/40 w-full sm:w-auto"
                         data-cy="select-all-button"
                       />
                       <Button
                         label="Deselect All"
                         size="small"
                         onClick={handleDeselectAll}
-                        className="bg-white/20 hover:bg-white/30 text-white border-white/40"
+                        className="bg-white/20 hover:bg-white/30 text-white border-white/40 w-full sm:w-auto"
                         data-cy="deselect-all-button"
                       />
                     </div>
@@ -493,12 +494,12 @@ export default function ATSPage() {
 
                 {/* Apply Button */}
                 <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg border border-purple-200 sticky bottom-0">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                      <p className="font-semibold text-gray-800">
+                      <p className="text-sm sm:text-base font-semibold text-gray-800">
                         {suggestions.filter(s => s.approved).length} of {suggestions.length} changes selected
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-xs sm:text-sm text-gray-600">
                         High confidence suggestions are pre-selected
                       </p>
                     </div>
@@ -507,7 +508,7 @@ export default function ATSPage() {
                       icon="pi pi-check"
                       onClick={handleApplyOptimization}
                       disabled={suggestions.filter(s => s.approved).length === 0}
-                      className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg transition-all duration-300"
+                      className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg transition-all duration-300"
                       data-cy="apply-changes-button"
                     />
                   </div>
@@ -518,12 +519,12 @@ export default function ATSPage() {
                 {/* Match Percentage Card */}
                 <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
                   <div className="flex items-center gap-3 mb-4">
-                    <TrendingUp className="w-6 h-6 text-[#017A8C]" />
-                    <h3 className="text-lg font-bold text-[#017A8C]">Match Score</h3>
+                    <TrendingUp className="w-5 sm:w-6 h-5 sm:h-6 text-[#017A8C]" />
+                    <h3 className="text-base sm:text-lg font-bold text-[#017A8C]">Match Score</h3>
                   </div>
 
                   <div className="flex items-center justify-center mb-4">
-                    <div className="text-5xl font-bold text-[#017A8C]">
+                    <div className="text-4xl sm:text-5xl font-bold text-[#017A8C]">
                       {analysisResult.matchPercentage}%
                     </div>
                   </div>
@@ -558,7 +559,7 @@ export default function ATSPage() {
 
                 {/* Keyword Analysis Chart */}
                 <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
-                  <h3 className="text-lg font-bold text-[#017A8C] mb-4">Keyword Analysis</h3>
+                  <h3 className="text-base sm:text-lg font-bold text-[#017A8C] mb-4">Keyword Analysis</h3>
                   <div className="h-64">
                     <Bar data={keywordChartData} options={chartOptions} />
                   </div>
@@ -567,7 +568,7 @@ export default function ATSPage() {
                 {/* Strengths */}
                 {analysisResult.strengths.length > 0 && (
                   <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
-                    <h3 className="text-lg font-bold text-green-600 mb-3">Strengths</h3>
+                    <h3 className="text-base sm:text-lg font-bold text-green-600 mb-3">Strengths</h3>
                     <ul className="space-y-2">
                       {analysisResult.strengths.map((strength, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
@@ -582,7 +583,7 @@ export default function ATSPage() {
                 {/* Weaknesses */}
                 {analysisResult.weaknesses.length > 0 && (
                   <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
-                    <h3 className="text-lg font-bold text-orange-600 mb-3">Areas for Improvement</h3>
+                    <h3 className="text-base sm:text-lg font-bold text-orange-600 mb-3">Areas for Improvement</h3>
                     <ul className="space-y-2">
                       {analysisResult.weaknesses.map((weakness, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
@@ -597,7 +598,7 @@ export default function ATSPage() {
                 {/* Recommendations */}
                 {analysisResult.recommendations.length > 0 && (
                   <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
-                    <h3 className="text-lg font-bold text-[#017A8C] mb-3">Recommendations</h3>
+                    <h3 className="text-base sm:text-lg font-bold text-[#017A8C] mb-3">Recommendations</h3>
                     <ul className="space-y-2">
                       {analysisResult.recommendations.map((recommendation, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
@@ -612,7 +613,7 @@ export default function ATSPage() {
                 {/* Matched Keywords */}
                 {analysisResult.keywordMatches.matched.length > 0 && (
                   <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
-                    <h3 className="text-lg font-bold text-green-600 mb-3">Matched Keywords</h3>
+                    <h3 className="text-base sm:text-lg font-bold text-green-600 mb-3">Matched Keywords</h3>
                     <div className="flex flex-wrap gap-2">
                       {analysisResult.keywordMatches.matched.map((keyword, index) => (
                         <span
@@ -629,7 +630,7 @@ export default function ATSPage() {
                 {/* Missing Keywords */}
                 {analysisResult.keywordMatches.missing.length > 0 && (
                   <Card className="bg-[var(--color-surface)] backdrop-blur-md shadow-lg shadow-[#017A8C]/10 border border-[#017A8C]/20">
-                    <h3 className="text-lg font-bold text-orange-600 mb-3">Missing Keywords</h3>
+                    <h3 className="text-base sm:text-lg font-bold text-orange-600 mb-3">Missing Keywords</h3>
                     <div className="flex flex-wrap gap-2">
                       {analysisResult.keywordMatches.missing.map((keyword, index) => (
                         <span

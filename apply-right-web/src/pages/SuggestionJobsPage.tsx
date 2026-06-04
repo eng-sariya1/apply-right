@@ -30,7 +30,7 @@ export default function SuggestionJobsPage() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="sticky top-0 z-50"
+        className="relative lg:sticky lg:top-0 z-50"
       >
         <div className="bg-gradient-to-r from-[#015C6A] via-[#017A8C] to-[#019baf] rounded-b-[2rem] shadow-lg shadow-[#017A8C]/20 relative overflow-hidden">
           {/* Decorative blurs */}
@@ -40,9 +40,9 @@ export default function SuggestionJobsPage() {
           </div>
 
           {/* Top nav row */}
-          <div className="container mx-auto px-6 pt-4 pb-2 relative z-10">
-            <div className="flex items-center justify-between">
-              <motion.div whileHover={{ scale: 1.05 }} className="text-2xl font-bold text-white tracking-tight cursor-pointer" onClick={() => navigate('/home')}>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 pt-4 pb-2 relative z-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+              <motion.div whileHover={{ scale: 1.05 }} className="hidden lg:block text-2xl font-bold text-white tracking-tight cursor-pointer" onClick={() => navigate('/home')}>
                 Nuivo
               </motion.div>
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigate('/ats')}
@@ -54,21 +54,21 @@ export default function SuggestionJobsPage() {
           </div>
 
           {/* Breadcrumb + Title */}
-          <div className="container mx-auto px-6 pb-6 pt-1 relative z-10">
-            <div className="flex items-center gap-1.5 text-white/60 text-sm mb-3">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 pb-6 pt-1 relative z-10">
+            <div className="flex flex-wrap items-center gap-1.5 text-white/60 text-xs sm:text-sm mb-3">
               <Home className="w-3.5 h-3.5" />
               <button onClick={() => navigate('/home')} className="hover:text-white/90 transition-colors">Home</button>
               <ChevronRight className="w-3.5 h-3.5" />
               <span className="text-white font-medium">Suggested Jobs</span>
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20">
+            <div className="flex items-start sm:items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20 flex-shrink-0">
                 <Briefcase className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white leading-tight">Suggested Jobs</h1>
-                <p className="text-sm text-white/60">Job matches based on your CV and ATS analysis</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-white leading-tight">Suggested Jobs</h1>
+                <p className="text-xs sm:text-sm text-white/60">Job matches based on your CV and ATS analysis</p>
               </div>
             </div>
           </div>
@@ -76,7 +76,7 @@ export default function SuggestionJobsPage() {
       </motion.header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-10 py-8">
         <div className="max-w-2xl mx-auto">
           {unlocked ? (
             <motion.div
@@ -98,10 +98,10 @@ export default function SuggestionJobsPage() {
                     <Briefcase className="w-5 h-5 text-[#017A8C]" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-[#017A8C] mb-1">
+                    <h3 className="text-base sm:text-lg font-bold text-[#017A8C] mb-1">
                       Let's find your next role
                     </h3>
-                    <p className="text-sm text-[var(--color-text-light)]">
+                    <p className="text-xs sm:text-sm text-[var(--color-text-light)]">
                       Start by completing your CV, then run an ATS analysis to see how it
                       scores. Once your CV is at least {REQUIRED_COMPLETION}% complete and
                       analyzed, we'll surface job openings matched to your profile.
@@ -117,8 +117,8 @@ export default function SuggestionJobsPage() {
                     ) : (
                       <Circle className="w-5 h-5 text-[var(--color-text-light)] shrink-0" />
                     )}
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-[var(--color-text-dark)]">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs sm:text-sm font-semibold text-[var(--color-text-dark)]">
                         CV completion: {progress}%
                       </p>
                       <p className="text-xs text-[var(--color-text-light)]">
@@ -135,8 +135,8 @@ export default function SuggestionJobsPage() {
                     ) : (
                       <Circle className="w-5 h-5 text-[var(--color-text-light)] shrink-0" />
                     )}
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-[var(--color-text-dark)]">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs sm:text-sm font-semibold text-[var(--color-text-dark)]">
                         ATS analysis: {atsReady ? 'Done' : 'Not yet run'}
                       </p>
                       <p className="text-xs text-[var(--color-text-light)]">
@@ -149,7 +149,7 @@ export default function SuggestionJobsPage() {
                 </div>
 
                 {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col gap-3">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
