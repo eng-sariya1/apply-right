@@ -4,33 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14da8514-20e5-4bbc-a153-f6164add1916" name="Changes" comment="">
+    <list default="true" id="14da8514-20e5-4bbc-a153-f6164add1916" name="Changes" comment="commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/AppLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/AppLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/CVFormInline.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/CVFormInline.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/CVFormTemplate2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/CVFormTemplate2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/CVFormTemplate3.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/CVFormTemplate3.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/LinkedInJobsCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/LinkedInJobsCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/PasswordInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/PasswordInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/Sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/UploadResumeModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/UploadResumeModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/form/TextAreaInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/form/TextAreaInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/components/form/TextInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/components/form/TextInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/ATSPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/ATSPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/CVBuilder.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/CVBuilder.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/Dashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/HomePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/Signup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/Signup.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/SuggestionJobsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/SuggestionJobsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/TemplatePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/TemplatePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/pages/UsersManagement.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/pages/UsersManagement.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/prompt3.md" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/prompt3.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apply-right-web/src/styles/cv-paginated.css" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-web/src/styles/cv-paginated.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,22 +41,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Victus/WebstormProjects/apply-right",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.dev.executor": "Run",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "ts.external.directory.path": "C:\\Users\\iyadm\\WebstormProjects\\apply-right\\apply-right-web\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Victus/WebstormProjects/apply-right&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\iyadm\\WebstormProjects\\apply-right\\apply-right-web\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Victus\WebstormProjects\apply-right" />
@@ -123,8 +98,18 @@
       <workItem from="1780352520065" duration="339000" />
       <workItem from="1780430151459" duration="4150000" />
       <workItem from="1780449804905" duration="3556000" />
-      <workItem from="1780518086411" duration="13663000" />
+      <workItem from="1780518086411" duration="14396000" />
+      <workItem from="1780612178030" duration="667000" />
     </task>
+    <task id="LOCAL-00001" summary="commit">
+      <option name="closed" value="true" />
+      <created>1780543216572</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1780543216574</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,5 +128,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
 </project>
