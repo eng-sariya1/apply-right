@@ -1,0 +1,221 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"14da8514-20e5-4bbc-a153-f6164add1916\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.env.example\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.firebaserc\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gitignore\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/vcs.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/THESIS.md\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress.config.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/downloads/localhost_5173____.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/e2e/comprehensive-cv-flow.cy.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/e2e/cv-form.cy.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/01-completed-cv-form (1).png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/01-completed-cv-form.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/02-job-description-filled (1).png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/02-job-description-filled.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/03-analysis-results.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/04-optimization-suggestions.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/05-all-suggestions-selected.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/06-final-optimized-results.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/07-ats-complete.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/08-optimized-cv-form.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/screenshots/09-final-cv-view.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/support/commands.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/support/e2e.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cypress/support/helpers.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/eslint.config.js\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/firebase.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/firestore.rules\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/images/logo/logo.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/images/templates/TEM1.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/images/templates/TEM2.jpg\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/images/templates/classic.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/images/typing-hero.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/index.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/netlify.toml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/netlify/functions/gemini.mts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/package-lock.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/package.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/postcss.config.js\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/public/_redirects\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/public/images/typing-hero.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/public/pdf.worker.min.mjs\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/public/vite.svg\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/App.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/AuthContext.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/AdminRoute.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/AppLayout.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/CVDisplay.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/CVDisplayTemplate2.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/CVDisplayTemplate3.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/CVFormInline.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/CVFormTemplate2.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/CVFormTemplate3.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/CVPaginatedPreview.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/LinkedInJobsCard.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/PasswordInput.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/ProtectedRoute.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/Sidebar.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/UploadResumeModal.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/form/CheckboxInput.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/form/ChipsInput.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/form/DropdownInput.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/form/TextAreaInput.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/form/TextInput.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/context/CVContext.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/context/ThemeContext.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/context/ToastContext.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/firebase.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/hooks/useGemini.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/hooks/useGeminiATS.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/hooks/useGeminiATSAnalysis.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/hooks/useGeminiCVOptimizer.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/hooks/useGeminiCVParser.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/hooks/useGeminiCareer.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/hooks/useGeminiEducation.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/hooks/useGeminiProfessionalBackground.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/hooks/useGeminiProjects.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/index.css\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/ATSPage.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/CVBuilder.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/Dashboard.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/HomePage.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/LandingPage.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/Login.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/ProfilePage.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/Signup.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/SuggestionJobsPage.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/TemplatePage.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/pages/UsersManagement.tsx\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/prompt.md\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/prompt3.md\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/styles/cv-builder.css\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/styles/cv-paginated.css\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/styles/cv.css\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/types/cv.types.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/utils/cvCompletion.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/utils/linkedinJobs.ts\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/tailwind.config.js\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/tsconfig.app.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/tsconfig.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/tsconfig.node.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/vite.config.ts\" beforeDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\"><![CDATA[{\r\n  \"lastFilter\": {\r\n    \"state\": \"OPEN\",\r\n    \"assignee\": \"sariya-ux\"\r\n  }\r\n}]]></component>\r\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\r\n  \"selectedUrlAndAccountId\": {\r\n    \"url\": \"https://github.com/sariya-ux/apply-right.git\",\r\n    \"accountId\": \"c23950ee-0bae-4f96-817c-15596fbae243\"\r\n  }\r\n}]]></component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"customColor\": \"\",\r\n  \"associatedIndex\": 6\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"3EVTbFEXHS3xrIFNQ4oLad8xakq\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"last_opened_file_path\": \"C:/Users/Victus/WebstormProjects/apply-right\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\Victus\\WebstormProjects\\apply-right\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.22855.79\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"14da8514-20e5-4bbc-a153-f6164add1916\" name=\"Changes\" comment=\"\" />\r\n      <created>1780262807473</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1780262807473</updated>\r\n      <workItem from=\"1780262809308\" duration=\"333000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 28360f20385d4ef7522f00bda8cf0469094d5c43)
++++ b/.idea/workspace.xml	(date 1780614514819)
+@@ -4,110 +4,8 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="14da8514-20e5-4bbc-a153-f6164add1916" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.firebaserc" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
++    <list default="true" id="14da8514-20e5-4bbc-a153-f6164add1916" name="Changes" comment="1">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/THESIS.md" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress.config.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/downloads/localhost_5173____.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/e2e/comprehensive-cv-flow.cy.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/e2e/cv-form.cy.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/01-completed-cv-form (1).png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/01-completed-cv-form.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/02-job-description-filled (1).png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/02-job-description-filled.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/03-analysis-results.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/04-optimization-suggestions.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/05-all-suggestions-selected.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/06-final-optimized-results.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/07-ats-complete.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/08-optimized-cv-form.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/screenshots/09-final-cv-view.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/support/commands.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/support/e2e.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/cypress/support/helpers.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/eslint.config.js" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/firebase.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/firestore.rules" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/images/logo/logo.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/images/templates/TEM1.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/images/templates/TEM2.jpg" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/images/templates/classic.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/images/typing-hero.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/netlify.toml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/netlify/functions/gemini.mts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/postcss.config.js" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/public/_redirects" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/public/images/typing-hero.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/public/pdf.worker.min.mjs" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/public/vite.svg" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/AuthContext.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/AdminRoute.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/AppLayout.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/CVDisplay.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/CVDisplayTemplate2.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/CVDisplayTemplate3.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/CVFormInline.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/CVFormTemplate2.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/CVFormTemplate3.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/CVPaginatedPreview.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/LinkedInJobsCard.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/PasswordInput.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/ProtectedRoute.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/Sidebar.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/UploadResumeModal.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/form/CheckboxInput.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/form/ChipsInput.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/form/DropdownInput.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/form/TextAreaInput.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/form/TextInput.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/context/CVContext.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/context/ThemeContext.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/context/ToastContext.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/firebase.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/hooks/useGemini.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiATS.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiATSAnalysis.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiCVOptimizer.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiCVParser.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiCareer.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiEducation.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiProfessionalBackground.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/hooks/useGeminiProjects.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/ATSPage.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/CVBuilder.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/Dashboard.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/HomePage.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/LandingPage.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/Login.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/ProfilePage.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/Signup.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/SuggestionJobsPage.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/TemplatePage.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/pages/UsersManagement.tsx" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/prompt.md" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/prompt3.md" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/styles/cv-builder.css" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/styles/cv-paginated.css" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/styles/cv.css" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/types/cv.types.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/utils/cvCompletion.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/utils/linkedinJobs.ts" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/tsconfig.app.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/tsconfig.node.json" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/vite.config.ts" beforeDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -122,38 +20,61 @@
+     </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+-  "lastFilter": {
+-    "state": "OPEN",
+-    "assignee": "sariya-ux"
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;sariya-ux&quot;
+   }
+-}]]></component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "https://github.com/sariya-ux/apply-right.git",
+-    "accountId": "c23950ee-0bae-4f96-817c-15596fbae243"
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/sariya-ux/apply-right.git&quot;,
++    &quot;accountId&quot;: &quot;c23950ee-0bae-4f96-817c-15596fbae243&quot;
+   }
+-}]]></component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "customColor": "",
+-  "associatedIndex": 6
+-}]]></component>
++}</component>
++  <component name="ProjectColorInfo">{
++  &quot;customColor&quot;: &quot;&quot;,
++  &quot;associatedIndex&quot;: 6
++}</component>
+   <component name="ProjectId" id="3EVTbFEXHS3xrIFNQ4oLad8xakq" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "last_opened_file_path": "C:/Users/Victus/WebstormProjects/apply-right",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.tslint": "(autodetect)"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/Victus/WebstormProjects/apply-right&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\Users\Victus\WebstormProjects\apply-right" />
+     </key>
++  </component>
++  <component name="RunManager">
++    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
++      <package-json value="$PROJECT_DIR$/apply-right-web/package.json" />
++      <command value="run" />
++      <scripts>
++        <script value="dev" />
++      </scripts>
++      <node-interpreter value="project" />
++      <envs />
++      <method v="2" />
++    </configuration>
++    <recent_temporary>
++      <list>
++        <item itemvalue="npm.dev" />
++      </list>
++    </recent_temporary>
+   </component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+@@ -171,10 +92,15 @@
+       <option name="presentableId" value="Default" />
+       <updated>1780262807473</updated>
+       <workItem from="1780262809308" duration="333000" />
++      <workItem from="1780268174131" duration="597000" />
+     </task>
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="1" />
++    <option name="LAST_COMMIT_MESSAGE" value="1" />
++  </component>
+ </project>
+\ No newline at end of file
