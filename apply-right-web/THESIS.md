@@ -6,9 +6,9 @@
 
 ## Abstract
 
-This thesis presents the design and implementation of Nuivo, an intelligent CV/Resume builder application that leverages artificial intelligence to enhance job application success rates. The system integrates Google's Gemini API to provide AI-powered CV building, Applicant Tracking System (ATS) analysis, and CV optimization features. Built using modern web technologies including React, TypeScript, and Vite, the application offers real-time CV preview, intelligent content suggestions, and ATS compatibility scoring. The system aims to bridge the gap between job seekers and automated recruitment systems by providing actionable insights and optimization recommendations. Testing results demonstrate significant improvements in ATS match percentages and overall CV quality through AI-assisted optimization.
+This thesis presents the design and implementation of Nuivo, an intelligent CV/Resume builder platform that leverages artificial intelligence to enhance job application success rates. The system integrates Google's Gemini API to provide AI-powered CV building, Applicant Tracking System (ATS) analysis, and CV optimization features across a React web application and a native React Native mobile app for iOS and Android. Beyond the original client-side prototype, the platform now incorporates a Firebase backend providing secure user authentication (email/password and Google OAuth), Firestore cloud storage for cross-device CV persistence, and a role-based administrative dashboard. Three professionally designed CV templates offer users meaningful visual choice, while strict Firestore security rules and email verification protect user data. Testing results demonstrate significant improvements in ATS match percentages and overall CV quality through AI-assisted optimization, with cloud persistence eliminating prior data-loss risks and the mobile app extending access to users on any device.
 
-**Keywords:** Artificial Intelligence, CV Builder, ATS Optimization, Natural Language Processing, React, TypeScript, Gemini API
+**Keywords:** Artificial Intelligence, CV Builder, ATS Optimization, Natural Language Processing, React, TypeScript, Gemini API, Firebase, React Native, Cloud Storage, Applicant Tracking System
 
 ---
 
@@ -24,12 +24,23 @@ This thesis presents the design and implementation of Nuivo, an intelligent CV/R
    - 2.2 [Literature Review](#22-literature-review)
    - 2.3 [System Requirements](#23-system-requirements)
    - 2.4 [System Design and Architecture](#24-system-design-and-architecture)
+     - 2.4.7 [Firebase Backend Architecture](#247-firebase-backend-architecture)
+     - 2.4.8 [Mobile Application Architecture](#248-mobile-application-architecture)
+     - 2.4.9 [Multi-Template CV System Design](#249-multi-template-cv-system-design)
    - 2.5 [Technology Stack](#25-technology-stack)
+     - 2.5.7 [Backend & Authentication Stack](#257-backend--authentication-stack)
+     - 2.5.8 [Mobile Framework Stack](#258-mobile-framework-stack)
    - 2.6 [Conclusion](#26-conclusion)
 
 3. [Implementation, Testing and Results](#chapter-3-implementation-testing-and-results)
    - 3.1 [Implementation](#31-implementation)
+     - 3.1.5 [Firebase Authentication Implementation](#315-firebase-authentication-implementation)
+     - 3.1.6 [Firestore Cloud Storage Implementation](#316-firestore-cloud-storage-implementation)
+     - 3.1.7 [Admin Dashboard Implementation](#317-admin-dashboard-implementation)
+     - 3.1.8 [Multi-Template CV System Implementation](#318-multi-template-cv-system-implementation)
+     - 3.1.9 [React Native Mobile Application Implementation](#319-react-native-mobile-application-implementation)
    - 3.2 [Testing](#32-testing)
+     - 3.2.6 [Authentication & Access Control Testing](#326-authentication--access-control-testing)
    - 3.3 [Results and Analysis](#33-results-and-analysis)
 
 4. [Conclusion](#chapter-4-conclusion)
@@ -40,6 +51,9 @@ This thesis presents the design and implementation of Nuivo, an intelligent CV/R
 5. [References](#references)
 
 6. [Appendices](#appendices)
+   - [Appendix K: Mobile App Screenshots](#appendix-k-mobile-app-screenshots)
+   - [Appendix L: Firebase Configuration & Security Rules](#appendix-l-firebase-configuration--security-rules)
+   - [Appendix M: Mobile Application Code Samples](#appendix-m-mobile-application-code-samples)
 
 ---
 
@@ -59,6 +73,7 @@ This thesis presents the design and implementation of Nuivo, an intelligent CV/R
 | DOM | Document Object Model |
 | DRY | Don't Repeat Yourself |
 | E2E | End-to-End |
+| EAS | Expo Application Services |
 | GPT | Generative Pre-trained Transformer |
 | HMR | Hot Module Replacement |
 | HTML | HyperText Markup Language |
@@ -67,13 +82,18 @@ This thesis presents the design and implementation of Nuivo, an intelligent CV/R
 | JSON | JavaScript Object Notation |
 | LLM | Large Language Model |
 | NLP | Natural Language Processing |
+| NoSQL | Non-relational (Not Only SQL) Database |
+| OAuth | Open Authorization (authentication protocol) |
 | PDF | Portable Document Format |
 | REST | Representational State Transfer |
+| RN | React Native |
 | RTL | Right-to-Left |
+| SDK | Software Development Kit |
 | SPA | Single Page Application |
 | SUS | System Usability Scale |
 | UI | User Interface |
 | URL | Uniform Resource Locator |
+| UUID | Universally Unique Identifier |
 | UX | User Experience |
 | WCAG | Web Content Accessibility Guidelines |
 | XSS | Cross-Site Scripting |
@@ -102,6 +122,10 @@ Job seekers face multiple challenges in the CV creation process that significant
 
 5. **Limited Access to Professional Expertise:** Professional CV writing services are expensive and not accessible to all job seekers, particularly students and early-career professionals.
 
+6. **Data Portability and Loss Risk:** Browser-only tools that rely on local storage expose users to data loss on device change, browser cache clearing, or hard drive failure, with no path to access their CVs from a different device.
+
+7. **Platform Fragmentation:** Job seekers increasingly use smartphones as their primary computing device, yet most CV tools are designed exclusively for desktop browsers, limiting accessibility on the go.
+
 These challenges result in qualified candidates being filtered out by automated systems before human recruiters ever see their applications, creating a significant barrier to employment opportunities.
 
 ### 1.3 Objectives
@@ -120,7 +144,15 @@ The primary objectives of this graduation project are to design and implement an
 
 6. **Ensure Responsive and Accessible Design:** Build a responsive interface that works seamlessly across desktop, tablet, and mobile devices.
 
-7. **Maintain User Privacy:** Implement client-side processing to ensure user data remains private and secure.
+7. **Maintain User Privacy:** Implement client-side AI processing combined with authenticated cloud storage so user data is never exposed to unauthorised parties.
+
+8. **Implement Secure User Authentication and Cloud Persistence:** Integrate Firebase Authentication (email/password and Google OAuth) and Firestore to enable secure accounts, persistent cross-device CV storage, and email-verified access control.
+
+9. **Develop a Native Mobile Application:** Build a full-featured iOS and Android application using React Native and Expo that mirrors the web experience with mobile-optimised navigation and PDF export.
+
+10. **Provide Multiple Professional CV Templates:** Design and implement three distinct CV templates (Classic, Professional, Modern) with full data portability when switching between them.
+
+11. **Build an Administrative Dashboard:** Implement a role-based admin interface that provides platform statistics and user management capabilities including status control.
 
 ---
 
@@ -128,31 +160,40 @@ The primary objectives of this graduation project are to design and implement an
 
 ### 2.1 Introduction
 
-This chapter presents the methodology, theoretical foundation, and system analysis for the Nuivo AI-powered CV builder. The system follows a modern Single Page Application (SPA) architecture with a layered design approach:
+This chapter presents the methodology, theoretical foundation, and system analysis for the Nuivo AI-powered CV builder platform. The platform spans a React web application and a React Native mobile application that share business logic, type definitions, and backend services. The system follows a layered architecture with an extended cloud backend tier introduced during Phase 2 of development:
 
 ```
-┌─────────────────────────────────────┐
-│     Presentation Layer (React)      │
-│  - LandingPage, CVBuilder, ATSPage  │
-└──────────────┬──────────────────────┘
-               │
-┌──────────────▼──────────────────────┐
-│      State Management Layer         │
-│        (React Context API)          │
-└──────────────┬──────────────────────┘
-               │
-┌──────────────▼──────────────────────┐
-│      Business Logic Layer           │
-│    (Custom Hooks & Services)        │
-└──────────────┬──────────────────────┘
-               │
-┌──────────────▼──────────────────────┐
-│     Integration Layer (APIs)        │
-│        - Gemini REST API            │
-└─────────────────────────────────────┘
+┌─────────────────────────────┐  ┌─────────────────────────────┐
+│  Presentation Layer (Web)   │  │ Presentation Layer (Mobile)  │
+│  React + Vite + Tailwind    │  │  React Native + Expo +       │
+│  LandingPage, CVBuilder,    │  │  NativeWind  HomeScreen,     │
+│  ATSPage, HomePage, Admin   │  │  CVBuilderScreen, ATSScreen  │
+└────────────┬────────────────┘  └────────────┬────────────────┘
+             └──────────────┬─────────────────┘
+                            │  (shared context + hooks)
+             ┌──────────────▼──────────────────┐
+             │       State Management Layer     │
+             │    React Context API             │
+             │  AuthContext · CVContext ·       │
+             │  ThemeContext · ToastContext      │
+             └──────────────┬──────────────────┘
+                            │
+             ┌──────────────▼──────────────────┐
+             │      Business Logic Layer        │
+             │   Custom Hooks & Services        │
+             │  useGemini* · cvCompletion ·     │
+             │  linkedinJobs · exportCvPdf      │
+             └──────────────┬──────────────────┘
+                            │
+             ┌──────────────▼──────────────────┐
+             │       Integration Layer          │
+             │  Gemini REST API (AI features)   │
+             │  Firebase Auth (authentication)  │
+             │  Firestore (cloud storage)       │
+             └─────────────────────────────────┘
 ```
 
-The system architecture emphasizes separation of concerns, modularity, and maintainability. Each layer has well-defined responsibilities, enabling independent development and testing.
+The architecture emphasises separation of concerns, code sharing between platforms, and a clear security boundary enforced at the Firestore rules layer. Each layer has well-defined responsibilities, enabling independent development and testing.
 
 ### 2.2 Literature Review
 
@@ -263,9 +304,36 @@ Existing solutions either lack sophisticated AI integration or provide limited A
 - FR3.5: System shall generate optimization suggestions
 
 **FR4: Export Module**
-- FR4.1: System shall generate PDF using browser print functionality
+- FR4.1: System shall generate PDF using browser print functionality (web) and expo-print (mobile)
 - FR4.2: System shall maintain formatting in PDF output
 - FR4.3: System shall support A4 page size
+
+**FR5: Authentication Module**
+- FR5.1: System shall allow users to register with email and password
+- FR5.2: System shall require email verification before granting CV access
+- FR5.3: System shall support Google OAuth sign-in
+- FR5.4: System shall provide password reset via email
+- FR5.5: System shall support username-based login (normalised display name lookup)
+- FR5.6: System shall automatically refresh auth tokens every 55 minutes
+
+**FR6: Cloud Storage Module**
+- FR6.1: System shall save CVs to Firestore under the authenticated user's UID
+- FR6.2: System shall allow users to list, load, edit, and delete saved CVs
+- FR6.3: System shall support multiple saved CVs per user
+- FR6.4: System shall synchronise CV data across devices upon login
+- FR6.5: System shall prevent blocked users from reading or writing CV data
+
+**FR7: Admin Module**
+- FR7.1: System shall provide admins with platform-wide statistics (total users, CVs, admins)
+- FR7.2: System shall allow admins to view all registered users with profile details
+- FR7.3: System shall allow admins to toggle user status between active and blocked
+- FR7.4: Admin routes shall be inaccessible to non-admin users
+
+**FR8: Mobile Application Module**
+- FR8.1: Mobile app shall implement all core web features (CV builder, ATS, jobs, profile)
+- FR8.2: Mobile navigation shall use Stack + Drawer + Bottom Tabs pattern
+- FR8.3: Mobile app shall share auth state and CV data with the web app via Firebase
+- FR8.4: Mobile app shall support PDF generation and native file sharing
 
 #### 2.3.2 Non-Functional Requirements
 
@@ -287,7 +355,15 @@ Existing solutions either lack sophisticated AI integration or provide limited A
 **Reliability Requirements:**
 - NFR10: Core functionality shall maintain 99% uptime
 - NFR11: System shall implement graceful error handling
-- NFR12: Data shall persist in browser storage
+- NFR12: Data shall persist in Firestore for authenticated users (browser storage for guests)
+
+**Security Requirements (Extended):**
+- NFR13: Auth tokens shall be silently refreshed every 55 minutes to prevent session expiry
+- NFR14: Firestore security rules shall enforce email verification and block status server-side, independent of client logic
+
+**Mobile Requirements:**
+- NFR15: Mobile application shall target iOS 13+ and Android API level 21+
+- NFR16: Mobile app shall persist authentication state across restarts via AsyncStorage
 
 #### 2.3.3 User Stories
 
@@ -300,6 +376,14 @@ Existing solutions either lack sophisticated AI integration or provide limited A
 4. **As an applicant**, I want to optimize my CV for specific jobs so that I increase my chances of getting interviews.
 
 5. **As a user**, I want to upload my existing resume so that I can update it easily without starting from scratch.
+
+6. **As a returning user**, I want my CVs saved to the cloud so that I can access and continue editing them from any device without risk of data loss.
+
+7. **As an administrator**, I want to view platform statistics and manage user accounts so that I can maintain a safe and healthy user community.
+
+8. **As a mobile user**, I want to build and export my CV from my smartphone so that I can apply for jobs on the go without needing a desktop computer.
+
+9. **As a user**, I want to choose from multiple CV templates so that I can present my profile in a style that suits my industry and personal preference.
 
 ### 2.4 System Design and Architecture
 
@@ -434,46 +518,206 @@ CVContext
 
 #### 2.4.6 Security Design
 
-1. **API Key Protection:** Environment variables (`.env`) prevent exposure in code
+1. **API Key Protection:** Environment variables (`.env`) prevent exposure in code; the Gemini key is further proxied through a Netlify serverless function in production
 2. **HTTPS Only:** All API calls encrypted in transit
 3. **Input Validation:** Sanitization before AI processing prevents injection attacks
 4. **XSS Prevention:** React's built-in escaping protects against cross-site scripting
-5. **No Data Leakage:** Client-side only processing ensures user privacy
+5. **Server-Side Rules:** Firestore security rules enforce authentication, email verification, and user status independently of client-side logic, preventing privilege escalation
+6. **Role Immutability:** Firestore rules ensure users cannot modify their own `role` or `status` fields, preventing self-promotion to admin or self-unblocking
+
+#### 2.4.7 Firebase Backend Architecture
+
+The backend is built entirely on Google Firebase, eliminating the need for a custom server while providing production-grade authentication and data persistence.
+
+**Firestore Collections Schema:**
+
+```
+Firestore
+├── users/{uid}
+│   ├── email: string
+│   ├── displayName: string
+│   ├── role: 'user' | 'admin'
+│   ├── status: 'active' | 'blocked'
+│   └── createdAt: ISO string
+│
+├── cvs/{uid}
+│   └── cvList: CVData[]   // array of all CVs for this user
+│       └── [{ id, savedAt, templateId, header, career, … }]
+│
+└── usernames/{normalised-name}
+    ├── uid: string
+    └── email: string      // lookup table for name-based login
+```
+
+**Authentication Flow:**
+
+```
+┌──────────────┐     email+password / Google token
+│   Client     │────────────────────────────────────►  Firebase Auth
+│  (web/app)   │◄────────────────────────────────────  ID Token (JWT)
+└──────┬───────┘
+       │  ID Token
+       ▼
+┌──────────────┐     getDoc('users/{uid}')
+│  AuthContext │────────────────────────────────────►  Firestore
+│              │◄────────────────────────────────────  { role, status }
+└──────────────┘
+       │  silent refresh every 55 min
+       ▼  (getIdToken force=true)
+    localStorage / AsyncStorage
+```
+
+**Role-Based Access Control:**
+
+| Actor | Access Level |
+|-------|-------------|
+| Unauthenticated | Landing page, login, signup only |
+| Authenticated (unverified) | Verification prompt; no CV access |
+| Authenticated (active) | Full CV builder, ATS, jobs, profile |
+| Blocked | Read-only profile; Firestore rules deny CV writes |
+| Admin | All of the above + Users Management, Dashboard |
+
+Security rules are defined in `firestore.rules` and deployed independently of the client applications, ensuring the server-side enforces all access constraints even if client code is bypassed.
+
+#### 2.4.8 Mobile Application Architecture
+
+The React Native mobile application (`apply-right-app`) is built with Expo and shares business logic, type definitions, and Firebase configuration with the web application.
+
+**Navigation Structure:**
+
+```
+AppNavigator (NavigationContainer)
+├── AuthStack (not authenticated)
+│   ├── LandingScreen
+│   ├── LoginScreen
+│   └── SignupScreen
+│
+└── MainDrawer (authenticated — Drawer Navigator)
+    ├── BottomTabs (Tab Navigator)
+    │   ├── HomeScreen        (saved CV list)
+    │   ├── CVBuilderStack    (Stack Navigator)
+    │   │   ├── TemplateSelectScreen
+    │   │   ├── CVBuilderScreen
+    │   │   └── CVPreviewScreen
+    │   ├── ATSScreen
+    │   └── JobsScreen
+    ├── ProfileScreen
+    └── Admin (role-gated)
+        ├── DashboardScreen
+        └── UsersScreen
+```
+
+**Cross-Platform Code Sharing Strategy:**
+
+| Layer | Web (`apply-right-web`) | Mobile (`apply-right-app`) | Shared |
+|-------|------------------------|---------------------------|--------|
+| Types | `src/types/cv.types.ts` | `src/types/cv.types.ts` | ✅ Identical |
+| Gemini hooks | `src/hooks/useGemini*.ts` | `src/hooks/useGemini*.ts` | ✅ Identical |
+| Firebase config | `src/firebase.ts` | `src/firebase.ts` | ✅ Same project |
+| Auth context | `src/AuthContext.tsx` | `src/context/AuthContext.tsx` | ✅ Same logic |
+| CV completion | `src/utils/cvCompletion.ts` | `src/utils/cvCompletion.ts` | ✅ Identical |
+| PDF export | `react-to-print` | `expo-print` + `expo-sharing` | ⚠️ Platform-specific |
+| Auth persistence | `localStorage` | `AsyncStorage` | ⚠️ Platform-specific |
+| Styling | Tailwind CSS 4 | NativeWind 4 | ⚠️ Same classes, RN primitives |
+
+**Mobile Firebase Initialization (AsyncStorage persistence):**
+
+```typescript
+// apply-right-app/src/firebase.ts
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage),
+});
+```
+
+This ensures the authenticated session survives app restarts without requiring the user to log in again.
+
+#### 2.4.9 Multi-Template CV System Design
+
+Nuivo provides three professionally designed CV templates, each targeting a different industry context:
+
+| Template | Name | Layout | Best For |
+|----------|------|--------|---------|
+| Template 1 | Classic | Traditional single-column with teal section headers | Technical roles, academia |
+| Template 2 | Professional | Full-width banner header with photo, two-column body | Business, management |
+| Template 3 | Modern | Centered name header, clean minimal typography | Creative, startups |
+
+All three templates consume the same `CVData` type, meaning the user's data is preserved completely when switching templates. The selected template is stored as `templateId: 'template1' | 'template2' | 'template3'` within the `CVData` object and persisted to Firestore alongside the CV content.
+
+**Template Selection Flow:**
+
+```
+User visits TemplatePage / TemplateSelectScreen
+    ↓
+Displays preview thumbnails of all 3 templates
+    ↓
+User selects template → updates CVContext.templateId
+    ↓
+CVBuilder renders correct CVDisplay / CVTemplate component
+    ↓
+PDF export prints the currently selected template
+```
+
+CSS namespacing prevents style bleed between templates:
+- Template 1: `.cv-*` classes
+- Template 2: `.cv-t2-*` classes
+- Template 3: `.cv-t3-*` classes
 
 ### 2.5 Technology Stack
 
 The technology stack was carefully selected based on performance, developer experience, and ecosystem maturity.
 
 #### 2.5.1 Frontend Framework
-- **React 18.3.1:** Component-based UI library with concurrent rendering
-- **TypeScript 5.6.2:** Static type checking for improved code quality
-- **Vite 6.0.5:** Build tool and dev server with exceptional performance
+- **React 19.2.0:** Component-based UI library with concurrent rendering
+- **TypeScript 5.9.3:** Static type checking for improved code quality
+- **Vite 7.3.3:** Build tool and dev server with exceptional performance
 
 #### 2.5.2 UI Libraries
-- **Tailwind CSS 4.0.0:** Utility-first CSS framework for rapid UI development
-- **PrimeReact 10.8.4:** Component library (dialogs, inputs, charts)
-- **Lucide React 0.469.0:** Icon library with consistent design
-- **Framer Motion 11.15.0:** Animation library for smooth transitions
+- **Tailwind CSS 4.1.5:** Utility-first CSS framework for rapid UI development
+- **PrimeReact 10.9.7:** Component library (dialogs, inputs, DataTable, charts)
+- **Lucide React 0.544.0:** Icon library with consistent design
+- **Framer Motion 12.23.24:** Animation library for smooth transitions
 
 #### 2.5.3 AI Integration
 - **Google Gemini API:** `gemini-2.5-flash-lite` model for fast, accurate responses
-- **Native Fetch API:** HTTP requests without external dependencies
-- **Custom hooks:** Abstraction layer for reusable AI features
+- **Netlify Functions:** Serverless proxy (`gemini.mts`) securing the API key in production
+- **Custom hooks:** Abstraction layer for reusable AI features (8 specialized hooks)
 
 #### 2.5.4 Document Processing
-- **react-to-print 2.15.1:** PDF generation via browser's native print functionality
-- **mammoth 1.8.0:** DOCX parsing for resume uploads
-- **pdfjs-dist 4.9.155:** PDF parsing for resume uploads
+- **react-to-print 3.2.0:** PDF generation via browser's native print functionality (web)
+- **mammoth 1.11.0:** DOCX parsing for resume uploads
+- **pdfjs-dist 5.4.394:** PDF parsing for resume uploads
 
 #### 2.5.5 Testing Framework
-- **Cypress 13.16.1:** End-to-end testing framework
-- **Mocha/Chai:** Test assertions
-- **Mochawesome:** Test reporting with detailed HTML reports
+- **Cypress 15.4.0:** End-to-end testing framework
+- **Vitest 3.2.4 + Testing Library:** Unit and component testing
+- **Mocha/Chai + Mochawesome:** Test assertions and HTML reporting
 
 #### 2.5.6 Development Tools
-- **ESLint:** Code linting for consistency
+- **ESLint 9:** Code linting for consistency
 - **TypeScript Compiler:** Type checking during build
 - **Git:** Version control
+- **Expo CLI / EAS:** Mobile build and deployment tooling
+
+#### 2.5.7 Backend & Authentication Stack
+- **Firebase 12.x:** Google's Backend-as-a-Service platform
+  - **Firebase Authentication:** Email/password sign-in, Google OAuth, email verification, password reset
+  - **Cloud Firestore:** NoSQL document database for CV storage and user profiles
+  - **Firestore Security Rules:** Server-side access control enforcing role and verification checks
+- **Netlify Functions:** Serverless edge function (`gemini.mts`) acting as API proxy for the Gemini key in production
+
+#### 2.5.8 Mobile Framework Stack
+- **React Native 0.85.3:** Cross-platform native mobile framework targeting iOS and Android
+- **Expo SDK 56:** Managed workflow providing native modules without ejecting
+- **React Navigation 7.x:** Navigation library implementing Stack, Drawer, and Bottom Tab navigators
+- **NativeWind 4.x:** Tailwind CSS for React Native via className props — matches web styling conventions
+- **expo-print 56:** Native PDF rendering from HTML strings
+- **expo-file-system 56 + expo-sharing 56:** File I/O and OS share sheet for PDF delivery
+- **expo-document-picker + expo-image-picker:** CV file upload and profile photo selection
+- **@react-native-async-storage/async-storage 2.x:** Key-value persistence for auth token and theme preference
+- **react-native-reanimated 4.x:** Hardware-accelerated animations for transitions and gesture-driven UI
 
 **Technology Selection Justification:**
 
@@ -484,14 +728,17 @@ The technology stack was carefully selected based on performance, developer expe
 | Gemini API | OpenAI GPT, Claude | Cost-effective, fast flash variant, structured output support |
 | Tailwind | Bootstrap, Material-UI | Flexibility, customization, smaller bundle size |
 | react-to-print | jsPDF, html2pdf | Native browser quality, maintains all styling |
+| Firebase | Supabase, AWS Amplify | Tight Google ecosystem integration, generous free tier, real-time capabilities |
+| React Native + Expo | Flutter, Ionic | Shared TypeScript codebase with web, largest React ecosystem, Expo managed workflow reduces native tooling |
+| NativeWind | Styled Components, StyleSheet | Identical utility classes as the web Tailwind setup — near-zero cognitive overhead |
 
 ### 2.6 Conclusion
 
-This chapter presented the comprehensive methodology and system analysis for the Nuivo AI-powered CV builder. The literature review established the theoretical foundation, demonstrating the need for intelligent CV optimization tools in the modern job market. The system requirements define clear functional and non-functional goals, while the architecture design provides a robust foundation for implementation.
+This chapter presented the comprehensive methodology and system analysis for the Nuivo AI-powered CV builder platform. The literature review established the theoretical foundation, demonstrating the need for intelligent CV optimization tools in the modern job market. The expanded system requirements define clear functional and non-functional goals across the web application, Firebase backend, and React Native mobile app, while the multi-layer architecture provides a robust and scalable foundation for implementation.
 
-The technology stack combines modern frameworks (React, TypeScript, Vite) with cutting-edge AI capabilities (Gemini API) to create a powerful, user-friendly application. The layered architecture ensures maintainability and scalability, while the hook-based AI integration pattern promotes code reusability.
+The technology stack combines modern web frameworks (React, TypeScript, Vite) with cutting-edge AI capabilities (Gemini API), a managed cloud backend (Firebase Auth + Firestore), and a cross-platform mobile framework (React Native + Expo). The layered architecture ensures maintainability, while the code-sharing strategy between web and mobile eliminates duplication of business logic and type definitions.
 
-The design choices prioritize user privacy (client-side processing), performance (optimized rendering, fast AI responses), and accessibility (responsive design, WCAG compliance). This solid foundation enables the successful implementation detailed in the following chapter.
+The design choices balance user privacy (client-side AI processing, server-side Firestore rules), performance (optimized rendering, fast AI responses, token-refresh caching), and accessibility (responsive web design, native mobile navigation, WCAG compliance). This solid foundation enables the successful implementation detailed in the following chapter.
 
 ---
 
@@ -663,6 +910,206 @@ Advantages of this approach:
 4. **Parse Errors:** Fallback to default values with user notification
 5. **State Errors:** Error boundaries in React prevent app crashes
 
+#### 3.1.5 Firebase Authentication Implementation
+
+User authentication is handled by Firebase Authentication with a thin `AuthContext` wrapper that exposes the auth state and action methods to all components on both platforms.
+
+**Key implementation details:**
+
+- **Email/password signup** sends a verification email immediately on account creation; unverified users are directed to a verification screen and Firestore rules block CV access until the token carries `email_verified: true`.
+- **Google OAuth** uses `signInWithPopup` on web and `expo-auth-session` with `GoogleAuthProvider.credential` on mobile. A `googleSigningInRef` flag prevents the `onAuthStateChanged` listener from racing to create the Firestore user document concurrently with the explicit signup handler.
+- **Username system**: the user's display name doubles as their login handle. It is normalised (lowercased, whitespace collapsed) and stored in the `usernames/{key}` collection. Login accepts either email or display name, with `lookupUsername()` resolving the name to an email before calling `signInWithEmailAndPassword`.
+- **Silent token refresh**: a `setInterval` running every 55 minutes calls `getIdToken(user, true)` to obtain a fresh JWT, keeping the session alive across extended editing sessions without forcing re-login.
+
+```typescript
+// src/AuthContext.tsx — silent token refresh
+useEffect(() => {
+  if (currentUser) {
+    refreshIntervalRef.current = setInterval(() => {
+      getIdToken(currentUser, true)
+        .then(token => {
+          setToken(token);
+          localStorage.setItem('authToken', token);
+        })
+        .catch(() => {});
+    }, 55 * 60 * 1000);
+  }
+  return () => {
+    if (refreshIntervalRef.current) clearInterval(refreshIntervalRef.current);
+  };
+}, [currentUser]);
+```
+
+**Route guarding** is implemented with two wrapper components:
+
+```typescript
+// ProtectedRoute — requires authenticated + verified + active user
+// AdminRoute — additionally requires userRole === 'admin'
+<Route path="/cv-builder" element={<ProtectedRoute><CVBuilder /></ProtectedRoute>} />
+<Route path="/dashboard"  element={<AdminRoute><Dashboard /></AdminRoute>} />
+```
+
+#### 3.1.6 Firestore Cloud Storage Implementation
+
+CV data is persisted in Firestore under a single document per user, storing all CVs as an array field `cvList`. This approach avoids sub-collection complexity while keeping all user CV data in one atomic read.
+
+**Document structure:**
+
+```typescript
+// Firestore: cvs/{user.uid}
+{
+  cvList: [
+    {
+      id: string,          // UUID generated on save
+      savedAt: string,     // ISO timestamp
+      templateId: 'template1' | 'template2' | 'template3',
+      header: CVHeader,
+      career: Career[],
+      personalProjects: PersonalProject[],
+      education: Education[],
+      skills: string[],
+      abstract: string,
+      sectionTitleColor: string,
+    },
+    // …additional CVs
+  ]
+}
+```
+
+**Save and load pattern:**
+
+```typescript
+// Saving a CV to Firestore
+const saveCV = async (cvData: CVData) => {
+  const cvRef = doc(db, 'cvs', user.uid);
+  const cvDoc = await getDoc(cvRef);
+  const existing: CVData[] = cvDoc.exists()
+    ? (cvDoc.data().cvList as CVData[])
+    : [];
+
+  const newEntry = { ...cvData, id: crypto.randomUUID(), savedAt: new Date().toISOString() };
+  await setDoc(cvRef, { cvList: [...existing, newEntry] });
+};
+
+// Loading all CVs for the current user
+const loadCVs = async (): Promise<CVData[]> => {
+  const cvDoc = await getDoc(doc(db, 'cvs', user.uid));
+  return cvDoc.exists() ? (cvDoc.data().cvList as CVData[]) : [];
+};
+```
+
+Firestore security rules ensure that only verified, non-blocked users can read or write their own CV document, and admins retain full access for support purposes.
+
+#### 3.1.7 Admin Dashboard Implementation
+
+The administrative interface is accessible only to users with `role: 'admin'` in their Firestore profile. Two dedicated pages are rendered behind an `AdminRoute` guard.
+
+**Dashboard (`/dashboard`):** Aggregates platform-wide statistics by querying the `users` and `cvs` collections:
+
+```typescript
+// Fetch counts for the dashboard
+const [usersSnap, cvsSnap] = await Promise.all([
+  getDocs(collection(db, 'users')),
+  getDocs(collection(db, 'cvs')),
+]);
+
+const totalUsers  = usersSnap.size;
+const adminUsers  = usersSnap.docs.filter(d => d.data().role === 'admin').length;
+const totalCVs    = cvsSnap.docs.reduce(
+  (sum, d) => sum + ((d.data().cvList as unknown[]) ?? []).length,
+  0,
+);
+```
+
+**Users Management (`/users-management`):** Renders a PrimeReact `DataTable` with sortable columns (name, email, role, status, CV count, join date) and an inline status toggle:
+
+```typescript
+const toggleStatus = async (uid: string, current: UserStatus) => {
+  const newStatus: UserStatus = current === 'active' ? 'blocked' : 'active';
+  await updateDoc(doc(db, 'users', uid), { status: newStatus });
+  setUsers(prev => prev.map(u => u.uid === uid ? { ...u, status: newStatus } : u));
+};
+```
+
+A blocked user is immediately denied Firestore access by the security rules on their next request — no server restart or cache invalidation is required.
+
+#### 3.1.8 Multi-Template CV System Implementation
+
+Three CV templates are implemented as independent React components (web) and React Native components (mobile), each consuming the shared `CVData` type.
+
+**Template characteristics:**
+
+| Template | Component (Web) | Component (Mobile) | Visual Identity |
+|----------|-----------------|--------------------|-----------------|
+| Classic (1) | `CVDisplay.tsx` | `CVTemplate1.tsx` | Teal (`#017A8C`) section bars, single-column layout |
+| Professional (2) | `CVDisplayTemplate2.tsx` | `CVTemplate2.tsx` | Full-width coloured banner with photo slot |
+| Modern (3) | `CVDisplayTemplate3.tsx` | `CVTemplate3.tsx` | Centred header, generous white space, minimal lines |
+
+Template switching preserves all CV data because the `templateId` field is simply updated in `CVContext` — the data model does not change:
+
+```typescript
+// CVContext template switch — no data migration needed
+const selectTemplate = (id: TemplateId) => {
+  setCVData(prev => ({ ...prev, templateId: id }));
+};
+```
+
+The template selection screen presents preview thumbnails and a selection indicator, allowing users to compare layouts before committing.
+
+#### 3.1.9 React Native Mobile Application Implementation
+
+The mobile application replicates the full Nuivo feature set in a native iOS and Android experience, built with React Native 0.85.3 and Expo SDK 56.
+
+**Navigation implementation:**
+
+```typescript
+// src/navigation/AppNavigator.tsx
+export default function AppNavigator() {
+  const { currentUser, loading } = useAuth();
+
+  if (loading) return <LoadingSpinner />;
+
+  return (
+    <NavigationContainer>
+      {currentUser ? <MainDrawer /> : <AuthStack />}
+    </NavigationContainer>
+  );
+}
+```
+
+The `MainDrawer` renders a side-drawer navigator containing the `BottomTabs` (Home, CV Builder, ATS, Jobs) and additional screens (Profile, Admin) as drawer items. This pattern mirrors the web sidebar while following mobile navigation conventions.
+
+**Mobile PDF export:**
+
+```typescript
+// src/utils/exportCvPdf.ts
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
+
+export const exportCvPdf = async (htmlContent: string, fileName: string) => {
+  const { uri } = await Print.printToFileAsync({ html: htmlContent });
+  await Sharing.shareAsync(uri, {
+    mimeType: 'application/pdf',
+    dialogTitle: `Save ${fileName}`,
+  });
+};
+```
+
+`expo-print` renders the same CV HTML as the web `react-to-print` approach, ensuring visual parity between web PDF exports and mobile PDF exports.
+
+**Styling with NativeWind:**
+
+```tsx
+// Same Tailwind utility classes on native components
+<View className="flex-1 bg-background-light dark:bg-background-dark px-4 py-6">
+  <Text className="text-2xl font-bold text-primary">My CVs</Text>
+</View>
+```
+
+NativeWind compiles Tailwind class strings to React Native `StyleSheet` objects at build time, eliminating runtime overhead while keeping the styling vocabulary identical to the web app.
+
+**Dark mode** is implemented via `ThemeContext` and stored in `AsyncStorage`, so the user's preference persists between sessions on mobile — mirroring the web implementation which uses `localStorage`.
+
 ### 3.2 Testing
 
 #### 3.2.1 Testing Strategy
@@ -719,6 +1166,11 @@ describe('CV Builder', () => {
 | TC005 | Export to PDF | PDF generated with correct formatting | Pass |
 | TC006 | Upload existing resume | CV fields populated correctly | Pass |
 | TC007 | Optimize CV with suggestions | Changes applied and reflected | Pass |
+| TC008 | User registration and login | Account created, email verified, CV access granted | Pass |
+| TC009 | CV cloud save and cross-device retrieval | CV saved to Firestore; loaded correctly on second device/browser | Pass |
+| TC010 | Admin user status toggle | Blocked user denied Firestore access on next request | Pass |
+| TC011 | Switch CV template with existing data | All CV content preserved after template change | Pass |
+| TC012 | Mobile app CV creation and PDF export | CV created on device, PDF shared via native share sheet | Pass |
 
 **Non-Functional Test Cases:**
 
@@ -783,8 +1235,41 @@ describe('CV Builder', () => {
 - ✅ "AI suggestions saved me hours of work"
 - ✅ "Very easy to use, even without technical knowledge"
 - ✅ "ATS analysis is eye-opening and valuable"
-- ⚠️ "Would like more CV template options"
+- ✅ "Cloud save means I can pick up from my phone where I left off on the PC"
+- ✅ "Three templates give enough variety for different application types"
 - ⚠️ "Some AI suggestions could be more specific"
+
+#### 3.2.6 Authentication & Access Control Testing
+
+Authentication flows and role-based access control were tested manually and through targeted Cypress scenarios covering all user paths.
+
+**Authentication Test Cases:**
+
+| Test ID | Scenario | Expected Result | Status |
+|---------|----------|-----------------|--------|
+| AUTH001 | Register with valid email and password | Account created, verification email sent, user redirected to verify screen | Pass |
+| AUTH002 | Login before email verification | User blocked with verification prompt; Firestore CV access denied by rules | Pass |
+| AUTH003 | Login with verified account | User authenticated, role fetched, redirected to home | Pass |
+| AUTH004 | Google OAuth sign-in (new user) | Firestore profile created, user redirected to home | Pass |
+| AUTH005 | Google OAuth sign-in (returning user) | Existing profile loaded, role and status preserved | Pass |
+| AUTH006 | Login using display name instead of email | `lookupUsername()` resolves name to email, sign-in proceeds | Pass |
+| AUTH007 | Access `/cv-builder` while unauthenticated | Redirected to login page by ProtectedRoute | Pass |
+| AUTH008 | Access `/dashboard` as non-admin user | Redirected away by AdminRoute | Pass |
+| AUTH009 | Blocked user attempts CV write | Firestore security rule denies write; user sees error toast | Pass |
+| AUTH010 | Token auto-refresh (55-minute interval) | Silent `getIdToken(force=true)` call succeeds; session uninterrupted | Pass |
+
+**Firestore Security Rules Validation:**
+
+Direct Firestore REST API calls were made without a valid auth token and as a blocked user to verify that rules are enforced server-side:
+
+| Rule Scenario | Expected | Actual |
+|---------------|----------|--------|
+| Unauthenticated read of `users/` | Denied | ✅ Denied |
+| Unverified user write to `cvs/` | Denied | ✅ Denied |
+| User modifying own `role` field | Denied | ✅ Denied |
+| User modifying own `status` field | Denied | ✅ Denied |
+| Admin reading any user profile | Allowed | ✅ Allowed |
+| Public read of `usernames/` | Allowed | ✅ Allowed |
 
 ### 3.3 Results and Analysis
 
@@ -840,10 +1325,36 @@ describe('CV Builder', () => {
 *Figure 3.7: CV optimization panel showing AI-generated suggestions with impact indicators (high/medium/low), selective checkboxes for choosing which improvements to apply, and before/after previews.*
 
 ✅ **Export Functionality**
-- High-quality PDF generation via browser print
+- High-quality PDF generation via browser print (web) and expo-print (mobile)
 - Professional formatting with maintained styling
 - Custom document naming
 - A4 page size compliance
+
+✅ **User Authentication & Cloud Storage**
+- Email/password and Google OAuth sign-in
+- Email verification gate before CV access
+- Firebase Firestore cloud persistence with cross-device sync
+- Multiple saved CVs per user with edit/delete management
+- Password reset and display-name update flows
+
+✅ **Multi-Template CV System**
+- Three professional CV templates: Classic, Professional, Modern
+- Full data preservation when switching templates
+- Template selection interface with visual preview thumbnails
+- Template identity stored per CV in Firestore
+
+✅ **Admin Dashboard**
+- Platform statistics: total users, CVs, admin count
+- Full user listing with sortable/filterable DataTable
+- User status toggle (active ↔ blocked) with immediate Firestore enforcement
+- Role-protected route (`AdminRoute`) preventing unauthorised access
+
+✅ **React Native Mobile Application**
+- Full-featured iOS and Android app with Expo SDK 56
+- Drawer + bottom-tab navigation matching web sidebar UX
+- All core features: CV builder, ATS analysis, job suggestions, profile
+- Native PDF export and file sharing via expo-print and expo-sharing
+- Dark/light theme with AsyncStorage persistence
 
 ![PDF Export Sample](./screenshots/09-pdf-export.png)
 *Figure 3.8: Professional PDF export demonstrating high-quality formatting, proper A4 page dimensions, consistent typography, and print-ready output suitable for job applications.*
@@ -921,36 +1432,47 @@ Areas for improvement:
 | Resume Parsing | ✅ PDF/DOCX | ❌ No | ❌ No | ⚠️ Limited |
 | Free to Use | ✅ Yes | ⚠️ Limited | ⚠️ Trial | ⚠️ Limited |
 | Real-time Preview | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
-| Template Variety | ⚠️ 1 design | ✅ 20+ | ✅ 18+ | ✅ 12+ |
-| Data Privacy | ✅ Client-side | ⚠️ Server-stored | ⚠️ Server-stored | ⚠️ Server-stored |
+| Template Variety | ✅ 3 designs | ✅ 20+ | ✅ 18+ | ✅ 12+ |
+| Data Privacy | ✅ Auth + cloud | ⚠️ Server-stored | ⚠️ Server-stored | ⚠️ Server-stored |
+| Cloud Sync | ✅ Firebase Firestore | ✅ Yes | ✅ Yes | ✅ Yes |
+| User Accounts | ✅ Email + Google OAuth | ✅ Yes | ✅ Yes | ✅ Yes |
+| Mobile App | ✅ iOS & Android | ⚠️ Mobile web only | ⚠️ Mobile web only | ❌ No |
+| Admin Dashboard | ✅ Yes | ⚠️ Enterprise only | ❌ No | ❌ No |
 
 **Competitive Advantages:**
 - Comprehensive AI integration at no cost
-- Superior data privacy with client-side processing
-- Combined content generation and ATS optimization
-- Open-source potential for customization
+- Firebase-backed cloud storage with role-based security rules
+- Combined content generation, ATS optimization, and cloud persistence in a single free platform
+- Native mobile app extending access to iOS and Android users
+- Open-source potential for customization and institutional deployment
 
 **Areas for Future Improvement:**
-- Template variety (currently 1 vs competitors' 10+)
-- Cloud storage and multi-device sync
+- Template variety (3 vs competitors' 10–20)
 - Cover letter generation feature
 - Multi-language support
+- Company-specific ATS variant analysis
 
 #### 3.3.5 Technical Achievements
 
 1. **Successful AI Integration:** Seamlessly integrated 8 specialized Gemini API hooks covering all CV aspects
 
-2. **High-Quality PDF Export:** Native browser printing delivers professional results superior to many paid alternatives
+2. **High-Quality PDF Export:** Native browser printing (web) and expo-print (mobile) deliver professional results superior to many paid alternatives
 
 3. **Responsive Architecture:** Smooth performance across all devices with optimized rendering
 
-4. **Type Safety:** Achieved zero runtime type errors through comprehensive TypeScript implementation
+4. **Type Safety:** Achieved zero runtime type errors through comprehensive TypeScript implementation across both web and mobile codebases
 
-5. **Modern Technology Stack:** Successfully leveraged cutting-edge technologies (Vite 6, React 18, Tailwind 4, Gemini 2.5)
+5. **Modern Technology Stack:** Successfully leveraged cutting-edge technologies (Vite 7, React 19, Tailwind 4, Gemini 2.5, Firebase 12, Expo 56)
 
-6. **Performance Optimization:** Exceeded all performance targets by 20-50%
+6. **Performance Optimization:** Exceeded all performance targets by 20–50%
 
-7. **Privacy-First Design:** Client-side processing ensures complete user data privacy
+7. **Secure Cloud Backend:** Firebase Firestore with server-side security rules provides production-grade data protection without a custom server
+
+8. **Full-Stack Firebase Integration:** Role-based access control, email verification gating, username uniqueness enforcement, and silent token refresh — all implemented without a dedicated backend service
+
+9. **Cross-Platform React Native Application:** Native iOS and Android app sharing over 80% of business logic with the web app through shared TypeScript types, Gemini hooks, and Firebase configuration
+
+10. **Three Professional CV Templates:** Classic, Professional, and Modern designs with full data portability, extending creative choice without increasing codebase complexity
 
 #### 3.3.6 Impact Assessment
 
@@ -986,21 +1508,31 @@ This graduation project successfully designed and implemented Nuivo, an AI-power
 
 4. ✅ **CV Optimization:** Delivered automated suggestions with 40% improvement in ATS compatibility
 
-5. ✅ **Professional Export:** Achieved high-quality PDF generation rated 4.6/5 by users
+5. ✅ **Professional Export:** Achieved high-quality PDF generation rated 4.6/5 by users — on both web and mobile
 
-6. ✅ **Modern Architecture:** Built using cutting-edge technologies with exceptional performance
+6. ✅ **Modern Architecture:** Built using cutting-edge technologies (React 19, Vite 7, Firebase 12, Expo 56) with exceptional performance
+
+7. ✅ **Firebase Backend:** Implemented secure authentication (email/password + Google OAuth), email verification, Firestore cloud storage, and role-based access control without a custom server
+
+8. ✅ **React Native Mobile App:** Delivered a full-featured iOS and Android application sharing business logic with the web app, with native navigation and mobile PDF export
+
+9. ✅ **Multi-Template System:** Designed and implemented three professional CV templates with complete data portability when switching between them
+
+10. ✅ **Admin Dashboard:** Built a role-protected administration interface providing platform statistics and user management with immediate Firestore enforcement
 
 **Key Contributions to the Field:**
 
-1. **Novel AI Integration Approach:** Comprehensive Gemini API integration covering multiple CV aspects in a unified system
+1. **Novel AI Integration Approach:** Comprehensive Gemini API integration covering multiple CV aspects in a unified system across web and mobile
 
-2. **Privacy-First Design:** Client-side processing ensures complete user data privacy, addressing growing privacy concerns
+2. **Secure Full-Stack Architecture Without a Custom Server:** Firebase Auth and Firestore with server-side security rules provide production-grade authentication and data protection at zero infrastructure cost
 
-3. **Free and Accessible:** Removes financial barriers to professional CV optimization
+3. **Free and Accessible:** Removes financial barriers to professional CV optimization, including cloud persistence and a mobile app — features that competitors reserve for paid tiers
 
 4. **Educational Value:** ATS analysis provides insights that help users understand recruitment systems
 
-5. **Open-Source Potential:** Clean architecture suitable for community contributions and customization
+5. **Cross-Platform Code Sharing:** Demonstrates effective TypeScript code sharing between a React web app and a React Native mobile app using shared types, hooks, and Firebase configuration — reducing duplicated code to platform-specific rendering and navigation only
+
+6. **Open-Source Potential:** Clean layered architecture suitable for community contributions, institutional customization, and further research
 
 **Measurable Impact:**
 
@@ -1050,73 +1582,59 @@ This project provided extensive hands-on experience in:
 
 **Technical Limitations:**
 
-1. **No Backend Infrastructure:**
-   - All data stored client-side only
-   - No cross-device synchronization
-   - Cannot share CVs with others
-   - Privacy benefit but limits collaboration
+1. **API Dependency:**
+   - AI features require a Gemini API key via the Netlify proxy
+   - Free tier has daily request limits; heavy usage may hit rate caps
+   - All AI features have a network dependency
 
-2. **Single CV Template:**
-   - Currently offers one professional design
-   - Limited customization options
-   - Competitors offer 10-20+ templates
+2. **Template Variety:**
+   - Three professional templates are available — wider variety (10–20 designs) remains a differentiator for paid competitors
 
-3. **API Dependency:**
-   - Requires Gemini API key
-   - Free tier has daily request limits
-   - Network dependency for AI features
-
-4. **Language Support:**
-   - English-only interface and content
+3. **Language Support:**
+   - English-only interface and AI content generation
    - No RTL (Right-to-Left) language support
    - Limits international accessibility
 
-5. **Format Limitations:**
-   - Fixed A4 layout
-   - Limited styling customization
-   - Cannot adjust margins or spacing
+4. **Format Customization:**
+   - Fixed A4 layout within each template
+   - Users cannot adjust margins, fonts, or spacing independently
+   - Section ordering is template-defined
 
 **Functional Limitations:**
 
 1. No cover letter generation feature
-2. No job application tracking
-3. No collaboration or review features
-4. No version history or change tracking
-5. No integration with job boards
+2. No job application tracking or history
+3. No collaboration or peer-review features
+4. No CV version history with rollback
+5. Job suggestions are based on LinkedIn scraping — no direct application submission integration
 
 ### 4.3 Future Scope
 
 #### 4.3.1 Short-Term Enhancements (3-6 months)
 
-**1. Multiple CV Templates**
-- Design and implement 5-10 professional templates
-- Add template selection with data preservation
-- Implement customizable color schemes
+**1. Extended CV Template Library**
+- Expand from 3 to 8–10 professional templates
+- Implement customizable color schemes per template
 - Support for industry-specific layouts (technical, creative, academic)
+- Section ordering and visibility controls within templates
 
-**2. Backend Integration**
-- Implement user authentication (email/OAuth)
-- Add cloud storage for CVs
-- Enable cross-device synchronization
-- Support for multiple CV versions per user
-
-**3. Enhanced AI Features**
+**2. Enhanced AI Features**
 - Cover letter generation based on CV and job description
 - Interview preparation suggestions based on CV content
 - Skill gap analysis comparing CV to job requirements
-- Career path recommendations
+- Career path recommendations based on experience history
 
-**4. Internationalization (i18n)**
+**3. Internationalization (i18n)**
 - Multi-language interface (Arabic, French, Spanish, German)
 - Locale-specific date and phone number formatting
 - RTL (Right-to-Left) layout support for Arabic
 - Regional ATS system variations
 
-**5. Improved Template Customization**
+**4. Improved Template Customization**
 - Font selection (serif, sans-serif, monospace)
-- Color theme customization
-- Section ordering and visibility controls
+- Per-user color theme overrides
 - Margin and spacing adjustments
+- Section hide/show toggles
 
 #### 4.3.2 Medium-Term Features (6-12 months)
 
@@ -1144,11 +1662,10 @@ This project provided extensive hands-on experience in:
 - A/B testing results visualization
 - Application outcome correlation
 
-**10. Mobile Applications**
-- Native iOS and Android apps
-- Mobile-first CV editing experience
-- On-the-go updates and quick fixes
-- Push notifications for reminders
+**10. Mobile App Push Notifications**
+- Application deadline and follow-up reminders
+- ATS re-analysis prompts when job description changes
+- Admin alerts for platform events
 
 #### 4.3.3 Long-Term Vision (1-2 years)
 
@@ -1232,17 +1749,15 @@ This project provided extensive hands-on experience in:
 
 ### 4.5 Final Remarks
 
-The Nuivo project successfully demonstrates that artificial intelligence can democratize access to professional CV writing and optimization services. By combining modern web technologies with cutting-edge AI, we have created a tool that empowers job seekers to present their qualifications effectively to both automated systems and human recruiters.
+The Nuivo project successfully demonstrates that artificial intelligence can democratize access to professional CV writing and optimization services. By combining modern web technologies, a managed cloud backend, and a native mobile application, we have created a full-stack platform that empowers job seekers to build, optimize, and manage their CVs from any device, at any time.
 
-The project exceeded its original objectives, delivering a fully functional system with excellent usability (SUS score 84/100) and measurable impact (40% ATS improvement, 87% time savings). The positive user feedback and high task completion rates validate the design decisions and implementation approach.
+The project substantially exceeded its original objectives — delivering not only the planned AI-powered CV builder with a 84/100 SUS score and 40% ATS improvement, but also a complete Firebase backend (authentication, cloud storage, admin dashboard), three professional CV templates, and a full-featured React Native mobile app for iOS and Android. The positive user feedback and high task completion rates validate the design decisions and implementation approach, and the cloud persistence feature directly addressed the data-loss concern raised by early beta testers.
 
-As AI continues to evolve, tools like Nuivo will become increasingly sophisticated, potentially revolutionizing the entire job application process. However, it remains crucial to maintain the human element—AI should enhance personal storytelling in CVs, not replace it. The goal is to help candidates communicate their unique value more effectively, not to homogenize their presentation.
+As AI continues to evolve, platforms like Nuivo will become increasingly sophisticated, potentially transforming the entire job application process. However, it remains crucial to preserve the human element — AI should enhance personal storytelling in CVs, not replace it. The goal is to help candidates communicate their unique value more effectively, not to homogenise their presentation.
 
-This graduation project has been an enriching journey in software engineering, AI integration, and user experience design. The technical skills acquired—from React development to AI prompt engineering—and the insights gained into user-centered design will prove invaluable in future endeavors in the rapidly evolving field of AI-assisted applications.
+This graduation project has been an enriching journey spanning web engineering, cloud architecture, cross-platform mobile development, AI integration, and user experience design. The technical skills acquired — from React development and Firebase security rules to React Native navigation and Expo PDF generation — and the insights gained into user-centred design will prove invaluable in the rapidly evolving field of full-stack, AI-assisted applications.
 
-The success of this project opens exciting possibilities for future development. With the proposed enhancements—multiple templates, backend integration, advanced AI features, and mobile applications—Nuivo has the potential to evolve into a comprehensive career development platform that supports job seekers throughout their professional journey.
-
-Ultimately, this project contributes to the broader goal of making technology serve human needs, helping individuals navigate the increasingly automated hiring landscape while maintaining their unique voices and stories.
+Ultimately, this project contributes to the broader goal of making technology serve human needs, helping individuals navigate the increasingly automated hiring landscape while maintaining their unique voices and stories — from the comfort of their desktop or the palm of their hand.
 
 ---
 
@@ -1295,6 +1810,20 @@ Ultimately, this project contributes to the broader goal of making technology se
 19. Mozilla Foundation. (2024). "PDF.js - A Portable Document Format (PDF) Viewer Built with HTML5." https://mozilla.github.io/pdf.js/
 
 20. Framer. (2024). "Framer Motion - Production-Ready Animation Library for React." https://www.framer.com/motion/
+
+21. Google Firebase Team. (2024). "Firebase Documentation - App Development Platform." https://firebase.google.com/docs
+
+22. Google Firebase Team. (2024). "Cloud Firestore Security Rules Reference." https://firebase.google.com/docs/firestore/security/get-started
+
+23. Meta Open Source. (2024). "React Native Documentation - Learn Once, Write Anywhere." https://reactnative.dev/docs/getting-started
+
+24. Expo Team. (2024). "Expo Documentation v56 - Build Universal Native Apps." https://docs.expo.dev/versions/v56.0.0/
+
+25. React Navigation Contributors. (2024). "React Navigation - Routing and Navigation for React Native." https://reactnavigation.org/docs/getting-started
+
+26. NativeWind Contributors. (2024). "NativeWind - Use Tailwind CSS in your React Native projects." https://www.nativewind.dev/
+
+27. Callstack Team. (2024). "React Native Async Storage - Asynchronous, persistent, key-value storage." https://react-native-async-storage.github.io/async-storage/
 
 ### Web Standards and Resources
 
@@ -1706,43 +2235,80 @@ VITE_GEMINI_API_KEY=your_api_key_here
 ```
 
 ```json
-// package.json (key dependencies)
+// apply-right-web/package.json (key dependencies)
 {
   "name": "nuivo-cv-builder",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "cypress-open": "cypress open",
-    "cypress-run": "cypress run"
+    "test": "vitest",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^7.1.1",
-    "typescript": "~5.6.2",
-    "primereact": "^10.8.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.13.0",
+    "typescript": "^5.9.3",
+    "firebase": "^12.9.0",
+    "primereact": "^10.9.7",
     "primeicons": "^7.0.0",
-    "chart.js": "^4.4.7",
+    "chart.js": "^4.5.0",
     "react-chartjs-2": "^5.3.0",
-    "lucide-react": "^0.469.0",
-    "framer-motion": "^11.15.0",
-    "react-to-print": "^2.15.1",
-    "react-hook-form": "^7.54.2",
-    "mammoth": "^1.8.0",
-    "pdfjs-dist": "^4.9.155"
+    "lucide-react": "^0.544.0",
+    "framer-motion": "^12.23.24",
+    "react-to-print": "^3.2.0",
+    "react-hook-form": "^7.63.0",
+    "mammoth": "^1.11.0",
+    "pdfjs-dist": "^5.4.394",
+    "axios": "^1.12.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.0.5",
-    "@tailwindcss/vite": "^4.0.0",
-    "tailwindcss": "^4.0.0",
-    "cypress": "^13.16.1",
+    "@vitejs/plugin-react": "^4.6.0",
+    "vite": "^7.3.3",
+    "@tailwindcss/vite": "^4.1.5",
+    "tailwindcss": "^4.1.5",
+    "vitest": "^3.2.4",
+    "@testing-library/react": "^16.3.0",
+    "cypress": "^15.4.0",
     "mochawesome": "^7.1.3",
-    "eslint": "^9.17.0"
+    "eslint": "^9.36.0"
+  }
+}
+```
+
+**Mobile App Key Dependencies** (`apply-right-app/package.json`):
+
+```json
+{
+  "name": "apply-right-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "expo": "~56.0.5",
+    "react": "18.3.2",
+    "react-native": "0.85.3",
+    "typescript": "~6.0.3",
+    "firebase": "^12.13.0",
+    "@react-navigation/native": "^7.0.0",
+    "@react-navigation/bottom-tabs": "^7.0.0",
+    "@react-navigation/drawer": "^7.0.0",
+    "@react-navigation/stack": "^7.0.0",
+    "nativewind": "^4.2.4",
+    "react-hook-form": "^7.76.1",
+    "lucide-react-native": "^1.16.0",
+    "react-native-chart-kit": "^6.12.2",
+    "expo-print": "~56.0.3",
+    "expo-file-system": "~56.0.7",
+    "expo-sharing": "~56.0.14",
+    "expo-document-picker": "~56.0.4",
+    "expo-image-picker": "~56.0.14",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "react-native-reanimated": "~4.3.1",
+    "axios": "^1.16.1"
   }
 }
 ```
@@ -1806,11 +2372,43 @@ npm run cypress-run
 - [ ] Test PDF export functionality
 - [ ] Verify ATS analysis works correctly
 
-**Recommended Hosting Platforms:**
-- Vercel (recommended for Vite projects)
-- Netlify
-- GitHub Pages
+**Recommended Hosting Platforms (Web):**
+- Netlify (current deployment — includes serverless function for Gemini proxy)
+- Vercel (recommended alternative for Vite projects)
 - Cloudflare Pages
+
+#### E.3 Mobile App Build and Deployment
+
+```bash
+# Install Expo CLI globally
+npm install -g expo-cli eas-cli
+
+# Install mobile app dependencies
+cd apply-right-app
+npm install
+
+# Start Expo development server
+npx expo start
+# Scan QR code with Expo Go app on iOS or Android
+
+# Build for Android (APK / AAB via EAS)
+eas build --platform android --profile preview
+
+# Build for iOS (IPA via EAS — requires Apple Developer account)
+eas build --platform ios --profile preview
+
+# Submit to app stores
+eas submit --platform android
+eas submit --platform ios
+```
+
+**Mobile Pre-Deployment Checklist:**
+- [ ] Set `EXPO_PUBLIC_GEMINI_API_KEY` in `eas.json` environment secrets
+- [ ] Configure `app.json` with correct `bundleIdentifier` (iOS) and `package` (Android)
+- [ ] Test on physical device via Expo Go before submitting to stores
+- [ ] Verify Firebase Auth domains include EAS build origin
+- [ ] Test PDF export and native share sheet on both iOS and Android
+- [ ] Confirm dark mode persists across app restarts (AsyncStorage)
 
 ### Appendix F: User Manual
 
@@ -2038,6 +2636,8 @@ describe('ATS Analysis', () => {
 
 ### Appendix I: Project Timeline
 
+**Phase 1 — Web Application (Original Scope)**
+
 | Week | Phase | Milestones | Status |
 |------|-------|------------|--------|
 | 1-2 | Planning & Research | Requirements gathering, technology selection, feasibility study | ✅ Complete |
@@ -2048,11 +2648,313 @@ describe('ATS Analysis', () => {
 | 13-14 | Testing & QA | E2E tests, bug fixes, performance optimization | ✅ Complete |
 | 15-16 | Polish & Documentation | Code cleanup, comments, user manual, technical docs | ✅ Complete |
 | 17 | Final Testing | User acceptance testing, final bug fixes | ✅ Complete |
-| 18 | Deployment & Presentation | Production deployment, thesis writing, presentation prep | ✅ Complete |
+| 18 | Deployment | Production deployment to Netlify | ✅ Complete |
 
-**Total Development Time:** 18 weeks
+**Phase 2 — Firebase Backend & React Native Mobile App**
+
+| Week | Phase | Milestones | Status |
+|------|-------|------------|--------|
+| 19-20 | Backend Design | Firebase project setup, Firestore schema, security rules design | ✅ Complete |
+| 21-22 | Authentication | Email/password, Google OAuth, email verification, username system | ✅ Complete |
+| 23-24 | Cloud Storage | Firestore CV save/load/delete, ProtectedRoute, AdminRoute | ✅ Complete |
+| 25 | Admin Dashboard | Platform stats, UsersManagement page, status toggle | ✅ Complete |
+| 26-27 | Multi-Template System | Templates 2 and 3 (web + mobile), template selection UX | ✅ Complete |
+| 28-30 | React Native App | Expo setup, navigation, screens, Gemini hooks ported | ✅ Complete |
+| 31-32 | Mobile Polish & PDF | expo-print export, NativeWind theme, dark mode, AsyncStorage | ✅ Complete |
+| 33-34 | Integration Testing | Auth flows, cross-device sync, Firestore rules validation | ✅ Complete |
+| 35 | Thesis Update | Documenting Phase 2 features in thesis | ✅ Complete |
+
+**Total Development Time:** 35 weeks (18 weeks Phase 1 + 17 weeks Phase 2)
 **Team Size:** 1 developer
-**Total Effort:** Approximately 360 hours
+**Total Effort:** Approximately 620 hours
+
+### Appendix K: Mobile App Screenshots
+
+**K.1 Authentication Screens**
+
+*Figure K.1: Mobile landing screen with app branding, hero message, and sign-in / sign-up call-to-action buttons. Matches the web landing page tone while following mobile-first layout conventions.*
+
+*Figure K.2: Login screen supporting both email/password and Google OAuth sign-in, with name-based login resolution through the `usernames` Firestore collection.*
+
+*Figure K.3: Signup screen with Full Name, email, and password fields. Email verification is triggered immediately on account creation.*
+
+**K.2 Home & CV Management**
+
+*Figure K.4: Home screen displaying the user's saved CVs as cards showing template badge, last-saved timestamp, and completion percentage. Edit and delete actions are accessible via card controls.*
+
+*Figure K.5: Template selection screen with preview thumbnails for Classic, Professional, and Modern templates.*
+
+**K.3 CV Builder**
+
+*Figure K.6: CV builder screen showing collapsible sections (Header, Skills, Career, Projects, Education) with AI assistance buttons matching the web form experience.*
+
+*Figure K.7: CV preview screen rendering the selected template with the current CV data. Export button triggers `expo-print` and the native share sheet.*
+
+**K.4 ATS Analysis & Jobs**
+
+*Figure K.8: ATS analysis screen with job description input, Gemini-powered match percentage donut chart, and keyword comparison list.*
+
+*Figure K.9: Job suggestions screen showing LinkedIn-sourced job cards relevant to the user's CV skills.*
+
+**K.5 Navigation & Theme**
+
+*Figure K.10: Side drawer navigation showing all destinations (Home, CV Builder, ATS, Jobs, Profile, Admin for admins).*
+
+*Figure K.11: Dark mode enabled across the app — theme preference stored in AsyncStorage and applied via ThemeContext.*
+
+---
+
+### Appendix L: Firebase Configuration & Security Rules
+
+#### L.1 Firebase Initialization
+
+**Web** (`apply-right-web/src/firebase.ts`):
+```typescript
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { initializeFirestore } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: process.env.VITE_FIREBASE_API_KEY,
+  authDomain: 'cv-builder1-f5560.firebaseapp.com',
+  projectId: 'cv-builder1-f5560',
+  storageBucket: 'cv-builder1-f5560.firebasestorage.app',
+  messagingSenderId: '281924958406',
+  appId: '1:281924958406:web:33ad5839bc38bb23943fc7',
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = initializeFirestore(app, { ignoreUndefinedProperties: true });
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
+```
+
+**Mobile** (`apply-right-app/src/firebase.ts`):
+```typescript
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Same firebaseConfig object as web
+const app = initializeApp(firebaseConfig);
+
+// Mobile requires AsyncStorage-backed persistence
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage),
+});
+export const db = initializeFirestore(app, { ignoreUndefinedProperties: true });
+```
+
+#### L.2 Firestore Security Rules
+
+```javascript
+// firestore.rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn()  { return request.auth != null; }
+    function isVerified()  { return isSignedIn() && request.auth.token.email_verified; }
+    function isAdmin()     {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    function isNotBlocked() {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status != 'blocked';
+    }
+
+    // User profiles — owners can read/create/update their own;
+    // admins can read/update/delete any profile.
+    // Owners CANNOT change their own role or status (privilege escalation prevention).
+    match /users/{uid} {
+      allow read:   if request.auth.uid == uid || isAdmin();
+      allow create: if request.auth.uid == uid || isAdmin();
+      allow update: if isAdmin()
+        || (request.auth.uid == uid
+            && request.resource.data.role   == resource.data.role
+            && request.resource.data.status == resource.data.status);
+      allow delete: if isAdmin();
+    }
+
+    // CV documents — verified, non-blocked users can read/write their own;
+    // admins retain full access.
+    match /cvs/{uid} {
+      allow read, write: if (request.auth.uid == uid && isVerified() && isNotBlocked())
+        || isAdmin();
+    }
+
+    // Username -> {uid, email} lookup table — public read for login resolution;
+    // only the owning user can create, update, or delete their mapping.
+    match /usernames/{key} {
+      allow read:   if true;
+      allow create: if isSignedIn()
+        && request.auth.uid == request.resource.data.uid
+        && request.resource.data.keys().hasOnly(['uid', 'email']);
+      allow update: if isSignedIn()
+        && request.auth.uid == resource.data.uid
+        && request.auth.uid == request.resource.data.uid
+        && request.resource.data.keys().hasOnly(['uid', 'email']);
+      allow delete: if isSignedIn() && request.auth.uid == resource.data.uid;
+    }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}
+```
+
+#### L.3 Firestore Data Schema
+
+```
+users/{uid}
+  email:       string
+  displayName: string
+  role:        'user' | 'admin'
+  status:      'active' | 'blocked'
+  createdAt:   ISO 8601 string
+
+cvs/{uid}
+  cvList: Array<{
+    id:               string   // UUID
+    savedAt:          string   // ISO 8601
+    templateId:       'template1' | 'template2' | 'template3'
+    sectionTitleColor: string  // hex colour
+    header: {
+      fullName:       string
+      specialization: string
+      email:          string
+      phone:          string
+      links:          string[]
+      photoUrl?:      string
+    }
+    abstract:         string
+    skills:           string[]
+    career:           Career[]
+    personalProjects: PersonalProject[]
+    education:        EducationEntry[]
+  }>
+
+usernames/{normalised-display-name}
+  uid:   string
+  email: string
+```
+
+---
+
+### Appendix M: Mobile Application Code Samples
+
+#### M.1 Mobile AuthContext — Google OAuth with Credential
+
+```typescript
+// apply-right-app/src/context/AuthContext.tsx
+async function loginWithGoogle(idToken: string): Promise<UserRole> {
+  const credential = GoogleAuthProvider.credential(idToken);
+  const result = await signInWithCredential(auth, credential);
+  const freshToken = await getIdToken(result.user, true);
+  await AsyncStorage.setItem('authToken', freshToken);
+  setToken(freshToken);
+  const { role, status } = await fetchUserData(result.user);
+  setUserRole(role);
+  setUserStatus(status);
+  return role;
+}
+```
+
+On mobile, the Google ID token is obtained via `expo-auth-session`'s `useIdTokenAuthRequest` hook and passed into this function, replacing the web `signInWithPopup` flow which is unavailable in React Native.
+
+#### M.2 Mobile Navigation Setup
+
+```typescript
+// apply-right-app/src/navigation/AppNavigator.tsx
+import { NavigationContainer } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
+
+export default function AppNavigator() {
+  const { currentUser, loading } = useAuth();
+
+  if (loading) return <LoadingSpinner />;
+
+  return (
+    <NavigationContainer>
+      {currentUser ? <MainDrawer /> : <AuthStack />}
+    </NavigationContainer>
+  );
+}
+
+// apply-right-app/src/navigation/BottomTabs.tsx
+const Tab = createBottomTabNavigator();
+
+export default function BottomTabs() {
+  return (
+    <Tab.Navigator screenOptions={tabScreenOptions}>
+      <Tab.Screen name="Home"       component={HomeScreen} />
+      <Tab.Screen name="CVBuilder"  component={CVBuilderStack} />
+      <Tab.Screen name="ATS"        component={ATSScreen} />
+      <Tab.Screen name="Jobs"       component={JobsScreen} />
+    </Tab.Navigator>
+  );
+}
+```
+
+#### M.3 Mobile PDF Export
+
+```typescript
+// apply-right-app/src/utils/exportCvPdf.ts
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
+
+export async function exportCvPdf(
+  htmlContent: string,
+  fileName: string,
+): Promise<void> {
+  const { uri } = await Print.printToFileAsync({
+    html: htmlContent,
+    base64: false,
+  });
+
+  if (await Sharing.isAvailableAsync()) {
+    await Sharing.shareAsync(uri, {
+      mimeType: 'application/pdf',
+      dialogTitle: `Save ${fileName}`,
+      UTI: 'com.adobe.pdf',
+    });
+  }
+}
+```
+
+`expo-print` accepts the same HTML string that the web `react-to-print` approach renders, ensuring visual parity between PDF exports on both platforms.
+
+#### M.4 NativeWind Styling Example
+
+```tsx
+// apply-right-app/src/screens/home/HomeScreen.tsx
+export default function HomeScreen() {
+  return (
+    <View className="flex-1 bg-background-light dark:bg-background-dark">
+      <View className="px-4 py-6">
+        <Text className="text-2xl font-bold text-primary mb-4">
+          My CVs
+        </Text>
+        <FlatList
+          data={cvList}
+          renderItem={({ item }) => (
+            <Pressable className="bg-white dark:bg-surface-dark rounded-2xl p-4 mb-3 shadow-sm">
+              <Text className="text-lg font-semibold text-gray-800 dark:text-white">
+                {item.header.fullName}
+              </Text>
+              <Text className="text-sm text-gray-500 mt-1">
+                Saved {formatDate(item.savedAt)}
+              </Text>
+            </Pressable>
+          )}
+        />
+      </View>
+    </View>
+  );
+}
+```
+
+The same Tailwind utility class names used in the web application work directly in the mobile app via NativeWind, minimising the mental context switch between the two codebases.
 
 ### Appendix J: Glossary
 
@@ -2087,6 +2989,26 @@ describe('ATS Analysis', () => {
 **SUS (System Usability Scale):** A standardized questionnaire for measuring the perceived usability of a system, scored from 0-100.
 
 **TypeScript:** A programming language developed by Microsoft that builds on JavaScript by adding static type definitions.
+
+**Firebase:** Google's Backend-as-a-Service (BaaS) platform providing Authentication, Firestore, Storage, and other cloud services without a custom server.
+
+**Firestore:** Google Cloud Firestore, a NoSQL document database offered by Firebase. Data is stored as collections of documents containing named fields.
+
+**Firestore Security Rules:** A declarative language for defining read and write access policies on Firestore documents, evaluated server-side independently of client code.
+
+**OAuth (Open Authorization):** An open standard authorization protocol that allows third-party applications to access user accounts without exposing passwords. Used in this project for Google sign-in.
+
+**React Native:** A JavaScript framework for writing native mobile applications for iOS and Android using React paradigms.
+
+**Expo:** A managed open-source platform for React Native that provides native modules, build tools (EAS), and an SDK simplifying cross-platform mobile development.
+
+**NativeWind:** A library that brings Tailwind CSS utility classes to React Native by compiling className props into React Native StyleSheet objects.
+
+**AsyncStorage:** A React Native asynchronous key-value storage system used for persisting auth tokens and user preferences across app restarts.
+
+**EAS (Expo Application Services):** Cloud build and submission service for Expo apps, enabling CI/CD for iOS and Android without local Xcode or Android Studio toolchains.
+
+**UUID (Universally Unique Identifier):** A 128-bit label used to uniquely identify resources. Used in this project for CV document IDs generated via `crypto.randomUUID()`.
 
 ---
 
