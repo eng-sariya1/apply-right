@@ -18,6 +18,7 @@ import {
   type FlatListProps,
 } from 'react-native';
 import { cssInterop } from 'nativewind';
+import { brand, colors } from '../../theme/colors';
 
 cssInterop(View, { className: 'style' });
 cssInterop(RNText, { className: 'style' });
@@ -34,7 +35,7 @@ type ClassProps = { className?: string };
 
 const CARD_SHADOW = Platform.select({
   ios: {
-    shadowColor: '#017A8C',
+    shadowColor: brand.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
@@ -45,7 +46,7 @@ const CARD_SHADOW = Platform.select({
 
 const BUTTON_SHADOW = Platform.select({
   ios: {
-    shadowColor: '#017A8C',
+    shadowColor: brand.shadow,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.25,
     shadowRadius: 6,
@@ -193,7 +194,7 @@ export const InputField = forwardRef<RNTextInput, TextInputProps & ClassProps>(
     <RNTextInput
       ref={ref}
       className={`flex-1 px-4 py-3.5 text-base font-[Inter_300Light] text-text-dark-light dark:text-text-dark-dark ${className}`}
-      placeholderTextColor="#6B9EA8"
+      placeholderTextColor={brand.placeholder}
       {...rest}
     />
   ),
@@ -227,7 +228,7 @@ export const Image = forwardRef<RNImage, ImageProps & ClassProps>(({ className, 
 Image.displayName = 'Image';
 
 // ────────────────────────── Spinner ──────────────────────────
-export const Spinner = ({ size = 'large', color = '#017A8C' }: { size?: 'small' | 'large'; color?: string }) => (
+export const Spinner = ({ size = 'large', color = colors.light.primary }: { size?: 'small' | 'large'; color?: string }) => (
   <ActivityIndicator size={size} color={color} />
 );
 

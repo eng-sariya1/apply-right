@@ -23,6 +23,7 @@ import {
 } from '../../components/ui';
 import { GradientHeader } from '../../components/ui/GradientHeader';
 import { Badge } from '../../components/ui/Badge';
+import { brand, colors } from '../../theme/colors';
 
 interface SavedCV extends CVData {
   id: string;
@@ -36,7 +37,7 @@ const templateLabels: Record<string, string> = {
 };
 
 const FAB_SHADOW = Platform.select({
-  ios: { shadowColor: '#017A8C', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.35, shadowRadius: 12 },
+  ios: { shadowColor: brand.shadow, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.35, shadowRadius: 12 },
   android: { elevation: 10 },
   default: {},
 });
@@ -105,7 +106,7 @@ export default function HomeScreen() {
         <HStack className="items-start justify-between">
           <HStack space={10} className="flex-1 items-center">
             <Center className="h-10 w-10 rounded-xl bg-primary/10">
-              <FileText size={20} color="#017A8C" />
+              <FileText size={20} color={colors.light.primary} />
             </Center>
             <VStack className="flex-1">
               <Text
@@ -121,7 +122,7 @@ export default function HomeScreen() {
           </HStack>
           <HStack space={8}>
             <Pressable className="p-1.5" onPress={() => handleEdit(item)}>
-              <Edit3 size={18} color="#017A8C" />
+              <Edit3 size={18} color={colors.light.primary} />
             </Pressable>
             <Pressable className="p-1.5" onPress={() => handleDelete(item.id, name)}>
               <Trash2 size={18} color="#dc2626" />
@@ -149,7 +150,7 @@ export default function HomeScreen() {
 
   return (
     <Box className="flex-1 bg-background-light dark:bg-background-dark">
-      <StatusBar barStyle="light-content" backgroundColor="#015C6A" />
+      <StatusBar barStyle="light-content" backgroundColor={colors.light.statusBar} />
 
       <GradientHeader style={{ paddingHorizontal: 20, paddingTop: 56, paddingBottom: 24 }}>
         <HStack className="items-end justify-between">

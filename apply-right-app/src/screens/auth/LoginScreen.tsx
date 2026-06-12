@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Alert, StatusBar, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
@@ -6,8 +6,6 @@ import type { AuthStackParamList } from '../../navigation/AuthStack';
 import { useAuth } from '../../context/AuthContext';
 import { Eye, EyeOff, ArrowLeft, FileText } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import * as Google from 'expo-auth-session/providers/google';
-import * as WebBrowser from 'expo-web-browser';
 import {
   Box,
   Button,
@@ -23,50 +21,19 @@ import {
 } from '../../components/ui';
 import { GradientHeader } from '../../components/ui/GradientHeader';
 import { GoogleIcon } from '../../components/ui/GoogleIcon';
-
-WebBrowser.maybeCompleteAuthSession();
+import { useGoogleAuth } from '../../hooks/useGoogleAuth';
+import { colors } from '../../theme/colors';
 
 type Nav = StackNavigationProp<AuthStackParamList, 'Login'>;
 
 export default function LoginScreen() {
   const navigation = useNavigation<Nav>();
-  const { login, loginWithGoogle, resetPassword } = useAuth();
+  const { login, resetPassword } = useAuth();
+  const { request, promptAsync, googleLoading } = useGoogleAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-
-  const ANDROID_CLIENT_ID = '281924958406-oe7v1j9vnfn83bim78v2tis7k39k60rg.apps.googleusercontent.com';
-
-  const WEB_CLIENT_ID = '281924958406-c4mc8hdc1ps4jopk7sl8ccn7aftd9fqj.apps.googleusercontent.com';
-
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: ANDROID_CLIENT_ID,
-    webClientId: WEB_CLIENT_ID,
-    scopes: ['profile', 'email'],
-  });
-
-  useEffect(() => {
-    if (response?.type === 'success' && response.params?.code && request?.codeVerifier && request?.redirectUri) {
-      setGoogleLoading(true);
-      fetch('https://oauth2.googleapis.com/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          code: response.params.code,
-          client_id: WEB_CLIENT_ID,
-          redirect_uri: request.redirectUri,
-          grant_type: 'authorization_code',
-          code_verifier: request.codeVerifier,
-        }).toString(),
-      })
-        .then((r) => r.json())
-        .then((tokens) => loginWithGoogle(tokens.id_token))
-        .catch((err: any) => Alert.alert('Google Sign-In failed', err.message || 'Please try again'))
-        .finally(() => setGoogleLoading(false));
-    }
-  }, [response]);
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -101,7 +68,7 @@ export default function LoginScreen() {
       className="flex-1 bg-background-light dark:bg-background-dark"
       contentContainerClassName="grow"
     >
-      <StatusBar barStyle="light-content" backgroundColor="#015C6A" />
+      <StatusBar barStyle="light-content" backgroundColor={colors.light.statusBar} />
 
       <GradientHeader style={{ paddingHorizontal: 24, paddingTop: 56, paddingBottom: 40 }}>
         <Pressable className="mb-6" onPress={() => navigation.goBack()}>

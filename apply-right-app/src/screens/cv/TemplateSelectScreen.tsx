@@ -19,6 +19,7 @@ import {
   VStack,
 } from '../../components/ui';
 import { GradientHeader } from '../../components/ui/GradientHeader';
+import { colors } from '../../theme/colors';
 
 type Nav = StackNavigationProp<CVBuilderStackParamList, 'TemplateSelect'>;
 
@@ -45,7 +46,7 @@ export default function TemplateSelectScreen() {
 
   return (
     <Box className="flex-1 bg-background-light dark:bg-background-dark">
-      <StatusBar barStyle="light-content" backgroundColor="#015C6A" />
+      <StatusBar barStyle="light-content" backgroundColor={colors.light.statusBar} />
       <GradientHeader style={{ paddingHorizontal: 20, paddingTop: 56, paddingBottom: 20 }}>
         <HStack space={12} className="items-center">
           <Pressable onPress={() => navigation.goBack()} className="mr-2">

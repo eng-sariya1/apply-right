@@ -4,8 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14da8514-20e5-4bbc-a153-f6164add1916" name="Changes" comment="">
+    <list default="true" id="14da8514-20e5-4bbc-a153-f6164add1916" name="Changes" comment="1">
+      <change afterPath="$PROJECT_DIR$/pres.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_5_2026_2_08_AM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_5_2026_2_08_AM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/assets/android-icon-foreground.png" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/assets/android-icon-foreground.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/assets/android-icon-monochrome.png" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/assets/android-icon-monochrome.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/assets/splash-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/assets/splash-icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/components/ui/Badge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/components/ui/Badge.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/components/ui/GradientHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/components/ui/GradientHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/components/ui/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/components/ui/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/auth/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/auth/LoginScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/auth/SignupScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/auth/SignupScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/cv/CVPreviewScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/cv/CVPreviewScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/cv/TemplateSelectScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/cv/TemplateSelectScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/home/HomeScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/home/HomeScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/screens/jobs/JobsScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/screens/jobs/JobsScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apply-right-app/src/theme/colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apply-right-app/src/theme/colors.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,15 +59,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Victus/WebstormProjects/apply-right",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "npm.dev.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Victus/WebstormProjects/apply-right&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Victus\WebstormProjects\apply-right" />
@@ -88,10 +110,37 @@
       <option name="presentableId" value="Default" />
       <updated>1780262807473</updated>
       <workItem from="1780262809308" duration="333000" />
+      <workItem from="1780617870019" duration="2001000" />
+      <workItem from="1780713407639" duration="584000" />
+      <workItem from="1780955887883" duration="3645000" />
+      <workItem from="1781032393743" duration="7793000" />
+      <workItem from="1781131612966" duration="4481000" />
+      <workItem from="1781239983301" duration="11198000" />
     </task>
+    <task id="LOCAL-00001" summary="1">
+      <option name="closed" value="true" />
+      <created>1780616453584</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1780616453585</updated>
+    </task>
+    <task id="LOCAL-00002" summary="1">
+      <option name="closed" value="true" />
+      <created>1780620224800</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1780620224800</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1" />
+    <option name="LAST_COMMIT_MESSAGE" value="1" />
   </component>
 </project>

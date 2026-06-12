@@ -17,6 +17,7 @@ import {
 } from '../../components/ui';
 import { GradientHeader } from '../../components/ui/GradientHeader';
 import { Badge } from '../../components/ui/Badge';
+import { colors } from '../../theme/colors';
 
 const LINKEDIN_BASE = 'https://www.linkedin.com/jobs/search/?keywords=';
 
@@ -37,7 +38,7 @@ export default function JobsScreen() {
 
   return (
     <ScrollView className="flex-1 bg-background-light dark:bg-background-dark">
-      <StatusBar barStyle="light-content" backgroundColor="#015C6A" />
+      <StatusBar barStyle="light-content" backgroundColor={colors.light.statusBar} />
 
       <GradientHeader style={{ paddingHorizontal: 20, paddingTop: 56, paddingBottom: 24 }}>
         <HStack space={10} className="items-center">
